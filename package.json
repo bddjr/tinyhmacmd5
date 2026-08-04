@@ -1,0 +1,40 @@
+{
+  "name": "tinyhmacmd5",
+  "version": "0.0.1",
+  "description": "A tiny JavaScript HMAC-MD5 implementation. The minified browser bundle is only 3299 bytes.",
+  "author": "bddjr",
+  "license": "MIT",
+  "type": "module",
+  "main": "main.js",
+  "types": "main.d.ts",
+  "browser": "browser.min.js",
+  "files": [
+    "main.js",
+    "main.d.ts",
+    "browser.min.js"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node scripts/test.mjs",
+    "prepublishOnly": "pnpm test"
+  },
+  "keywords": [
+    "md5",
+    "hmac",
+    "hmacmd5",
+    "hmac-md5",
+    "tiny",
+    "hex",
+    "crypto",
+    "blueimp",
+    "blueimp-md5"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bddjr/tinyhmacmd5.git"
+  },
+  "devDependencies": {
+    "terser": "^5.49.0",
+    "tinyhmacmd5": "link:"
+  }
+}

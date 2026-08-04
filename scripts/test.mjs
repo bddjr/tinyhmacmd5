@@ -1,0 +1,73 @@
+import fs from 'node:fs'
+import crypto from 'node:crypto'
+
+/**
+ * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
+ */
+const nodeMD5 = (data) => crypto.createHash('md5').update(data).digest('hex')
+
+/**
+ * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
+ * @param {crypto.KeyLike} key
+ */
+const nodeHmacMD5 = (data, key) => crypto.createHmac('md5', key).update(data).digest('hex')
+
+/**
+ * @param {typeof import("tinyhmacmd5").default} md5
+ */
+function test(md5) {
+    /**
+     * @param {string | Uint8Array} data
+     * @param {string | Uint8Array} key
+     */
+    function test(data, key) {
+        console.log('data:', data, 'key:', key)
+
+        let a = md5(data), b = nodeMD5(data)
+        console.log('md5: tinyhmacmd5:', a, 'nodejs:', b)
+        if (a !== b)
+            throw Error(`Failed to test md5`)
+
+        a = md5(data, key), b = nodeHmacMD5(data, key)
+        console.log('hmacmd5: tinyhmacmd5:', a, 'nodejs:', b)
+        if (a !== b)
+            throw Error(`Failed to test hmacmd5`)
+
+        console.log()
+
+    }
+
+    test('', crypto.randomBytes(4).toString('hex'))
+    test('1', crypto.randomBytes(4).toString('hex'))
+    test('12', crypto.randomBytes(5).toString('hex'))
+    test('123', crypto.randomBytes(6).toString('hex'))
+    test('1234', crypto.randomBytes(7).toString('hex'))
+    test('Hello world', crypto.randomBytes(8).toString('hex'))
+    test('Hello world!', crypto.randomBytes(9).toString('hex'))
+    test('Hello world!👋', crypto.randomBytes(10).toString('hex'))
+    test(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
+    test('', '')
+
+    for (let i = 0; i < 3; i++) {
+        const data = crypto.randomUUID()
+        const key = crypto.randomUUID()
+        test(data, key)
+    }
+    console.log('ok')
+    console.log()
+}
+
+console.log('test browser.min.js');
+
+; (0, eval)(fs.readFileSync('browser.min.js').toString())
+if (typeof md5 != 'function')
+    throw Error(`browser.min.js is invalid`)
+test(md5)
+delete global.md5
+
+console.log('=======================');
+console.log('test main.js');
+console.log();
+
+import md5 from "tinyhmacmd5";
+test(md5)
