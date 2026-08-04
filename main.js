@@ -106,7 +106,7 @@ let md5ii = (a, b, c, d, x, s, t) => md5cmn(c ^ (b | ~d), a, b, x, s, t)
  * @returns {[number, number, number, number]} MD5 Array
  */
 let binlMD5 = (x, bitLen) => {
-  let i = 0
+  var i = 0
     , olda
     , oldb
     , oldc
@@ -211,7 +211,7 @@ let binlMD5 = (x, bitLen) => {
  * @returns {number[]} Array of little-endian words
  */
 let bytesToBinl = (input) => {
-  let i = input[$length]
+  var i = input[$length]
     , output = _Array(Math.ceil(i / 4))
   for (; i;) {
     output[floor(--i / 4)] |= input[i] << ((i % 4) * 8)
@@ -247,7 +247,7 @@ let bytesToBinl = (input) => {
 var md5 = (data, key, raw) => {
   if (typeof data == 'string') data = textEncoder.encode(data);
 
-  let bitLen = data[$length] * 8
+  var bitLen = data[$length] * 8
     , bdata = bytesToBinl(data)
     , i = 16
     , out = new Uint8Array(16)
