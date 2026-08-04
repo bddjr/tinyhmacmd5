@@ -260,17 +260,17 @@ var md5 = (data, key, raw) => {
   var bdata = bytesToBinl(data = inputToBytes(data))
     , bitLen = data[$length] * 8
     , i = 16
-    , out = new Uint8Array(16)
+    , out = new Uint8Array(i)
 
   if (key != null) {
     // HMAC
     let bkey = bytesToBinl(key = inputToBytes(key))
-      , i = 16
-      , opad = Array(16)
+      , j = i
+      , opad = Array(j)
       , unshift = (/**@type{*}*/ _) => bdata.unshift(...opad)
-    unshift(bkey[$length] > 16 && (bkey = binlMD5(bkey, key[$length] * 8)))
-    for (; i; opad[i] = bkey[i] ^ 0x5c5c5c5c) {
-      bdata[--i] = bkey[i] ^ 0x36363636
+    unshift(bkey[$length] > j && (bkey = binlMD5(bkey, key[$length] * 8)))
+    for (; j; opad[j] = bkey[j] ^ 0x5c5c5c5c) {
+      bdata[--j] = bkey[j] ^ 0x36363636
     }
     unshift(bdata = binlMD5(bdata, 512 + bitLen))
     bitLen = 512 + 128
