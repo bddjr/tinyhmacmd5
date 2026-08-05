@@ -119,7 +119,7 @@ let binlMD5 = (x, bitLen) => {
   // append padding
   x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
   x[padLenIndex] = 0 | bitLen;
-  x[padLenIndex + 1] = 0 | bitLen / 0x100000000;
+  x[padLenIndex + 1] = 0 | bitLen / 2 ** 32;
 
   for (; i < x[$length]; d = safeAdd(d, oldd)) {
     let [
