@@ -8,7 +8,7 @@ let $length = "length"
 /** @type {16} */
 let $16 = 16
 
-/** @type {0x100000000} */
+/** @type {number} */
 let $2_32 = 2 ** 32
 
 let $Math = Math
@@ -102,6 +102,9 @@ let md5hh = (a, b, c, d, x, s, t) => md5cmn(b ^ c ^ d, a, b, x, s, t)
  */
 let md5ii = (a, b, c, d, x, s, t) => md5cmn(c ^ (b | ~d), a, b, x, s, t)
 
+/** @type {number[]} MD5 constants cached in memory */
+let K = []
+
 /**
  * Calculate the MD5 of an array of little-endian words, and a bit length.
  *
@@ -116,10 +119,13 @@ let binlMD5 = (x, bitLen) => {
     , oldc
     , oldd
     , a = 1732584193
-    , b = -271733879
-    , c = -1732584194
     , d = 271733878
+    , c = ~a
+    , b = ~d
     , padLenIndex = floor((bitLen + 64) / 512) * $16 + 14
+  /** @type {number} */
+  var k_i
+    , k = (/**@type {*}*/ _) => K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i))
 
   // append padding
   x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
@@ -137,73 +143,75 @@ let binlMD5 = (x, bitLen) => {
     oldc = c
     oldd = d
 
-    a = md5ff(a, b, c, d, x0, 7, K[0])
-    d = md5ff(d, a, b, c, x1, 12, K[1])
-    c = md5ff(c, d, a, b, x2, 17, K[2])
-    b = md5ff(b, c, d, a, x3, 22, K[3])
-    a = md5ff(a, b, c, d, x4, 7, K[4])
-    d = md5ff(d, a, b, c, x5, 12, K[5])
-    c = md5ff(c, d, a, b, x6, 17, K[6])
-    b = md5ff(b, c, d, a, x7, 22, K[7])
-    a = md5ff(a, b, c, d, x8, 7, K[8])
-    d = md5ff(d, a, b, c, x9, 12, K[9])
-    c = md5ff(c, d, a, b, x10, 17, K[10])
-    b = md5ff(b, c, d, a, x11, 22, K[11])
-    a = md5ff(a, b, c, d, x12, 7, K[12])
-    d = md5ff(d, a, b, c, x13, 12, K[13])
-    c = md5ff(c, d, a, b, x14, 17, K[14])
-    b = md5ff(b, c, d, a, x15, 22, K[15])
+    k_i = 0
 
-    a = md5gg(a, b, c, d, x1, 5, K[16])
-    d = md5gg(d, a, b, c, x6, 9, K[17])
-    c = md5gg(c, d, a, b, x11, 14, K[18])
-    b = md5gg(b, c, d, a, x0, 20, K[19])
-    a = md5gg(a, b, c, d, x5, 5, K[20])
-    d = md5gg(d, a, b, c, x10, 9, K[21])
-    c = md5gg(c, d, a, b, x15, 14, K[22])
-    b = md5gg(b, c, d, a, x4, 20, K[23])
-    a = md5gg(a, b, c, d, x9, 5, K[24])
-    d = md5gg(d, a, b, c, x14, 9, K[25])
-    c = md5gg(c, d, a, b, x3, 14, K[26])
-    b = md5gg(b, c, d, a, x8, 20, K[27])
-    a = md5gg(a, b, c, d, x13, 5, K[28])
-    d = md5gg(d, a, b, c, x2, 9, K[29])
-    c = md5gg(c, d, a, b, x7, 14, K[30])
-    b = md5gg(b, c, d, a, x12, 20, K[31])
+    a = md5ff(a, b, c, d, x0, 7, k())
+    d = md5ff(d, a, b, c, x1, 12, k())
+    c = md5ff(c, d, a, b, x2, 17, k())
+    b = md5ff(b, c, d, a, x3, 22, k())
+    a = md5ff(a, b, c, d, x4, 7, k())
+    d = md5ff(d, a, b, c, x5, 12, k())
+    c = md5ff(c, d, a, b, x6, 17, k())
+    b = md5ff(b, c, d, a, x7, 22, k())
+    a = md5ff(a, b, c, d, x8, 7, k())
+    d = md5ff(d, a, b, c, x9, 12, k())
+    c = md5ff(c, d, a, b, x10, 17, k())
+    b = md5ff(b, c, d, a, x11, 22, k())
+    a = md5ff(a, b, c, d, x12, 7, k())
+    d = md5ff(d, a, b, c, x13, 12, k())
+    c = md5ff(c, d, a, b, x14, 17, k())
+    b = md5ff(b, c, d, a, x15, 22, k())
 
-    a = md5hh(a, b, c, d, x5, 4, K[32])
-    d = md5hh(d, a, b, c, x8, 11, K[33])
-    c = md5hh(c, d, a, b, x11, $16, K[34])
-    b = md5hh(b, c, d, a, x14, 23, K[35])
-    a = md5hh(a, b, c, d, x1, 4, K[36])
-    d = md5hh(d, a, b, c, x4, 11, K[37])
-    c = md5hh(c, d, a, b, x7, $16, K[38])
-    b = md5hh(b, c, d, a, x10, 23, K[39])
-    a = md5hh(a, b, c, d, x13, 4, K[40])
-    d = md5hh(d, a, b, c, x0, 11, K[41])
-    c = md5hh(c, d, a, b, x3, $16, K[42])
-    b = md5hh(b, c, d, a, x6, 23, K[43])
-    a = md5hh(a, b, c, d, x9, 4, K[44])
-    d = md5hh(d, a, b, c, x12, 11, K[45])
-    c = md5hh(c, d, a, b, x15, $16, K[46])
-    b = md5hh(b, c, d, a, x2, 23, K[47])
+    a = md5gg(a, b, c, d, x1, 5, k())
+    d = md5gg(d, a, b, c, x6, 9, k())
+    c = md5gg(c, d, a, b, x11, 14, k())
+    b = md5gg(b, c, d, a, x0, 20, k())
+    a = md5gg(a, b, c, d, x5, 5, k())
+    d = md5gg(d, a, b, c, x10, 9, k())
+    c = md5gg(c, d, a, b, x15, 14, k())
+    b = md5gg(b, c, d, a, x4, 20, k())
+    a = md5gg(a, b, c, d, x9, 5, k())
+    d = md5gg(d, a, b, c, x14, 9, k())
+    c = md5gg(c, d, a, b, x3, 14, k())
+    b = md5gg(b, c, d, a, x8, 20, k())
+    a = md5gg(a, b, c, d, x13, 5, k())
+    d = md5gg(d, a, b, c, x2, 9, k())
+    c = md5gg(c, d, a, b, x7, 14, k())
+    b = md5gg(b, c, d, a, x12, 20, k())
 
-    a = md5ii(a, b, c, d, x0, 6, K[48])
-    d = md5ii(d, a, b, c, x7, 10, K[49])
-    c = md5ii(c, d, a, b, x14, 15, K[50])
-    b = md5ii(b, c, d, a, x5, 21, K[51])
-    a = md5ii(a, b, c, d, x12, 6, K[52])
-    d = md5ii(d, a, b, c, x3, 10, K[53])
-    c = md5ii(c, d, a, b, x10, 15, K[54])
-    b = md5ii(b, c, d, a, x1, 21, K[55])
-    a = md5ii(a, b, c, d, x8, 6, K[56])
-    d = md5ii(d, a, b, c, x15, 10, K[57])
-    c = md5ii(c, d, a, b, x6, 15, K[58])
-    b = md5ii(b, c, d, a, x13, 21, K[59])
-    a = md5ii(a, b, c, d, x4, 6, K[60])
-    d = md5ii(d, a, b, c, x11, 10, K[61])
-    c = md5ii(c, d, a, b, x2, 15, K[62])
-    b = md5ii(b, c, d, a, x9, 21, K[63])
+    a = md5hh(a, b, c, d, x5, 4, k())
+    d = md5hh(d, a, b, c, x8, 11, k())
+    c = md5hh(c, d, a, b, x11, $16, k())
+    b = md5hh(b, c, d, a, x14, 23, k())
+    a = md5hh(a, b, c, d, x1, 4, k())
+    d = md5hh(d, a, b, c, x4, 11, k())
+    c = md5hh(c, d, a, b, x7, $16, k())
+    b = md5hh(b, c, d, a, x10, 23, k())
+    a = md5hh(a, b, c, d, x13, 4, k())
+    d = md5hh(d, a, b, c, x0, 11, k())
+    c = md5hh(c, d, a, b, x3, $16, k())
+    b = md5hh(b, c, d, a, x6, 23, k())
+    a = md5hh(a, b, c, d, x9, 4, k())
+    d = md5hh(d, a, b, c, x12, 11, k())
+    c = md5hh(c, d, a, b, x15, $16, k())
+    b = md5hh(b, c, d, a, x2, 23, k())
+
+    a = md5ii(a, b, c, d, x0, 6, k())
+    d = md5ii(d, a, b, c, x7, 10, k())
+    c = md5ii(c, d, a, b, x14, 15, k())
+    b = md5ii(b, c, d, a, x5, 21, k())
+    a = md5ii(a, b, c, d, x12, 6, k())
+    d = md5ii(d, a, b, c, x3, 10, k())
+    c = md5ii(c, d, a, b, x10, 15, k())
+    b = md5ii(b, c, d, a, x1, 21, k())
+    a = md5ii(a, b, c, d, x8, 6, k())
+    d = md5ii(d, a, b, c, x15, 10, k())
+    c = md5ii(c, d, a, b, x6, 15, k())
+    b = md5ii(b, c, d, a, x13, 21, k())
+    a = md5ii(a, b, c, d, x4, 6, k())
+    d = md5ii(d, a, b, c, x11, 10, k())
+    c = md5ii(c, d, a, b, x2, 15, k())
+    b = md5ii(b, c, d, a, x9, 21, k())
 
     a = safeAdd(a, olda)
     b = safeAdd(b, oldb)
@@ -237,13 +245,6 @@ let inputToBytes = (input) => (
     ? new TextEncoder().encode(input)
     : input
 )
-
-/** @type {number[]} MD5 constants generated dynamically to save space */
-let K = []
-let i = 64
-for (; i;) {
-  K[i - 1] = 0 | $2_32 * $Math.abs($Math.sin(i--))
-}
 
 /**
  * @overload
