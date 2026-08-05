@@ -1,6 +1,6 @@
 {
   "name": "tinyhmacmd5",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A tiny JavaScript HMAC-MD5 implementation. The minified browser bundle is only 2471 bytes.",
   "author": "bddjr",
   "license": "MIT",
