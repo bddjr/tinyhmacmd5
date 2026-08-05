@@ -45,6 +45,7 @@ function test(md5) {
     test('Hello world', crypto.randomBytes(8).toString('hex'))
     test('Hello world!', crypto.randomBytes(9).toString('hex'))
     test('Hello world!👋', crypto.randomBytes(10).toString('hex'))
+    test('Hello world!👋', 'HMAC key 🔑')
     test(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
     test('', '')
 

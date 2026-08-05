@@ -2,7 +2,7 @@
 
 A tiny JavaScript HMAC-MD5 implementation.
 
-The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 2911 bytes.
+The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 2883 bytes.
 
 ## Setup
 
@@ -32,12 +32,12 @@ HMAC-MD5:
 
 ```js
 // string to hex
-// returns "1feba2d374d15f7b446f1bc1c0855868"
-md5("Hello world!👋", "83e6ecec0587c82060f1")
+// returns "c87fdc912df24da05a6e3fed927e9d89"
+md5("Hello world!👋", "HMAC key 🔑")
 
 // string to bytes
 // returns Uint8Array<ArrayBuffer>
-md5("Hello world!👋", "83e6ecec0587c82060f1", true)
+md5("Hello world!👋", "HMAC key 🔑", true)
 
 // bytes to hex
 // returns "f881235eccf71ab49b937753a72ac673"

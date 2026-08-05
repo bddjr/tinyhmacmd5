@@ -39,7 +39,7 @@ let bitRotateLeft = (num, cnt) => (num << cnt) | (num >>> (32 - cnt))
  * @param {number} t t
  * @returns {number} Result
  */
-let md5cmn = (q, a, b, x, s, t) => safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b)
+let md5cmn = (q, a, b, x, s, t) => safeAdd(bitRotateLeft(safeAdd(a, q) + safeAdd(x, t), s), b)
 
 /**
  * Basic operation the algorithm uses.
@@ -267,14 +267,18 @@ var md5 = (data, key, raw) => {
   if (key != null) {
     // HMAC
     let bkey = bytesToBinl(key = inputToBytes(key))
-      , i = $16
-      , opad = Array(i)
-      , unshift = (/**@type{*}*/ _) => bdata.unshift(...opad)
-    unshift(bkey[$length] > $16 && (bkey = binlMD5(bkey, key[$length] * 8)))
-    for (; i; opad[i] = bkey[i] ^ 0x5c5c5c5c) {
-      bdata[--i] = bkey[i] ^ 0x36363636
+      , pad = (/**@type {number}*/ x) => {
+        for (; i;) {
+          bdata.unshift(x ^ bkey[--i])
+        }
+        i = $16
+      }
+    if (bkey[$length] > $16) {
+      bkey = binlMD5(bkey, key[$length] * 8)
     }
-    unshift(bdata = binlMD5(bdata, 512 + bitLen))
+    pad(0x36363636)
+    bdata = binlMD5(bdata, 512 + bitLen)
+    pad(0x5c5c5c5c)
     bitLen = 512 + 128
   }
 
