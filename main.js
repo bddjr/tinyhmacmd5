@@ -262,17 +262,19 @@ var md5 = (data, key, raw) => {
   var bdata = bytesToBinl(data = inputToBytes(data))
     , bitLen = data[$length] * 8
     , i = $16
-    , out = new Uint8Array(i)
+    , out = new Uint8Array($16)
+  /** @type {*} */
+  var bkey
+    , pad = (/**@type {number}*/ x) => {
+      for (; i;) {
+        bdata.unshift(x ^ bkey[--i])
+      }
+      i = $16
+    }
 
   if (key != null) {
     // HMAC
-    let bkey = bytesToBinl(key = inputToBytes(key))
-      , pad = (/**@type {number}*/ x) => {
-        for (; i;) {
-          bdata.unshift(x ^ bkey[--i])
-        }
-        i = $16
-      }
+    bkey = bytesToBinl(key = inputToBytes(key))
     if (bkey[$length] > $16) {
       bkey = binlMD5(bkey, key[$length] * 8)
     }
@@ -292,6 +294,7 @@ var md5 = (data, key, raw) => {
   return raw
     ? out
     : out.reduce((p, v) => p + (v >> 4 && '') + v.toString($16), '')
+  // : out.toHex()
 }
 
 export default md5
