@@ -119,6 +119,52 @@ let binlMD5 = (x, bitLen) => {
 
   var X = (/**@type {*}*/ _) => x[i++]
 
+  /**
+   * @param {typeof ff} f
+   * @param {number} s0
+   * @param {number} s1
+   * @param {number} s2
+   * @param {number} s3
+   * @param {number} x0
+   * @param {number} x1
+   * @param {number} x2
+   * @param {number} x3
+   * @param {number} x4
+   * @param {number} x5
+   * @param {number} x6
+   * @param {number} x7
+   * @param {number} x8
+   * @param {number} x9
+   * @param {number} x10
+   * @param {number} x11
+   * @param {number} x12
+   * @param {number} x13
+   * @param {number} x14
+   * @param {number} x15
+   */
+  var F = (
+    f, s0, s1, s2, s3,
+    x0, x1, x2, x3, x4, x5, x6, x7,
+    x8, x9, x10, x11, x12, x13, x14, x15
+  ) => {
+    /**
+     * @param {number} x0 
+     * @param {number} x1 
+     * @param {number} x2 
+     * @param {number} x3 
+     */
+    var F4 = (x0, x1, x2, x3) => {
+      a = f(a, b, c, d, x0, s0)
+      d = f(d, a, b, c, x1, s1)
+      c = f(c, d, a, b, x2, s2)
+      b = f(b, c, d, a, x3, s3)
+    }
+    F4(x0, x1, x2, x3)
+    F4(x4, x5, x6, x7)
+    F4(x8, x9, x10, x11)
+    F4(x12, x13, x14, x15)
+  }
+
   var padLenIndex = floor((bitLen + 64) / 512) * $16 + 14
 
   // append padding
@@ -134,73 +180,33 @@ let binlMD5 = (x, bitLen) => {
 
     k_i = 0
 
-    a = ff(a, b, c, d, x0 = X(), 7)
-    d = ff(d, a, b, c, x1 = X(), 12)
-    c = ff(c, d, a, b, x2 = X(), 17)
-    b = ff(b, c, d, a, x3 = X(), 22)
-    a = ff(a, b, c, d, x4 = X(), 7)
-    d = ff(d, a, b, c, x5 = X(), 12)
-    c = ff(c, d, a, b, x6 = X(), 17)
-    b = ff(b, c, d, a, x7 = X(), 22)
-    a = ff(a, b, c, d, x8 = X(), 7)
-    d = ff(d, a, b, c, x9 = X(), 12)
-    c = ff(c, d, a, b, x10 = X(), 17)
-    b = ff(b, c, d, a, x11 = X(), 22)
-    a = ff(a, b, c, d, x12 = X(), 7)
-    d = ff(d, a, b, c, x13 = X(), 12)
-    c = ff(c, d, a, b, x14 = X(), 17)
-    b = ff(b, c, d, a, x15 = X(), 22)
+    F(ff, 7, 12, 17, 22,
+      x0 = X(), x1 = X(), x2 = X(), x3 = X(),
+      x4 = X(), x5 = X(), x6 = X(), x7 = X(),
+      x8 = X(), x9 = X(), x10 = X(), x11 = X(),
+      x12 = X(), x13 = X(), x14 = X(), x15 = X()
+    )
 
-    a = gg(a, b, c, d, x1, 5)
-    d = gg(d, a, b, c, x6, 9)
-    c = gg(c, d, a, b, x11, 14)
-    b = gg(b, c, d, a, x0, 20)
-    a = gg(a, b, c, d, x5, 5)
-    d = gg(d, a, b, c, x10, 9)
-    c = gg(c, d, a, b, x15, 14)
-    b = gg(b, c, d, a, x4, 20)
-    a = gg(a, b, c, d, x9, 5)
-    d = gg(d, a, b, c, x14, 9)
-    c = gg(c, d, a, b, x3, 14)
-    b = gg(b, c, d, a, x8, 20)
-    a = gg(a, b, c, d, x13, 5)
-    d = gg(d, a, b, c, x2, 9)
-    c = gg(c, d, a, b, x7, 14)
-    b = gg(b, c, d, a, x12, 20)
+    F(gg, 5, 9, 14, 20,
+      x1, x6, x11, x0,
+      x5, x10, x15, x4,
+      x9, x14, x3, x8,
+      x13, x2, x7, x12
+    )
 
-    a = hh(a, b, c, d, x5, 4)
-    d = hh(d, a, b, c, x8, 11)
-    c = hh(c, d, a, b, x11, $16)
-    b = hh(b, c, d, a, x14, 23)
-    a = hh(a, b, c, d, x1, 4)
-    d = hh(d, a, b, c, x4, 11)
-    c = hh(c, d, a, b, x7, $16)
-    b = hh(b, c, d, a, x10, 23)
-    a = hh(a, b, c, d, x13, 4)
-    d = hh(d, a, b, c, x0, 11)
-    c = hh(c, d, a, b, x3, $16)
-    b = hh(b, c, d, a, x6, 23)
-    a = hh(a, b, c, d, x9, 4)
-    d = hh(d, a, b, c, x12, 11)
-    c = hh(c, d, a, b, x15, $16)
-    b = hh(b, c, d, a, x2, 23)
+    F(hh, 4, 11, $16, 23,
+      x5, x8, x11, x14,
+      x1, x4, x7, x10,
+      x13, x0, x3, x6,
+      x9, x12, x15, x2
+    )
 
-    a = ii(a, b, c, d, x0, 6)
-    d = ii(d, a, b, c, x7, 10)
-    c = ii(c, d, a, b, x14, 15)
-    b = ii(b, c, d, a, x5, 21)
-    a = ii(a, b, c, d, x12, 6)
-    d = ii(d, a, b, c, x3, 10)
-    c = ii(c, d, a, b, x10, 15)
-    b = ii(b, c, d, a, x1, 21)
-    a = ii(a, b, c, d, x8, 6)
-    d = ii(d, a, b, c, x15, 10)
-    c = ii(c, d, a, b, x6, 15)
-    b = ii(b, c, d, a, x13, 21)
-    a = ii(a, b, c, d, x4, 6)
-    d = ii(d, a, b, c, x11, 10)
-    c = ii(c, d, a, b, x2, 15)
-    b = ii(b, c, d, a, x9, 21)
+    F(ii, 6, 10, 15, 21,
+      x0, x7, x14, x5,
+      x12, x3, x10, x1,
+      x8, x15, x6, x13,
+      x4, x11, x2, x9
+    )
 
     a = safeAdd(a, olda)
     b = safeAdd(b, oldb)
