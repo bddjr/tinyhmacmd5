@@ -69,8 +69,7 @@ let binlMD5 = (x, bitLen) => {
     cmn_t = (
       a + q +
       (
-        cmn_t = 0o07531501 >> ff_i * 6,
-        cmn_t = j++ * (7 & cmn_t) + (7 & cmn_t >> 3) & 15,
+        cmn_t = j++ * (7 & 0o7351 >> ff_i * 3) + (7 & 0o0510 >> ff_i * 3) & 15,
         ff_i ? w[cmn_t] : w[cmn_t] = 0 | x[i++]
       ) +
       (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i)))
