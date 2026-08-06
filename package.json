@@ -14,8 +14,8 @@
     "browser.min.js"
   ],
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "test": "node scripts/build.mjs && node scripts/test.mjs",
+    "build": "node scripts/build.mjs && es-check es2021 --module --checkFeatures main.js browser.min.js",
+    "test": "pnpm build && node scripts/test.mjs",
     "prepublishOnly": "pnpm test"
   },
   "keywords": [
@@ -34,6 +34,7 @@
     "url": "git+https://github.com/bddjr/tinyhmacmd5.git"
   },
   "devDependencies": {
+    "es-check": "^9.6.4",
     "terser": "^5.49.0",
     "tinyhmacmd5": "link:"
   }
