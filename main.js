@@ -8,7 +8,6 @@ let $length = "length"
 /** @type {16} */
 let $16 = 16
 
-/** @type {number} */
 let $2_32 = 2 ** 32
 
 let $Array = Array
@@ -19,18 +18,10 @@ let floor = $Math.floor
 
 /** @type {((b:number, c:number, d:number) => number)[]} */
 let ff = [
-  (b, c, d) => (b & c) | (~b & d),
-  (b, c, d) => (b & d) | (c & ~d),
+  (b, c, d) => b & c | ~b & d,
+  (b, c, d) => b & d | c & ~d,
   (b, c, d) => b ^ c ^ d,
   (b, c, d) => c ^ (b | ~d)
-]
-
-/** @type {((j: number) => number)[]} */
-let M = [
-  j => j,
-  j => 5 * j + 1 & 15,
-  j => 3 * j + 5 & 15,
-  j => 7 * j & 15
 ]
 
 /** @type {number[]} MD5 constants cached in memory */
@@ -78,7 +69,8 @@ let binlMD5 = (x, bitLen) => {
     cmn_t = (
       a + q +
       (
-        cmn_t = M[ff_i](j++),
+        cmn_t = 0o07531501 >> ff_i * 6,
+        cmn_t = j++ * (7 & cmn_t) + (7 & cmn_t >> 3) & 15,
         ff_i ? w[cmn_t] : w[cmn_t] = 0 | x[i++]
       ) +
       (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i)))
