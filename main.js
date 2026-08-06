@@ -217,7 +217,7 @@ var md5 = (data, key, raw) => {
 
   return raw
     ? out
-    : out.toHex?.() ?? out.reduce((p, v) => p + (v >> 4 && '') + v.toString($16), '')
+    : out.reduce((p, v) => p + (v >> 4 && '') + v.toString($16), '')
 }
 
 export default md5
