@@ -75,8 +75,15 @@ let binlMD5 = (x, bitLen) => {
   * @returns {number}
   */
   var cmn = (q, a, b, s) => (
-    cmn_t = a + q + w[M[ff_i](j++)] + (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i))),
-    (cmn_t << s | cmn_t >>> 32 - s) + b
+    cmn_t = (
+      a + q +
+      (
+        cmn_t = M[ff_i](j++),
+        ff_i ? w[cmn_t] : w[cmn_t] = 0 | x[i++]
+      ) +
+      (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i)))
+    ),
+    0 | (cmn_t << s | cmn_t >>> 32 - s) + b
   )
 
   /** @type {typeof ff[0]} */
@@ -109,12 +116,7 @@ let binlMD5 = (x, bitLen) => {
     oldc = c
     oldd = d
 
-    j = k_i = ff_i = 0
-
-    for (; j < $16;) {
-      // x[i++] may be undefined
-      w[j++] = 0 | x[i++]
-    }
+    k_i = ff_i = 0
 
     F(7, 12, 17, 22)
     F(5, 9, 14, 20)
