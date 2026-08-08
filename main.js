@@ -52,9 +52,6 @@ let binlMD5 = (x, bitLen) => {
   /** @type {number} */
   var ff_i
 
-  /** @type {number} */
-  var cmn_t
-
   /** @type {number[]} */
   var w = $Array($16)
 
@@ -66,15 +63,15 @@ let binlMD5 = (x, bitLen) => {
   * @returns {number}
   */
   var cmn = (q, a, b, s) => (
-    cmn_t = (
-      a + q +
+    q = (
+      q + a +
       (
-        cmn_t = j++ * (7 & 0o7351 >> ff_i * 3) + (7 & 0o0510 >> ff_i * 3) & 15,
-        ff_i ? w[cmn_t] : w[cmn_t] = 0 | x[i++]
+        q = j++ * (0x7351 >> ff_i * 4) + (0x0510 >> ff_i * 4) & 15,
+        ff_i ? w[q] : w[q] = 0 | x[i++]
       ) +
       (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i)))
     ),
-    0 | (cmn_t << s | cmn_t >>> 32 - s) + b
+    0 | b + (q << s | q >>> 32 - s)
   )
 
   /** @type {typeof ff[0]} */
