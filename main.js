@@ -156,7 +156,7 @@ var md5 = (data, key, raw) => {
     , pad = (/**@type {number}*/ x) => {
       bdata.unshift(...$Array($16))
       for (; i;) {
-        bdata[--i] = x ^ bkey[i]
+        bdata[--i] = 0x01010101 * x ^ bkey[i]
       }
       i = $16
     }
@@ -167,9 +167,9 @@ var md5 = (data, key, raw) => {
     if (bkey[$length] > $16) {
       bkey = binlMD5(bkey, key[$length] * 8)
     }
-    pad(0x36363636)
+    pad(0x36)
     bdata = binlMD5(bdata, 512 + bitLen)
-    pad(0x5c5c5c5c)
+    pad(0x5c)
     bitLen = 512 + 128
   }
 
