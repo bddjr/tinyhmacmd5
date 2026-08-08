@@ -15,8 +15,6 @@ let A = 1732584193
   , C = ~A
   , B = ~D
 
-let $Array = Array
-
 let $Math = Math
 
 let floor = $Math.floor
@@ -30,7 +28,7 @@ let S = [
 ]
 
 /** @type {number[]} MD5 constants cached in memory */
-let K = $Array(64)
+let K = Array(64)
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a bit length.
@@ -154,7 +152,7 @@ var md5 = (data, key, raw) => {
   /** @type {*} */
   var bkey
     , pad = (/**@type {number}*/ x) => {
-      bdata.unshift(...$Array($16))
+      bdata.unshift(...Array($16))
       for (; i;) {
         bdata[--i] = 0x01010101 * x ^ bkey[i]
       }
