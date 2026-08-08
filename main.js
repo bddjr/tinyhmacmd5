@@ -21,14 +21,6 @@ let $Math = Math
 
 let floor = $Math.floor
 
-/** @type {((b:number, c:number, d:number) => number)[]} */
-let ff = [
-  (b, c, d) => b & c | ~b & d,
-  (b, c, d) => b & d | c & ~d,
-  (b, c, d) => b ^ c ^ d,
-  (b, c, d) => c ^ (b | ~d)
-]
-
 /** @type {number[]} */
 let S = [
   738695, // 7, 12, 17, 22
@@ -50,23 +42,18 @@ let K = $Array(64)
 let binlMD5 = (x, bitLen) => {
   var i = 0
     , j = floor((bitLen + 64) / 512) * $16 + 14
+    , l
+    , t0
+    , t1
+    , t2
 
   /** @type {number} */
-  var l
-
-  /** @type {number} */
-  var tmp0
-
-  /** @type {number} */
-  var tmp1
+  var oi
 
   /** @type {[number, number, number, number]} */
   var output = [A, B, C, D]
     , oldOutput = [...output]
     , o = (/**@type {*}*/ _) => output[++oi & 3]
-
-  /** @type {number} */
-  var oi
 
   // append padding
   x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
@@ -76,18 +63,29 @@ let binlMD5 = (x, bitLen) => {
   for (; i < x[$length]; i += $16) {
     for (oi = j = 0; j < 64; oi -= 6) {
       output[oi & 3] = (
-        tmp0 = (
-          ff[l = j >> 4](o(), o(), o()) +
-          o() +
+        t0 = (
+          (
+            t0 = o(),
+            t1 = o(),
+            t2 = o(),
+            (l = j >> 4)
+              ? l > 1
+                ? l > 2
+                  ? t1 ^ (t0 | ~t2)  // 3
+                  : t0 ^ t1 ^ t2     // 2
+                : t0 & t2 | t1 & ~t2 // 1
+              : t0 & t1 | ~t0 & t2   // 0
+          ) +
           (
             0 | x[i + (j * (0x7351 >> l * 4) + (0x0510 >> l * 4) & 15)]
           ) +
           (
-            tmp1 = S[l] >> j % 4 * 5 & 31,
+            t1 = S[l] >> j % 4 * 5 & 31,
             K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
-          )
+          ) +
+          o()
         ),
-        0 | (tmp0 << tmp1 | tmp0 >>> 32 - tmp1) + o()
+        0 | (t0 << t1 | t0 >>> 32 - t1) + o()
       )
     }
     for (oi = 4; oi;) {
