@@ -87,7 +87,7 @@ let binlMD5 = (x, bitLen) => {
             K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
           )
         ),
-        0 | o() + (tmp0 << tmp1 | tmp0 >>> 32 - tmp1)
+        0 | (tmp0 << tmp1 | tmp0 >>> 32 - tmp1) + o()
       )
     }
     for (oi = 4; oi;) {
