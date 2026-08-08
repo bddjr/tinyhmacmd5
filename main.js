@@ -24,6 +24,14 @@ let ff = [
   (b, c, d) => c ^ (b | ~d)
 ]
 
+/** @type {number[]} */
+let S = [
+  738695, // 7, 12, 17, 22
+  669989, // 5, 9,  14, 20
+  770404, // 4, 11, 16, 23
+  703814, // 6, 10, 15, 21
+]
+
 /** @type {number[]} MD5 constants cached in memory */
 let K = $Array(64)
 
@@ -47,44 +55,30 @@ let binlMD5 = (x, bitLen) => {
     , j = floor((bitLen + 64) / 512) * $16 + 14
 
   /** @type {number} */
-  var k_i
-
-  /** @type {number} */
-  var ff_i
+  var l
 
   /**
   * @param {number} q
   * @param {number} a
   * @param {number} b
-  * @param {number} s
   * @returns {number}
   */
-  var cmn = (q, a, b, s) => (
-    q = (
-      q + a +
-      (0 | x[i + (j++ * (0x7351 >> ff_i * 4) + (0x0510 >> ff_i * 4) & 15)]) +
-      (K[k_i++] ??= 0 | $2_32 * $Math.abs($Math.sin(k_i)))
+  var cmn = (q, a, b) => (
+    q += (
+      a +
+      (
+        0 | x[i + (j * (0x7351 >> l * 4) + (0x0510 >> l * 4) & 15)]
+      ) +
+      (
+        a = S[l] >> j % 4 * 5 & 31,
+        K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
+      )
     ),
-    0 | b + (q << s | q >>> 32 - s)
+    0 | b + (q << a | q >>> 32 - a)
   )
 
   /** @type {typeof ff[0]} */
-  var F_f
-
-  /**
-   * @param {number} s0
-   * @param {number} s1
-   * @param {number} s2
-   * @param {number} s3
-   */
-  var F = (s0, s1, s2, s3) => {
-    for (F_f = ff[ff_i], j = 0; j < $16; b = cmn(F_f(c, d, a), b, c, s3)) {
-      a = cmn(F_f(b, c, d), a, b, s0)
-      d = cmn(F_f(a, b, c), d, a, s1)
-      c = cmn(F_f(d, a, b), c, d, s2)
-    }
-    ff_i++
-  }
+  var f
 
   // append padding
   x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
@@ -97,12 +91,14 @@ let binlMD5 = (x, bitLen) => {
     oldc = c
     oldd = d
 
-    k_i = ff_i = 0
+    j = 0
 
-    F(7, 12, 17, 22)
-    F(5, 9, 14, 20)
-    F(4, 11, $16, 23)
-    F(6, 10, 15, 21)
+    for (; j < 64; b = cmn(f(c, d, a), b, c)) {
+      f = ff[l = j >> 4]
+      a = cmn(f(b, c, d), a, b)
+      d = cmn(f(a, b, c), d, a)
+      c = cmn(f(d, a, b), c, d)
+    }
 
     a = 0 | a + olda
     b = 0 | b + oldb
