@@ -74,8 +74,8 @@ let binlMD5 = (x, bitLen) => {
   x[j + 1] = 0 | bitLen / $2_32;
 
   for (; i < x[$length]; i += $16) {
-    for (oi = j = 0; j < 64; oi -= 2) {
-      output[oi &= 3] = (
+    for (oi = j = 0; j < 64; oi -= 6) {
+      output[oi & 3] = (
         tmp0 = (
           ff[l = j >> 4](o(), o(), o()) +
           o() +
