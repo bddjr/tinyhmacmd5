@@ -10,6 +10,11 @@ let $16 = 16
 
 let $2_32 = 2 ** 32
 
+let A = 1732584193
+  , D = 271733878
+  , C = ~A
+  , B = ~D
+
 let $Array = Array
 
 let $Math = Math
@@ -44,41 +49,24 @@ let K = $Array(64)
  */
 let binlMD5 = (x, bitLen) => {
   var i = 0
-    , olda
-    , oldb
-    , oldc
-    , oldd
-    , a = 1732584193
-    , d = 271733878
-    , c = ~a
-    , b = ~d
     , j = floor((bitLen + 64) / 512) * $16 + 14
 
   /** @type {number} */
   var l
 
-  /**
-  * @param {number} q
-  * @param {number} a
-  * @param {number} b
-  * @returns {number}
-  */
-  var cmn = (q, a, b) => (
-    q += (
-      a +
-      (
-        0 | x[i + (j * (0x7351 >> l * 4) + (0x0510 >> l * 4) & 15)]
-      ) +
-      (
-        a = S[l] >> j % 4 * 5 & 31,
-        K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
-      )
-    ),
-    0 | b + (q << a | q >>> 32 - a)
-  )
+  /** @type {number} */
+  var tmp0
 
-  /** @type {typeof ff[0]} */
-  var f
+  /** @type {number} */
+  var tmp1
+
+  /** @type {[number, number, number, number]} */
+  var output = [A, B, C, D]
+    , oldOutput = [...output]
+    , o = (/**@type {*}*/ _) => output[++oi & 3]
+
+  /** @type {number} */
+  var oi
 
   // append padding
   x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
@@ -86,26 +74,28 @@ let binlMD5 = (x, bitLen) => {
   x[j + 1] = 0 | bitLen / $2_32;
 
   for (; i < x[$length]; i += $16) {
-    olda = a
-    oldb = b
-    oldc = c
-    oldd = d
-
-    j = 0
-
-    for (; j < 64; b = cmn(f(c, d, a), b, c)) {
-      f = ff[l = j >> 4]
-      a = cmn(f(b, c, d), a, b)
-      d = cmn(f(a, b, c), d, a)
-      c = cmn(f(d, a, b), c, d)
+    oi = 4
+    for (j = 0; j < 64; oi -= 2) {
+      output[oi & 3] = (
+        tmp0 = (
+          ff[l = j >> 4](o(), o(), o()) +
+          o() +
+          (
+            0 | x[i + (j * (0x7351 >> l * 4) + (0x0510 >> l * 4) & 15)]
+          ) +
+          (
+            tmp1 = S[l] >> j % 4 * 5 & 31,
+            K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
+          )
+        ),
+        0 | o() + (tmp0 << tmp1 | tmp0 >>> 32 - tmp1)
+      )
     }
-
-    a = 0 | a + olda
-    b = 0 | b + oldb
-    c = 0 | c + oldc
-    d = 0 | d + oldd
+    for (oi = 4; oi;) {
+      oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
+    }
   }
-  return [a, b, c, d]
+  return output
 }
 
 /**
