@@ -60,9 +60,9 @@ let binlMD5 = (
 ) => {
 
   // append padding
-  x[floor(l / 32)] |= 0x80 << l % 32;
-  x[j] = 0 | l;
   x[j + 1] = 0 | l / $2_32;
+  x[j] = 0 | l;
+  x[floor(l / 32)] |= 0x80 << l % 32;
 
   for (; i < x[$length]; i += $16) {
     for (oi = j = 0; j < 64; oi -= 6) {
