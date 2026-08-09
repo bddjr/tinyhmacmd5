@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tinyhmacmd5</title>
+    <meta name="robots" content="index, follow">
+    <meta name="keywords"
+        content="tinyhmacmd5,md5,hmac,hmacmd5,hmac-md5,tiny,crypto,bddjr,blueimp,blueimp-md5,javascript,typescript,js,ts">
+    <meta name="color-scheme" content="light dark">
+    <script src="./browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scrollbar-gutter: stable;
+        }
+
+        body {
+            font-family: system-ui;
+            display: flex;
+            justify-content: center;
+            margin: 24px 16px;
+        }
+
+        #main {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        #h1 {
+            margin-top: 0;
+        }
+
+        textarea,
+        input,
+        .output {
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace, system-ui;
+        }
+
+        textarea {
+            width: 100%;
+            resize: vertical;
+            font-size: 16px;
+            white-space: pre-wrap;
+            tab-size: 4;
+            min-height: 80px;
+            border-radius: 4px;
+            padding: 6px;
+            border: 1px solid rgb(118, 118, 118);
+        }
+
+        textarea:enabled {
+            background: transparent;
+        }
+
+        button {
+            cursor: pointer;
+            line-height: 20px;
+            font-size: 14px;
+        }
+
+        button:disabled {
+            cursor: default;
+        }
+
+        input[type=file] {
+            border: 1px solid rgb(118, 118, 118);
+            border-radius: 4px;
+            width: 100%;
+            padding: 16px;
+            cursor: pointer;
+        }
+
+        input[type=file]::file-selector-button {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        label.checkbox {
+            cursor: pointer;
+            line-height: 24px;
+            display: inline-flex;
+            gap: 6px;
+            padding: 2px 6px;
+            align-items: center;
+        }
+
+        label.checkbox input {
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .form-title {
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        body:not(:has(#input-data-type-text:checked)) #input-data-text,
+        body:not(:has(#input-data-type-file:checked)) #input-data-file,
+        body:not(:has(#input-key-type-text:checked)) #input-key-text,
+        body:not(:has(#input-key-type-file:checked)) #input-key-file {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <h1 id="h1">Tiny HMAC MD5</h1>
+        <p>tinyhmacmd5</p>
+        <p>A tiny JavaScript HMAC-MD5 implementation.</p>
+        <p>The minified browser bundle (<a target="_blank" href="./browser.min.js">browser.min.js</a>) is only 991
+            bytes.</p>
+        <p><a target="_blank" href="https://github.com/bddjr/tinyhmacmd5">Github</a> &nbsp;|&nbsp; <a target="_blank"
+                href="https://www.npmjs.com/package/tinyhmacmd5">npm</a></p>
+        <hr>
+
+        <p class="form-title">MD5 input data type:</p>
+        <form class="checkbox" id="input-data-type">
+            <label class="checkbox" for="input-data-type-text">
+                <input checked type="radio" name="input" id="input-data-type-text" value="text">
+                text (UTF-8)
+            </label>
+            <label class="checkbox" for="input-data-type-file">
+                <input type="radio" name="input" id="input-data-type-file" value="file">
+                file
+            </label>
+        </form>
+        <p class="form-title">MD5 input data:</p>
+        <textarea id="input-data-text">The quick brown fox jumps over the lazy dog</textarea>
+        <input type="file" id="input-data-file">
+
+        <p class="form-title">HMAC-MD5 input key type:</p>
+        <form class="checkbox" id="input-key-type">
+            <label class="checkbox" for="input-key-type-text">
+                <input checked type="radio" name="input" id="input-key-type-text" value="text">
+                text (UTF-8)
+            </label>
+            <label class="checkbox" for="input-key-type-file">
+                <input type="radio" name="input" id="input-key-type-file" value="file">
+                file
+            </label>
+        </form>
+        <p class="form-title">HMAC-MD5 input key:</p>
+        <textarea id="input-key-text">HMAC key 🔑</textarea>
+        <input type="file" id="input-key-file">
+
+        <p class="form-title">MD5 output hex:</p>
+        <div class="output" id="output-md5">-</div>
+
+        <p class="form-title">HMAD-MD5 output hex:</p>
+        <div class="output" id="output-hmac">-</div>
+    </div>
+    <script>
+        {
+            const elemInputDataType = document.getElementById("input-data-type")
+            const elemInputDataText = document.getElementById("input-data-text")
+            const elemInputDataFile = document.getElementById("input-data-file")
+            const elemInputKeyType = document.getElementById("input-key-type")
+            const elemInputKeyText = document.getElementById("input-key-text")
+            const elemInputKeyFile = document.getElementById("input-key-file")
+            const elemOutputMD5 = document.getElementById("output-md5")
+            const elemOutputHMAC = document.getElementById("output-hmac")
+            const readFileToBytes = (file) => {
+                const fr = new FileReader
+                fr.readAsArrayBuffer(new Blob([file]))
+                return new Promise((resolve, reject) => {
+                    fr.onload = () => resolve(new Uint8Array(fr.result))
+                    fr.onerror = () => reject(fr.error)
+                })
+            }
+            const getInputValue = async (elemInputType, elemInputText, elemInputFile) => {
+                const inputType = elemInputType.input.value;
+                if (inputType === 'text') {
+                    return elemInputText.value
+                }
+                if (inputType === 'file') {
+                    const files = elemInputFile.files
+                    if (files.length == 0) return '';
+                    return readFileToBytes(files[0])
+                }
+                throw Error(`unknown input type "${inputType}"`);
+            }
+            const update = async () => {
+                elemOutputMD5.innerText = '-'
+                elemOutputHMAC.innerText = '-'
+                const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
+                const key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                elemOutputMD5.innerText = md5(data)
+                elemOutputHMAC.innerText = md5(data, key)
+            }
+            const updateHMAC = async () => {
+                elemOutputHMAC.innerText = '-'
+                const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
+                const key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                elemOutputHMAC.innerText = md5(data, key)
+            }
+            elemInputDataType.oninput = update
+            elemInputDataText.oninput = update
+            elemInputDataFile.oninput = update
+            elemInputKeyType.oninput = updateHMAC
+            elemInputKeyText.oninput = updateHMAC
+            elemInputKeyFile.oninput = updateHMAC
+            update()
+        }
+    </script>
+</body>
+
+</html>

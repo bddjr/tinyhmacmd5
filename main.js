@@ -1,4 +1,4 @@
-/** @license https://github.com/bddjr/tinyhmacmd5/blob/HEAD/LICENSE */
+/** @license https://bddjr.github.io/tinyhmacmd5/lic */
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
