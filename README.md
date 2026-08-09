@@ -2,7 +2,7 @@
 
 A tiny JavaScript HMAC-MD5 implementation.
 
-The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 1029 bytes.
+The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 1014 bytes.
 
 ## Setup
 
