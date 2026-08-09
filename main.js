@@ -28,7 +28,7 @@ let S = [
 ]
 
 /** @type {number[]} MD5 constants cached in memory */
-let K = Array(64)
+let K = []
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a bit length.
@@ -79,7 +79,7 @@ let binlMD5 = (x, bitLen) => {
           ) +
           (
             t1 = S[l] >> j % 4 * 5 & 31,
-            K[j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
+            K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
           ) +
           o()
         ),
@@ -149,13 +149,17 @@ var md5 = (data, key, raw) => {
     , bitLen = data[$length] * 8
     , i = $16
     , out = new Uint8Array($16)
+
   /** @type {*} */
   var bkey
+
+  /** @type {number[]} */
+  var padTemp = []
     , pad = (/**@type {number}*/ x) => {
-      bdata.unshift(...Array($16))
       for (; i;) {
-        bdata[--i] = 0x01010101 * x ^ bkey[i]
+        padTemp[--i] = 0x01010101 * x ^ bkey[i]
       }
+      bdata.unshift(...padTemp)
       i = $16
     }
 
