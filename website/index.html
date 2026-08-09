@@ -185,27 +185,33 @@
                 }
                 throw Error(`unknown input type "${inputType}"`);
             }
-            const update = async () => {
+            let data, key;
+            const updateMD5 = async () => {
                 elemOutputMD5.innerText = '-'
                 elemOutputHMAC.innerText = '-'
-                const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
-                const key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
                 elemOutputMD5.innerText = md5(data)
                 elemOutputHMAC.innerText = md5(data, key)
             }
             const updateHMAC = async () => {
                 elemOutputHMAC.innerText = '-'
-                const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
-                const key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
                 elemOutputHMAC.innerText = md5(data, key)
             }
-            elemInputDataType.oninput = update
-            elemInputDataText.oninput = update
-            elemInputDataFile.oninput = update
+            elemInputDataType.oninput = updateMD5
+            elemInputDataText.oninput = updateMD5
+            elemInputDataFile.oninput = updateMD5
             elemInputKeyType.oninput = updateHMAC
             elemInputKeyText.oninput = updateHMAC
             elemInputKeyFile.oninput = updateHMAC
-            update()
+            Promise.all([
+                getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile),
+                getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+            ]).then(value => {
+                [data, key] = value
+                elemOutputMD5.innerText = md5(data)
+                elemOutputHMAC.innerText = md5(data, key)
+            })
         }
     </script>
 </body>
