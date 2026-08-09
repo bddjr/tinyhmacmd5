@@ -26,6 +26,13 @@ jobs:
       - run: pnpm i
       - run: pnpm test
 
+      - name: Upload static files as artifact
+        id: deployment
+        if: github.event_name == 'push' && github.ref_name == 'main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: website
+
   deploy:
     if: github.event_name == 'push' && github.ref_name == 'main'
     needs: test
@@ -39,14 +46,5 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Upload static files as artifact
-        id: deployment
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: website
-
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v5
