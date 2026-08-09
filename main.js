@@ -34,13 +34,12 @@ let K = []
  * Calculate the MD5 of an array of little-endian words, and a bit length.
  *
  * @param {number[]} x Array of little-endian words
- * @param {number} bitLen Bit length
+ * @param {number} l Bit length
  * @returns {[number, number, number, number]} MD5 Array
  */
-let binlMD5 = (x, bitLen) => {
+let binlMD5 = (x, l) => {
   var i = 0
-    , j = floor((bitLen + 64) / 512) * $16 + 14
-    , l
+    , j = floor((l + 64) / 512) * $16 + 14
     , t0
     , t1
     , t2
@@ -54,9 +53,9 @@ let binlMD5 = (x, bitLen) => {
     , o = (/**@type {*}*/ _) => output[++oi & 3]
 
   // append padding
-  x[floor(bitLen / 32)] |= 0x80 << bitLen % 32;
-  x[j] = 0 | bitLen;
-  x[j + 1] = 0 | bitLen / $2_32;
+  x[floor(l / 32)] |= 0x80 << l % 32;
+  x[j] = 0 | l;
+  x[j + 1] = 0 | l / $2_32;
 
   for (; i < x[$length]; i += $16) {
     for (oi = j = 0; j < 64; oi -= 6) {
