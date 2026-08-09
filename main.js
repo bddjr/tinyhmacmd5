@@ -101,11 +101,16 @@ let binlMD5 = (x, l) => {
 let inputToBinl = (input) => {
   if (typeof input == 'string')
     input = new TextEncoder().encode(input);
+
   var i = input[$length]
+
   /** @type {number[]} */
   var output = []
+
+  // byte length
   //@ts-ignore
   output.L = i
+
   for (; i;) {
     output[floor(--i / 4)] |= input[i] << i % 4 * 8
   }
