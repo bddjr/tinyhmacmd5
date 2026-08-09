@@ -35,22 +35,29 @@ let K = []
  *
  * @param {number[]} x Array of little-endian words
  * @param {number} l Bit length
+ * 
+ * @param {number} [t0]
+ * @param {number} [t1]
+ * @param {number} [t2]
+ * @param {number} [oi]
+ * @param {[number, number, number, number]} [output]
+ * 
  * @returns {[number, number, number, number]} MD5 Array
  */
-let binlMD5 = (x, l) => {
-  var i = 0
-    , j = floor((l + 64) / 512) * $16 + 14
-    , t0
-    , t1
-    , t2
-
-  /** @type {number} */
-  var oi
-
-  /** @type {[number, number, number, number]} */
-  var output = [A, B, C, D]
-    , oldOutput = [...output]
-    , o = (/**@type {*}*/ _) => output[++oi & 3]
+let binlMD5 = (
+  x,
+  l,
+  // var:
+  i = 0,
+  j = floor((l + 64) / 512) * $16 + 14,
+  t0,
+  t1,
+  t2,
+  oi,
+  output = [A, B, C, D],
+  oldOutput = [...output],
+  o = (/**@type {*}*/ _) => output[++oi & 3],
+) => {
 
   // append padding
   x[floor(l / 32)] |= 0x80 << l % 32;
@@ -95,21 +102,25 @@ let binlMD5 = (x, l) => {
 /**
  * Convert bytes to an array of little-endian words
  *
- * @param {string | Uint8Array} input Raw bytes
+ * @param {string | Uint8Array} input
+ * 
+ * @param {number} [i]
+ * @param {number[]} [output]
+ * 
  * @returns {number[]} Array of little-endian words
  */
-let inputToBinl = (input) => {
+let inputToBinl = (
+  input,
+  // var:
+  i,
+  output = [],
+) => {
   if (typeof input == 'string')
     input = new TextEncoder().encode(input);
 
-  var i = input[$length]
-
-  /** @type {number[]} */
-  var output = []
-
   // byte length
   //@ts-ignore
-  output.L = i
+  output.L = i = input[$length]
 
   for (; i;) {
     output[floor(--i / 4)] |= input[i] << i % 4 * 8
