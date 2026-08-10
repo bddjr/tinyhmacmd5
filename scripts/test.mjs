@@ -54,6 +54,11 @@ function test(md5) {
         const key = crypto.randomUUID()
         test(data, key)
     }
+
+    test("Hi There", new Uint8Array(16).fill(0x0b))
+    test("what do ya want for nothing?", "Jefe")
+    test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
+
     console.log('ok')
     console.log()
 }
