@@ -19,14 +19,6 @@ let $Math = Math
 
 let floor = $Math.floor
 
-/** @type {number[]} */
-let S = [
-  738695, // 7, 12, 17, 22
-  669989, // 5,  9, 14, 20
-  770404, // 4, 11, 16, 23
-  703814, // 6, 10, 15, 21
-]
-
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
 
@@ -81,10 +73,11 @@ let binlMD5 = (
               : t0 & t1 | ~t0 & t2   // 0
           ) +
           (
-            0 | x[i + (j * (0x7351 >> l * 4) + (0x0510 >> l * 4) & 15)]
+            l *= 4,
+            0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
           ) +
           (
-            t1 = S[l] >> j % 4 * 5 & 31,
+            t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4) - 32,
             K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
           ) +
           o()
