@@ -108,12 +108,13 @@ let inputToBinl = (
   i,
   output = [],
 ) => {
-  if (typeof input == 'string')
-    input = new TextEncoder().encode(input);
-
   // byte length
   //@ts-ignore
-  output.L = i = input[$length]
+  output.L = i = (
+    typeof input == 'string'
+      ? input = new TextEncoder().encode(input)
+      : input
+  )[$length]
 
   for (; i;) {
     output[floor(--i / 4)] |= input[i] << i % 4 * 8
