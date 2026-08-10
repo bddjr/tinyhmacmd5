@@ -5,19 +5,10 @@
 /** @type {"length"} */
 let $length = "length"
 
-/** @type {16} */
-let $16 = 16
-
-let $2_32 = 2 ** 32
-
 let A = 1732584193
   , D = 271733878
   , C = ~A
   , B = ~D
-
-let $Math = Math
-
-let floor = $Math.floor
 
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
@@ -28,6 +19,7 @@ let K = []
  * @param {number[]} x Array of little-endian words
  * @param {number} l Bit length
  * 
+ * @param {number} [j]
  * @param {number} [t0]
  * @param {number} [t1]
  * @param {number} [t2]
@@ -41,7 +33,7 @@ let binlMD5 = (
   l,
   // var:
   i = 0,
-  j = floor((l + 64) / 512) * $16 + 14,
+  j,
   t0,
   t1,
   t2,
@@ -52,11 +44,10 @@ let binlMD5 = (
 ) => {
 
   // append padding
-  x[j + 1] = 0 | l / $2_32;
-  x[j] = 0 | l;
-  x[floor(l / 32)] |= 0x80 << l % 32;
+  x[((l + 64) >>> 9 << 4) + 14] = 0 | l;
+  x[l >>> 5] |= 0x80 << l % 32;
 
-  for (; i < x[$length]; i += $16) {
+  for (; i < x[$length]; i += 16) {
     for (oi = j = 0; j < 64; oi -= 6) {
       output[oi & 3] = (
         t0 = (
@@ -77,7 +68,7 @@ let binlMD5 = (
           ) +
           (
             t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4) - 32,
-            K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
+            K[63 - j++] ??= 0 | 2 ** 32 * Math.abs(Math.sin(j))
           ) +
           o()
         ),
@@ -116,7 +107,7 @@ let inputToBinl = (
   )[$length]
 
   for (; i;) {
-    output[floor(--i / 4)] |= input[i] << i % 4 * 8
+    output[--i >>> 2] |= input[i] << i % 4 * 8
   }
   return output
 }
@@ -152,8 +143,8 @@ var md5 = (data, key, raw) => {
 
   //@ts-ignore
   var bitLen = data.L * 8
-    , i = $16
-    , out = new Uint8Array($16)
+    , i = 16
+    , out = new Uint8Array(i)
 
   /** @type {number[]} */
   var padTemp = []
@@ -164,14 +155,14 @@ var md5 = (data, key, raw) => {
       }
       //@ts-ignore
       data.unshift(...padTemp)
-      i = $16
+      i = 16
     }
 
   if (key != null) {
     // HMAC
     //@ts-ignore
     key = inputToBinl(key)
-    if (key[$length] > $16) {
+    if (key[$length] > i) {
       //@ts-ignore
       key = binlMD5(key, key.L * 8)
     }
@@ -193,7 +184,7 @@ var md5 = (data, key, raw) => {
 
   return raw
     ? out
-    : out.reduce((p, v) => p + (v >> 4 && '') + v.toString($16), '')
+    : out.reduce((p, v) => p + (v >> 4 && '') + v.toString(16), '')
 }
 
 export default md5
