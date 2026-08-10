@@ -67,10 +67,10 @@ let binlMD5 = (
             (l = j >> 4 << 2)
               ? l > 4 * 1
                 ? l > 4 * 2
-                  ? t1 ^ (t0 | ~t2)  // 3
-                  : t0 ^ t1 ^ t2     // 2
-                : t0 & t2 | t1 & ~t2 // 1
-              : t0 & t1 | ~t0 & t2   // 0
+                  ? t1 ^ (t0 | ~t2)  // Round 4: II
+                  : t0 ^ t1 ^ t2     // Round 3: HH
+                : t0 & t2 | t1 & ~t2 // Round 2: GG
+              : t0 & t1 | ~t0 & t2   // Round 1: FF
           ) +
           (
             0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
