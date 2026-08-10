@@ -80,15 +80,19 @@ let binlMD5 = (
 }
 
 /**
+ * @typedef {number[] & {L?: number}} inputToBinlOutput
+ */
+
+/**
  * Convert bytes to an array of little-endian words
  *
  * @param {string | Uint8Array} input
  * @param {number} padLen
  * 
  * @param {number} [i]
- * @param {number[]} [output]
+ * @param {inputToBinlOutput} [output]
  * 
- * @returns {number[]} Array of little-endian words
+ * @returns {inputToBinlOutput} Array of little-endian words
  */
 let inputToBinl = (
   input,
@@ -138,34 +142,30 @@ let inputToBinl = (
  */
 var md5 = (data, key, raw) => {
   var i = 16
+    , hasKey = key != null
+    , bdata = inputToBinl(data, /**@type {*}*/(hasKey) * i)
+    , bitLen = bdata.L
 
-  /** @type {*} */
-  var temp = key != null
-
-  var bdata = inputToBinl(data, i * temp)
-
-  /** @type {number} */
-  //@ts-ignore
-  var bitLen = bdata.L
+  /** @type {inputToBinlOutput} */
+  var bkey
 
   /**
    * @param {number} x 
    */
   var pad = x => {
     for (; i;) {
-      //@ts-ignore
-      bdata[--i] = 0x01010101 * x ^ temp[i]
+      bdata[--i] = 0x01010101 * x ^ bkey[i]
     }
     i = 16
   }
 
   var out = new Uint8Array(i)
 
-  if (temp) {
+  if (hasKey) {
     // HMAC
-    temp = inputToBinl(key, 0)
-    if (temp.L > 512) {
-      temp = binlMD5(temp, temp.L)
+    bkey = inputToBinl(key, 0)
+    if (bkey.L > 512) {
+      bkey = binlMD5(bkey, bkey.L)
     }
     pad(0x36)
     bdata = binlMD5(bdata, 512 + bitLen)
