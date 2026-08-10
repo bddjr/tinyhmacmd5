@@ -21,9 +21,9 @@ let K = []
  * @param {number} [t1]
  * @param {number} [t2]
  * @param {number} [oi]
- * @param {[number, number, number, number]} [output]
+ * @param {number[]} [output]
  * 
- * @returns {[number, number, number, number]} MD5 Array
+ * @returns {number[]} MD5 Array
  */
 let binlMD5 = (
   x,
@@ -83,6 +83,7 @@ let binlMD5 = (
  * Convert bytes to an array of little-endian words
  *
  * @param {string | Uint8Array} input
+ * @param {number} padLen
  * 
  * @param {number} [i]
  * @param {number[]} [output]
@@ -91,6 +92,7 @@ let binlMD5 = (
  */
 let inputToBinl = (
   input,
+  padLen,
   // var:
   i = (
     typeof input == 'string'
@@ -104,7 +106,7 @@ let inputToBinl = (
 
   for (; i;) {
     //@ts-ignore
-    output[--i >>> 2] |= input[i] << i % 4 * 8
+    output[padLen + (--i >>> 2)] |= input[i] << i % 4 * 8
   }
   return output
 }
@@ -135,49 +137,48 @@ let inputToBinl = (
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
 var md5 = (data, key, raw) => {
-  //@ts-ignore
-  data = inputToBinl(data)
+  var i = 16
 
-  //@ts-ignore
-  var bitLen = data.L
-    , i = 16
-    , out = new Uint8Array(i)
+  /** @type {*} */
+  var temp = key != null
 
-  /** @type {number[]} */
-  var padTemp = []
-    , pad = (/**@type {number}*/ x) => {
-      for (; i;) {
-        //@ts-ignore
-        padTemp[--i] = 0x01010101 * x ^ key[i]
-      }
+  var bdata = inputToBinl(data, i * temp)
+
+  /** @type {number} */
+  //@ts-ignore
+  var bitLen = bdata.L
+
+  /**
+   * @param {number} x 
+   */
+  var pad = x => {
+    for (; i;) {
       //@ts-ignore
-      data.unshift(...padTemp)
-      i = 16
+      bdata[--i] = 0x01010101 * x ^ temp[i]
     }
+    i = 16
+  }
 
-  if (key != null) {
+  var out = new Uint8Array(i)
+
+  if (temp) {
     // HMAC
-    //@ts-ignore
-    key = inputToBinl(key)
-    //@ts-ignore
-    if (key.L > 512) {
-      //@ts-ignore
-      key = binlMD5(key, key.L)
+    temp = inputToBinl(key, 0)
+    if (temp.L > 512) {
+      temp = binlMD5(temp, temp.L)
     }
     pad(0x36)
-    //@ts-ignore
-    data = binlMD5(data, 512 + bitLen)
+    bdata = binlMD5(bdata, 512 + bitLen)
+    bdata.unshift(...Array(16))
     pad(0x5c)
     bitLen = 640
   }
 
-  //@ts-ignore
-  data = binlMD5(data, bitLen)
+  bdata = binlMD5(bdata, bitLen)
 
   // binl to bytes
   for (; i;) {
-    //@ts-ignore
-    out[--i] = data[i >> 2] >>> i % 4 * 8
+    out[--i] = bdata[i >> 2] >>> i % 4 * 8
   }
 
   return raw
