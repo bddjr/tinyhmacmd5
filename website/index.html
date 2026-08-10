@@ -156,6 +156,9 @@
 
         <p class="form-title">HMAD-MD5 output hex:</p>
         <div class="output" id="output-hmac">-</div>
+
+        <p class="form-title">Error:</p>
+        <div class="output" id="output-error">-</div>
     </div>
     <script>
         {
@@ -167,6 +170,7 @@
             const elemInputKeyFile = document.getElementById("input-key-file")
             const elemOutputMD5 = document.getElementById("output-md5")
             const elemOutputHMAC = document.getElementById("output-hmac")
+            const elemOutputError = document.getElementById("output-error")
             const readFileToBytes = (file) => {
                 const fr = new FileReader
                 fr.readAsArrayBuffer(new Blob([file]))
@@ -191,14 +195,26 @@
             const updateMD5 = async () => {
                 elemOutputMD5.innerText = '-'
                 elemOutputHMAC.innerText = '-'
-                data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
-                elemOutputMD5.innerText = md5(data)
-                elemOutputHMAC.innerText = md5(data, key)
+                elemOutputError.innerText = '-'
+                try {
+                    data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
+                    elemOutputMD5.innerText = md5(data)
+                    elemOutputHMAC.innerText = md5(data, key)
+                } catch (e) {
+                    console.error(e)
+                    elemOutputError.innerText = e
+                }
             }
             const updateHMAC = async () => {
                 elemOutputHMAC.innerText = '-'
-                key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
-                elemOutputHMAC.innerText = md5(data, key)
+                elemOutputError.innerText = '-'
+                try {
+                    key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                    elemOutputHMAC.innerText = md5(data, key)
+                } catch (e) {
+                    console.error(e)
+                    elemOutputError.innerText = e
+                }
             }
             elemInputDataType.oninput = updateMD5
             elemInputDataText.oninput = updateMD5
@@ -213,6 +229,9 @@
                 [data, key] = value
                 elemOutputMD5.innerText = md5(data)
                 elemOutputHMAC.innerText = md5(data, key)
+            }).catch(e => {
+                console.error(e)
+                elemOutputError.innerText = e
             })
         }
     </script>
