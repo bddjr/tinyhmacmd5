@@ -2,9 +2,6 @@
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
-/** @type {"length"} */
-let $length = "length"
-
 let A = 1732584193
   , D = 271733878
   , C = ~A
@@ -47,7 +44,7 @@ let binlMD5 = (
   x[l + 64 >>> 9 << 4 | 14] = 0 | l;
   x[l >>> 5] |= 0x80 << l % 32;
 
-  for (; i < x[$length]; i += 16) {
+  for (; i < x.length; i += 16) {
     for (oi = j = 0; j < 64; oi -= 6) {
       output[oi & 3] = (
         t0 = (
@@ -56,8 +53,8 @@ let binlMD5 = (
             t1 = o(),
             t2 = o(),
             (l = j >> 4 << 2)
-              ? l > 4 * 1
-                ? l > 4 * 2
+              ? l > 4
+                ? l > 8
                   ? t1 ^ (t0 | ~t2)  // Round 4: II
                   : t0 ^ t1 ^ t2     // Round 3: HH
                 : t0 & t2 | t1 & ~t2 // Round 2: GG
@@ -95,18 +92,18 @@ let binlMD5 = (
 let inputToBinl = (
   input,
   // var:
-  i,
-  output = [],
-) => {
-  // byte length
-  //@ts-ignore
-  output.L = i = (
+  i = (
     typeof input == 'string'
       ? input = new TextEncoder().encode(input)
       : input
-  )[$length]
+  ).length,
+  output = [],
+) => {
+  //@ts-ignore
+  output.L = 8 * i // bit length
 
   for (; i;) {
+    //@ts-ignore
     output[--i >>> 2] |= input[i] << i % 4 * 8
   }
   return output
@@ -142,7 +139,7 @@ var md5 = (data, key, raw) => {
   data = inputToBinl(data)
 
   //@ts-ignore
-  var bitLen = data.L * 8
+  var bitLen = data.L
     , i = 16
     , out = new Uint8Array(i)
 
@@ -162,15 +159,16 @@ var md5 = (data, key, raw) => {
     // HMAC
     //@ts-ignore
     key = inputToBinl(key)
-    if (key[$length] > i) {
+    //@ts-ignore
+    if (key.L > 512) {
       //@ts-ignore
-      key = binlMD5(key, key.L * 8)
+      key = binlMD5(key, key.L)
     }
     pad(0x36)
     //@ts-ignore
     data = binlMD5(data, 512 + bitLen)
     pad(0x5c)
-    bitLen = 512 + 128
+    bitLen = 640
   }
 
   //@ts-ignore
