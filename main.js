@@ -44,7 +44,7 @@ let binlMD5 = (
 ) => {
 
   // append padding
-  x[((l + 64) >>> 9 << 4) + 14] = 0 | l;
+  x[l + 64 >>> 9 << 4 | 14] = 0 | l;
   x[l >>> 5] |= 0x80 << l % 32;
 
   for (; i < x[$length]; i += 16) {
