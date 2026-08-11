@@ -47,7 +47,7 @@ let binlMD5 = (
   for (; i < x.length; i += 16) {
     for (oi = j = 0; j < 64; oi -= 6) {
       output[oi & 3] = (
-        t0 = (
+        t0 = 0 | (
           (
             t0 = o(),
             t1 = o(),
