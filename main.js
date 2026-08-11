@@ -36,7 +36,10 @@ let binlMD5 = (
   oi,
   output = [A, B, C, D],
   oldOutput = [...output],
-  o = (/**@type {*}*/ _) => output[++oi & 3],
+  o = (
+    /** @param {*} [_] */
+    _ => output[++oi & 3]
+  ),
 ) => {
 
   // append padding
@@ -116,7 +119,7 @@ let inputToBinl = (
 /**
  * @overload
  * @param {string | Uint8Array} data
- * @param {string | Uint8Array | null} [key]
+ * @param {string | Uint8Array | null | undefined} key
  * @param {true} raw
  * @returns {Uint8Array<ArrayBuffer>}
  */

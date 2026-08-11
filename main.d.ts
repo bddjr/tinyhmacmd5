@@ -9,8 +9,8 @@
  * @param {boolean} [raw] If true, the hash is returned as raw bytes (Uint8Array); otherwise, as a hex string.
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
-var md5: {
+declare var md5: {
     (data: string | Uint8Array, key?: string | Uint8Array | null, raw?: false): string;
-    (data: string | Uint8Array, key?: string | Uint8Array | null, raw: true): Uint8Array<ArrayBuffer>;
+    (data: string | Uint8Array, key: string | Uint8Array | null | undefined, raw: true): Uint8Array<ArrayBuffer>;
 };
 export default md5;
