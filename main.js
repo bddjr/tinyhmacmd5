@@ -21,7 +21,6 @@ let K = []
  * @param {number} [t1]
  * @param {number} [t2]
  * @param {number} [oi]
- * @param {number[]} [output]
  * 
  * @returns {number[]} MD5 Array
  */
@@ -85,10 +84,9 @@ let binlMD5 = (
  * @param {string | Uint8Array} input
  * @param {number} padLen
  * 
- * @param {number} [i]
  * @param {number[]} [output]
  * 
- * @returns {[number[], number]} Array of little-endian words
+ * @returns {[number[], number]}
  */
 let inputToBinl = (
   input,
