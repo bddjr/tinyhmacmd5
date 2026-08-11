@@ -21,7 +21,8 @@ function test(md5) {
      * @param {string | Uint8Array} key
      */
     function test(data, key) {
-        console.log('data:', data, 'key:', key)
+        console.log('data:', data)
+        console.log('key:', key)
 
         let a = md5(data), b = nodeMD5(data)
         console.log('md5: tinyhmacmd5:', a, 'nodejs:', b)
@@ -62,6 +63,8 @@ function test(md5) {
     test("Hi There", new Uint8Array(16).fill(0x0b))
     test("what do ya want for nothing?", "Jefe")
     test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
+
+    test(crypto.randomBytes(100 * 1024 * 1024), crypto.randomBytes(16))
 
     console.log('ok')
     console.log()
