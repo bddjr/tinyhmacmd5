@@ -53,6 +53,7 @@
             border-radius: 4px;
             padding: 6px;
             border: 1px solid rgb(118, 118, 118);
+            display: block;
         }
 
         textarea:enabled {
@@ -61,8 +62,6 @@
 
         button {
             cursor: pointer;
-            line-height: 20px;
-            font-size: 14px;
         }
 
         button:disabled {
@@ -101,6 +100,16 @@
             margin-bottom: 8px;
         }
 
+        .div-output-btn {
+            margin-top: 8px;
+        }
+
+        .output-btn {
+            min-width: 8rem;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
         body:not(:has(#input-data-type-text:checked)) #input-data-text,
         body:not(:has(#input-data-type-file:checked)) #input-data-file,
         body:not(:has(#input-key-type-text:checked)) #input-key-text,
@@ -136,6 +145,16 @@
         <textarea id="input-data-text">The quick brown fox jumps over the lazy dog</textarea>
         <input type="file" id="input-data-file">
 
+        <div class="div-output-btn"><button id="btn-md5" class="output-btn" type="button" disabled>MD5</button></div>
+
+        <p class="form-title">MD5 output hex:</p>
+        <div class="output" id="output-md5">-</div>
+
+        <p class="form-title">MD5 error:</p>
+        <div class="output" id="output-md5-error">-</div>
+
+        <hr>
+
         <p class="form-title">HMAC-MD5 input key type:</p>
         <form class="checkbox" id="input-key-type">
             <label class="checkbox" for="input-key-type-text">
@@ -151,26 +170,66 @@
         <textarea id="input-key-text">HMAC key 🔑</textarea>
         <input type="file" id="input-key-file">
 
-        <p class="form-title">MD5 output hex:</p>
-        <div class="output" id="output-md5">-</div>
+        <div class="div-output-btn"><button id="btn-hmac" class="output-btn" type="button" disabled>HMAC-MD5</button>
+        </div>
 
         <p class="form-title">HMAD-MD5 output hex:</p>
         <div class="output" id="output-hmac">-</div>
 
-        <p class="form-title">Error:</p>
-        <div class="output" id="output-error">-</div>
+        <p class="form-title">HMAD-MD5 error:</p>
+        <div class="output" id="output-hmac-error">-</div>
     </div>
     <script>
         {
+            /** @type {HTMLFormElement} */
             const elemInputDataType = document.getElementById("input-data-type")
+            /** @type {HTMLInputElement} */
             const elemInputDataText = document.getElementById("input-data-text")
+            /** @type {HTMLInputElement} */
             const elemInputDataFile = document.getElementById("input-data-file")
+
+            /** @type {HTMLFormElement} */
             const elemInputKeyType = document.getElementById("input-key-type")
+            /** @type {HTMLInputElement} */
             const elemInputKeyText = document.getElementById("input-key-text")
+            /** @type {HTMLInputElement} */
             const elemInputKeyFile = document.getElementById("input-key-file")
+
+            /** @type {HTMLButtonElement} */
+            const elemButtonMD5 = document.getElementById("btn-md5")
+            /** @type {HTMLDivElement} */
             const elemOutputMD5 = document.getElementById("output-md5")
+            /** @type {HTMLDivElement} */
+            const elemOutputMD5Error = document.getElementById("output-md5-error")
+
+            /** @type {HTMLButtonElement} */
+            const elemButtonHMAC = document.getElementById("btn-hmac")
+            /** @type {HTMLDivElement} */
             const elemOutputHMAC = document.getElementById("output-hmac")
-            const elemOutputError = document.getElementById("output-error")
+            /** @type {HTMLDivElement} */
+            const elemOutputHMACError = document.getElementById("output-hmac-error")
+
+            const clearMD5 = () => {
+                elemOutputMD5.innerText = '-'
+                elemOutputMD5Error.innerText = '-'
+            }
+            const clearHMAC = () => {
+                elemOutputHMAC.innerText = '-'
+                elemOutputHMACError.innerText = '-'
+            }
+            const clear = () => {
+                clearMD5()
+                clearHMAC()
+            }
+
+            elemInputDataType.oninput = clear
+            elemInputDataText.oninput = clear
+            elemInputDataFile.oninput = clear
+
+            elemInputKeyType.oninput = clearHMAC
+            elemInputKeyText.oninput = clearHMAC
+            elemInputKeyFile.oninput = clearHMAC
+
             const readFileToBytes = (file) => {
                 const fr = new FileReader
                 fr.readAsArrayBuffer(new Blob([file]))
@@ -191,48 +250,37 @@
                 }
                 throw Error(`unknown input type "${inputType}"`);
             }
-            let data, key;
-            const updateMD5 = async () => {
-                elemOutputMD5.innerText = '-'
-                elemOutputHMAC.innerText = '-'
-                elemOutputError.innerText = '-'
+
+            elemButtonMD5.onclick = async () => {
+                elemButtonMD5.disabled = true
+                clearMD5()
                 try {
-                    data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
+                    const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
                     elemOutputMD5.innerText = md5(data)
-                    elemOutputHMAC.innerText = md5(data, key)
                 } catch (e) {
                     console.error(e)
-                    elemOutputError.innerText = e
+                    elemOutputMD5Error.innerText = e
                 }
+                elemButtonMD5.disabled = false
             }
-            const updateHMAC = async () => {
-                elemOutputHMAC.innerText = '-'
-                elemOutputError.innerText = '-'
+            elemButtonMD5.disabled = false
+
+            elemButtonHMAC.onclick = async () => {
+                elemButtonHMAC.disabled = true
+                clearHMAC()
                 try {
-                    key = await getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                    const [data, key] = await Promise.all([
+                        getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile),
+                        getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
+                    ])
                     elemOutputHMAC.innerText = md5(data, key)
                 } catch (e) {
                     console.error(e)
-                    elemOutputError.innerText = e
+                    elemOutputHMACError.innerText = e
                 }
+                elemButtonHMAC.disabled = false
             }
-            elemInputDataType.oninput = updateMD5
-            elemInputDataText.oninput = updateMD5
-            elemInputDataFile.oninput = updateMD5
-            elemInputKeyType.oninput = updateHMAC
-            elemInputKeyText.oninput = updateHMAC
-            elemInputKeyFile.oninput = updateHMAC
-            Promise.all([
-                getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile),
-                getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
-            ]).then(value => {
-                [data, key] = value
-                elemOutputMD5.innerText = md5(data)
-                elemOutputHMAC.innerText = md5(data, key)
-            }).catch(e => {
-                console.error(e)
-                elemOutputError.innerText = e
-            })
+            elemButtonHMAC.disabled = false
         }
     </script>
 </body>
