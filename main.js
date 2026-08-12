@@ -106,6 +106,7 @@ let inputToBinl = (
       ? input = new TextEncoder().encode(input)
       : input
   ).length,
+  // Using Array would fail to handle large files, so Int32Array must be used.
   output = new Int32Array(toBinlLen(j * 4 + byteLen)),
   i = 0,
 ) => {
