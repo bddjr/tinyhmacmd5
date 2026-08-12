@@ -49,8 +49,8 @@ let binlMD5 = (
   // console.time("binlMD5")
 
   // append padding
-  x[j - 1] = l * 8 / $2_32;
-  x[j - 2] = l * 8;
+  x[j - 1] = 0 | l * 8 / $2_32;
+  x[j - 2] = 0 | l * 8;
   x[floor(l / 4)] |= 0x80 << l % 4 * 8;
 
   for (; i < x.length; i += 16) {
