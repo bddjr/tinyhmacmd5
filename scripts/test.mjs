@@ -70,9 +70,10 @@ function test(md5) {
     test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
 
     console.log(`test output raw`)
-    assert.deepStrictEqual(
-        md5('Hello world!👋', 'HMAC key 🔑'),
-        nodeHmacMD5('Hello world!👋', 'HMAC key 🔑'),
+    assert.strict(
+        crypto.createHmac('md5', 'HMAC key 🔑').update('Hello world!👋').digest().equals(
+            md5('Hello world!👋', 'HMAC key 🔑', true)
+        ),
         `Failed to test output raw`
     )
     console.log()
