@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import crypto from 'node:crypto'
+import assert from 'node:assert'
 
 /**
  * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
@@ -28,13 +29,11 @@ function test(md5) {
 
         let a = md5(data), b = nodeMD5(data)
         console.log('md5: tinyhmacmd5:', a, 'nodejs:', b)
-        if (a !== b)
-            throw Error(`Failed to test md5`)
+        assert.strictEqual(a, b, `Failed to test MD5`)
 
         a = md5(data, key), b = nodeHmacMD5(data, key)
         console.log('hmacmd5: tinyhmacmd5:', a, 'nodejs:', b)
-        if (a !== b)
-            throw Error(`Failed to test hmacmd5`)
+        assert.strictEqual(a, b, `Failed to test HMAC-MD5`)
 
         console.log()
 
@@ -48,12 +47,16 @@ function test(md5) {
     test('Hello world', crypto.randomBytes(8).toString('hex'))
     test('Hello world!', crypto.randomBytes(9).toString('hex'))
     test('Hello world!👋', crypto.randomBytes(10).toString('hex'))
-    test('Hello world!👋', crypto.randomBytes(63))
-    test('Hello world!👋', crypto.randomBytes(64))
-    test('Hello world!👋', crypto.randomBytes(65))
     test('Hello world!👋', 'HMAC key 🔑')
     test('The quick brown fox jumps over the lazy dog', 'HMAC key 🔑')
     test(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
+
+    for (const n of [55, 56, 57, 63, 64, 65, 119, 120, 121]) {
+        for (const k of [0, 1, 63, 64, 65, 128]) {
+            test(crypto.randomBytes(n), crypto.randomBytes(k))
+        }
+    }
+
     test('', '')
 
     for (let i = 0; i < 3; i++) {
@@ -65,6 +68,14 @@ function test(md5) {
     test("Hi There", new Uint8Array(16).fill(0x0b))
     test("what do ya want for nothing?", "Jefe")
     test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
+
+    console.log(`test output raw`)
+    assert.deepStrictEqual(
+        md5('Hello world!👋', 'HMAC key 🔑'),
+        nodeHmacMD5('Hello world!👋', 'HMAC key 🔑'),
+        `Failed to test output raw`
+    )
+    console.log()
 
     // 663 MiB
     if (test663Once) {
