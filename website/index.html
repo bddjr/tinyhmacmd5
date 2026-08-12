@@ -232,7 +232,7 @@
 
             const readFileToBytes = (file) => {
                 const fr = new FileReader
-                fr.readAsArrayBuffer(new Blob([file]))
+                fr.readAsArrayBuffer(file)
                 return new Promise((resolve, reject) => {
                     fr.onload = () => resolve(new Uint8Array(fr.result))
                     fr.onerror = () => reject(fr.error)
@@ -245,7 +245,7 @@
                 }
                 if (inputType === 'file') {
                     const files = elemInputFile.files
-                    if (files.length == 0) return '';
+                    if (files.length == 0) return new Uint8Array(0);
                     return readFileToBytes(files[0])
                 }
                 throw Error(`unknown input type "${inputType}"`);
