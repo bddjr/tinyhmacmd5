@@ -157,17 +157,17 @@ var md5 = (data, key, raw) => {
   if (hasKey) {
     // HMAC
     let [bkey, keyByteLen] = inputToBinl(key, 0)
-    let pad5cArr = []
+    let opad = []
     if (keyByteLen > 64) {
       bkey = binlMD5(bkey, keyByteLen)
     }
     for (; i;) {
-      bdata[--i] = 0x36363636 ^ bkey[i]
-      pad5cArr[i] = 0x5c5c5c5c ^ bkey[i]
+      bdata[--i] = 0x36363636 ^ bkey[i] // ipad
+      opad[i] = 0x5c5c5c5c ^ bkey[i]
     }
     i = 16
     bdata = binlMD5(bdata, 64 + dataByteLen)
-    bdata.unshift(...pad5cArr)
+    bdata.unshift(...opad)
     dataByteLen = 80
   }
 
