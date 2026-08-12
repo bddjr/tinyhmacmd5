@@ -64,7 +64,8 @@ function test(md5) {
     test("what do ya want for nothing?", "Jefe")
     test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
 
-    test(crypto.randomBytes(100 * 1024 * 1024), crypto.randomBytes(16))
+    // 663 MiB
+    test(crypto.randomBytes(663 * 1024 * 1024), crypto.randomBytes(16))
 
     console.log('ok')
     console.log()
