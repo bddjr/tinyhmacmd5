@@ -95,7 +95,7 @@ let binlMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length
  * 
- * @returns {[Int32Array | number[], number]}
+ * @returns {[Int32Array<ArrayBuffer> | number[], number]}
  */
 let inputToBinl = (
   input,
