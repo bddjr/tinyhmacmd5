@@ -7,14 +7,23 @@ let A = 1732584193
   , C = ~A
   , B = ~D
 
+let $2_32 = 2 ** 32
+
+let $Math = Math
+
+let floor = $Math.floor
+
+/** @param {number} byteLen */
+let toBinlLen = (byteLen) => floor((byteLen + 8) / 64) * 16 + 16
+
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a bit length.
  *
- * @param {number[]} x Array of little-endian words
- * @param {number} l Bit length
+ * @param {Int32Array | number[]} x Array of little-endian words
+ * @param {number} l Byte length
  * 
  * @param {number} [j]
  * @param {number} [t0]
@@ -29,31 +38,29 @@ let binlMD5 = (
   l,
   // var:
   i = 0,
-  j,
+  j = toBinlLen(l),
   t0,
   t1,
   t2,
   oi,
   output = [A, B, C, D],
   oldOutput = [...output],
-  o = (
-    /** @param {*} [_] */
-    _ => output[++oi & 3]
-  ),
 ) => {
+  // console.time("binlMD5")
 
   // append padding
-  x[l + 64 >>> 9 << 4 | 14] = 0 | l;
-  x[l >>> 5] |= 0x80 << l % 32;
+  x[j - 1] = l * 8 / $2_32;
+  x[j - 2] = l * 8;
+  x[floor(l / 4)] |= 0x80 << l % 4 * 8;
 
   for (; i < x.length; i += 16) {
-    for (oi = j = 0; j < 64; oi -= 6) {
+    for (oi = j = 0; j < 64;) {
       output[oi & 3] = (
         t0 = 0 | (
           (
-            t0 = o(),
-            t1 = o(),
-            t2 = o(),
+            t0 = output[++oi & 3],
+            t1 = output[++oi & 3],
+            t2 = output[++oi & 3],
             (l = j >> 4 << 2)
               ? l > 4
                 ? l > 8
@@ -67,46 +74,52 @@ let binlMD5 = (
           ) +
           (
             t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4) - 32,
-            K[63 - j++] ??= 0 | 2 ** 32 * Math.abs(Math.sin(j))
+            K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
           ) +
-          o()
+          output[oi + 1 & 3]
         ),
-        0 | (t0 << t1 | t0 >>> 32 - t1) + o()
+        0 | (t0 << t1 | t0 >>> 32 - t1) + output[oi + 2 & 3]
       )
     }
     for (oi = 4; oi;) {
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
     }
   }
+  // console.timeEnd("binlMD5")
   return output
 }
 
 /**
  * Convert bytes to an array of little-endian words
  *
- * @param {string | Uint8Array} input
- * @param {number} padLen
+ * @param {*} input
+ * @param {number} j pad int32 length
  * 
- * @param {number[]} [output]
- * 
- * @returns {[number[], number]}
+ * @returns {[Int32Array | number[], number]}
  */
 let inputToBinl = (
   input,
-  padLen,
+  j,
   // var:
-  i = (
+  byteLen = (
     typeof input == 'string'
       ? input = new TextEncoder().encode(input)
       : input
   ).length,
-  output = [],
-  bitLen = 8 * i,
+  output = new Int32Array(toBinlLen(j * 4 + byteLen)),
+  i = 0,
 ) => {
-  for (; i;) {
-    output[padLen + (--i >>> 2)] |= /**@type {Uint8Array}*/(input)[i] << i % 4 * 8
+  // console.time("inputToBinl")
+  for (; i < byteLen;) {
+    output[j++] = (
+      input[i++] |
+      input[i++] << 8 |
+      input[i++] << 16 |
+      input[i++] << 24
+    )
   }
-  return [output, bitLen]
+  // console.timeEnd("inputToBinl")
+  return [output, byteLen]
 }
 
 /**
@@ -137,29 +150,27 @@ let inputToBinl = (
 var md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
-    , [bdata, bitLen] = inputToBinl(data, /**@type {*}*/(hasKey) * i)
+    , [bdata, dataByteLen] = inputToBinl(data, /**@type {*}*/(hasKey) * i)
     , out = new Uint8Array(i)
 
   if (hasKey) {
     // HMAC
-    let [bkey, keyBitlen] = inputToBinl(key, 0)
-      , pad = (/**@type {number}*/ x) => {
-        for (; i;) {
-          bdata[--i] = 0x01010101 * x ^ bkey[i]
-        }
-        i = 16
-      }
-    if (keyBitlen > 512) {
-      bkey = binlMD5(bkey, keyBitlen)
+    let [bkey, keyByteLen] = inputToBinl(key, 0)
+    let pad5cArr = []
+    if (keyByteLen > 64) {
+      bkey = binlMD5(bkey, keyByteLen)
     }
-    pad(0x36)
-    bdata = binlMD5(bdata, 512 + bitLen)
-    bdata.unshift(...Array(16))
-    pad(0x5c)
-    bitLen = 640
+    for (; i;) {
+      bdata[--i] = 0x36363636 ^ bkey[i]
+      pad5cArr[i] = 0x5c5c5c5c ^ bkey[i]
+    }
+    i = 16
+    bdata = binlMD5(bdata, 64 + dataByteLen)
+    bdata.unshift(...pad5cArr)
+    dataByteLen = 80
   }
 
-  bdata = binlMD5(bdata, bitLen)
+  bdata = binlMD5(bdata, dataByteLen)
 
   // binl to bytes
   for (; i;) {
