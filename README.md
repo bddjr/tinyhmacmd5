@@ -6,6 +6,10 @@ The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 1057 by
 
 Preview: https://bddjr.github.io/tinyhmacmd5/
 
+> [!WARNING]  
+> MD5 is cryptographically broken and unsafe for security-sensitive applications.  
+> Do not rely on it for password hashing, digital signatures, or certificate verification.
+
 ## Setup
 
 ### npm
@@ -29,6 +33,10 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 ---
 
 ## Example
+
+> [!WARNING]  
+> Please make sure on your own that the types of input parameters conform to the definitions in [`main.d.ts`](main.d.ts).  
+> If you pass wrong types, it may not throw an error and may produce incorrect results.
 
 HMAC-MD5:
 
