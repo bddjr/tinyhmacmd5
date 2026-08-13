@@ -20,8 +20,8 @@ let test663Once = true
  */
 function test(md5) {
     /**
-     * @param {string | Uint8Array} data
-     * @param {string | Uint8Array} key
+     * @param {string | Uint8Array | Uint8ClampedArray} data
+     * @param {string | Uint8Array | Uint8ClampedArray} key
      */
     function test(data, key) {
         console.log('data:', data)
