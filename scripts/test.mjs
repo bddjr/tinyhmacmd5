@@ -51,6 +51,8 @@ function test(md5) {
     test('The quick brown fox jumps over the lazy dog', 'HMAC key 🔑')
     test(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
 
+    test(Uint8ClampedArray.of(1, 2, 3), Uint8ClampedArray.of(4, 5, 6))
+
     for (const n of [55, 56, 57, 63, 64, 65, 119, 120, 121]) {
         for (const k of [0, 1, 63, 64, 65, 128]) {
             test(crypto.randomBytes(n), crypto.randomBytes(k))
