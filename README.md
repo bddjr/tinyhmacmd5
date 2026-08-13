@@ -1,6 +1,6 @@
 # Tiny HMAC MD5
 
-A tiny, reliable JavaScript HMAC-MD5 implementation.
+A tiny JavaScript HMAC-MD5 implementation.
 
 The minified browser bundle ([`browser.min.js`](browser.min.js)) is only 1057 bytes.
 
