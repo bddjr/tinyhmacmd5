@@ -20,8 +20,8 @@ let test663Once = true
  */
 function test(md5) {
     /**
-     * @param {string | Uint8Array} data
-     * @param {string | Uint8Array} key
+     * @param {string | Uint8Array | Uint8ClampedArray} data
+     * @param {string | Uint8Array | Uint8ClampedArray} key
      */
     function test(data, key) {
         console.log('data:', data)
@@ -69,6 +69,8 @@ function test(md5) {
     test("what do ya want for nothing?", "Jefe")
     test(new Uint8Array(50).fill(0xDD), new Uint8Array(16).fill(0xAA))
 
+    test(Uint8ClampedArray.of(1, 2, 3), Uint8ClampedArray.of(4, 5, 6))
+
     console.log(`test output raw`)
     assert.strict(
         crypto.createHmac('md5', 'HMAC key 🔑').update('Hello world!👋').digest().equals(
@@ -76,6 +78,24 @@ function test(md5) {
         ),
         `Failed to test output raw`
     )
+    console.log()
+
+    console.log(`test invalid input`);
+    ((/** @type {*} */ md5) => {
+        for (const f of [
+            () => md5(new ArrayBuffer(1)),
+            () => md5('x', new ArrayBuffer(1)),
+            () => md5(new Int8Array(1)),
+            () => md5(new DataView(new ArrayBuffer(1))),
+            () => md5(1),
+            () => md5('x', 1),
+        ]) {
+            assert.throws(f, {
+                name: 'TypeError',
+                message: `data or key parameter must be a string, Uint8Array or Uint8ClampedArray`
+            })
+        }
+    })(md5)
     console.log()
 
     // 663 MiB

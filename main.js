@@ -92,27 +92,29 @@ let binlMD5 = (
 /**
  * Convert bytes to an array of little-endian words
  *
- * @param {*} input
- * @param {number} j pad int32 length
+ * @param {string | Uint8Array | Uint8ClampedArray} input
+ * @param {number} padInt32Len
  * 
  * @returns {[Int32Array<ArrayBuffer> | number[], number]}
  */
-let inputToBinl = (
-  input,
-  j,
-  // var:
-  byteLen = (
+let inputToBinl = (input, padInt32Len) => {
+  if (!(
     typeof input == 'string'
       ? input = new TextEncoder().encode(input)
-      : input
-  ).length,
+      : /^Uint8(Clamped)?Array$/.test(input?.[Symbol.toStringTag])
+  )) {
+    throw TypeError(`data or key parameter must be a string, Uint8Array or Uint8ClampedArray`)
+  }
+
+  var byteLen = input.length
+
   // Using Array would fail to handle large files, so Int32Array must be used.
-  output = new Int32Array(toBinlLen(j * 4 + byteLen)),
-  i = 0,
-) => {
+  var output = new Int32Array(toBinlLen(padInt32Len * 4 + byteLen))
+    , i = 0
+
   // console.time("inputToBinl")
   for (; i < byteLen;) {
-    output[j++] = (
+    output[padInt32Len++] = (
       input[i++] |
       input[i++] << 8 |
       input[i++] << 16 |
@@ -126,14 +128,14 @@ let inputToBinl = (
 /**
  * @overload
  * @param {string | Uint8Array} data
- * @param {string | Uint8Array | null} [key]
+ * @param {string | Uint8Array | Uint8ClampedArray | null} [key]
  * @param {false} [raw]
  * @returns {string}
  */
 /**
  * @overload
  * @param {string | Uint8Array} data
- * @param {string | Uint8Array | null | undefined} key
+ * @param {string | Uint8Array | Uint8ClampedArray | null | undefined} key
  * @param {true} raw
  * @returns {Uint8Array<ArrayBuffer>}
  */
@@ -143,8 +145,8 @@ let inputToBinl = (
  * By default, returns the hash as a lowercase hexadecimal string.  
  * If `raw` is true, returns a Uint8Array.  
  *
- * @param {string | Uint8Array} data The input data to hash. Strings are UTF‑8 encoded.
- * @param {string | Uint8Array | null} [key] Optional HMAC key. When given, HMAC‑MD5 is calculated instead of plain MD5.
+ * @param {string | Uint8Array | Uint8ClampedArray} data The input data to hash. Strings are UTF‑8 encoded.
+ * @param {string | Uint8Array | Uint8ClampedArray | null} [key] Optional HMAC key. When given, HMAC‑MD5 is calculated instead of plain MD5.
  * @param {boolean} [raw] If true, the hash is returned as raw bytes (Uint8Array); otherwise, as a hex string.
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
