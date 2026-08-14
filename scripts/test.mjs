@@ -60,6 +60,7 @@ function test(md5) {
     }
 
     test('', '')
+    test('a', 'a')
 
     for (let i = 0; i < 3; i++) {
         const data = crypto.randomUUID()
