@@ -120,7 +120,7 @@ During the adaptation, I also discovered that the original `blueimp-md5` does no
 
 I also found that using `Array` for inputs larger than 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-This project proves that a fully compliant HMAC‑MD5 implementation in an extremely small footprint is not only possible, but also more reliable.
+Through practice, I've proven that implementing HMAC-MD5 in an extremely small footprint (1057 bytes) is possible — and that it can be made more reliable.
 
 Maybe not many people truly care about the difference of a few kilobytes, but "Into the Unknown" — that's what `tinyhmacmd5` is about.
 
