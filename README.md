@@ -71,7 +71,7 @@ md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
 md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
 ```
 
-MD5:
+MD5: (when `key` is `null` or `undefined`)
 
 ```js
 // string to hex
@@ -143,6 +143,14 @@ The Invincible Experiment!
 
 ---
 
+## License
+
+The MIT License
+
+See: [LICENSE](LICENSE)
+
+---
+
 ## Clone
 
 ```
@@ -151,3 +159,4 @@ cd tinyhmacmd5
 pnpm i
 pnpm test
 ```
+
