@@ -21,14 +21,21 @@
   },
   "keywords": [
     "md5",
+    "hash",
     "hmac",
     "hmacmd5",
     "hmac-md5",
     "tiny",
     "hex",
     "crypto",
+    "encryption",
+    "cryptography",
     "blueimp",
-    "blueimp-md5"
+    "blueimp-md5",
+    "js-md5",
+    "crypto-js",
+    "javascript",
+    "typescript"
   ],
   "repository": {
     "type": "git",
