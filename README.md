@@ -19,6 +19,7 @@ A tiny, fully compliant HMAC-MD5 implementation for JavaScript:
 
 ### npm
 
+
 ```
 npm i tinyhmacmd5
 ```
@@ -26,6 +27,10 @@ npm i tinyhmacmd5
 ```js
 import md5 from "tinyhmacmd5";
 ```
+
+### Other package managers
+
+You can also use other package managers (e.g. `pnpm` or `yarn`) in place of `npm`.
 
 ### jsDelivr
 
