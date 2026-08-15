@@ -26,7 +26,7 @@ jobs:
           version: "11"
 
       - run: pnpm i
-      - run: pnpm test
+      - run: pnpm test:unchanged
 
       - name: Upload static files as artifact
         id: deployment

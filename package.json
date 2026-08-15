@@ -16,8 +16,11 @@
   "homepage": "https://bddjr.github.io/tinyhmacmd5/",
   "scripts": {
     "build": "tsc && node scripts/build.mjs && es-check es2021 --module --checkFeatures main.js browser.min.js",
-    "test": "pnpm build && node scripts/test.mjs",
-    "prepublishOnly": "pnpm test"
+    "build:unchanged": "node scripts/build-unchanged.mjs",
+    "test": "pnpm build && pnpm test:only",
+    "test:only": "node scripts/test.mjs",
+    "test:unchanged": "pnpm build:unchanged && pnpm test:only",
+    "prepublishOnly": "pnpm test:unchanged"
   },
   "keywords": [
     "md5",
