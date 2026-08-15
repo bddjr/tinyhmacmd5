@@ -30,7 +30,7 @@ npm i tinyhmacmd5
 import md5 from "tinyhmacmd5";
 ```
 
-### Other package managers
+### Other Package Managers
 
 You can also use other package managers (e.g. `pnpm` or `yarn`) in place of `npm`.
 
