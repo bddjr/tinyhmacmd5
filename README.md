@@ -124,7 +124,7 @@ Through practice, I've proven that implementing HMAC-MD5 in an extremely small f
 
 Maybe not many people truly care about the difference of a few kilobytes, but "Into the Unknown" — that's what `tinyhmacmd5` is about.
 
-INVINCIBLE_EXPERIMENT!
+INVINCIBLE EXPERIMENT!
 
 ---
 
