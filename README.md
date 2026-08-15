@@ -100,29 +100,29 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 
 ---
 
-## Why make this project
+## Why I Made This Project
 
 > [!NOTE]  
-> Translated by AI, from Chinese.  
+> AI-translated from Chinese.  
 > [查看原文](README-zh.md#为什么做这个项目)
 
-I originally needed HMAC‑MD5 just to call a certain website's API. That website used `crypto-js` to sign the request body with HMAC‑MD5, to make reverse engineering harder.
+I initially used HMAC-MD5 just to call a certain website's API. That site signs the request body with `crypto-js`'s HMAC-MD5 to make reverse engineering harder.
 
-But I only needed HMAC‑MD5 — dragging in the entire `crypto-js` felt too heavy, and Web Crypto API doesn't support HMAC‑MD5, so I had to pull in a dependency.
+But I only needed HMAC-MD5. Depending on `crypto-js` felt way too bloated. The Web Crypto API doesn't support HMAC-MD5, so I had no choice but to drag in a dependency.
 
-So I found `blueimp-md5` — its `md5.min.js` is only 3750 bytes, even smaller than `js-md5`.
+Then I found `blueimp-md5`. Its `md5.min.js` is only 3750 bytes, even smaller than `js-md5`.
 
-But even `blueimp-md5` still felt too bloated. It has some completely unnecessary design choices — it repeatedly converts strings back and forth, which wastes performance.
+But I felt `blueimp-md5` was still far too bloated. It has some completely unnecessary design choices—it repeatedly parses strings and then generates new strings, wasting performance like crazy.
 
-So I decided to adapt it, using more modern implementations to make it even smaller. That's how `tinyhmacmd5` was born.
+So I decided to adapt it, use a more modern implementation, and crush the size down even further. That's how the current `tinyhmacmd5` was born.
 
-During the adaptation, I also discovered that the original `blueimp-md5` does not correctly handle bit length padding for inputs exceeding 32 bits, and I fixed that error.
+During the adaptation, I discovered that `blueimp-md5` did not correctly handle the 64-bit length field in the final MD5 padding when the input's bit length exceeded the 32-bit range. It wrote only the low 32 bits and ignored the high 32 bits. I fixed this bug.
 
-I also found that using `Array` for inputs larger than 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
+I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I switched it to `Int32Array`.
 
-Through practice, I've proven that implementing HMAC-MD5 in an extremely small footprint (1057 bytes) is possible — and that it can be made more reliable.
+I proved in practice that implementing HMAC-MD5 in an extremely tiny size (1057 bytes) is possible, and it can be even more reliable.
 
-Maybe not many people truly care about the difference of a few kilobytes, but "Into the Unknown" — that's what `tinyhmacmd5` is about.
+Maybe not many people care about these few KB of size difference, but `tinyhmacmd5` exists to venture “Into the Unknown”.
 
 INVINCIBLE EXPERIMENT!
 
