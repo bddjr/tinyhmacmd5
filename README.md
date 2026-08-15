@@ -1,3 +1,5 @@
+English | [中文](README-zh.md)
+
 # Tiny HMAC MD5
 
 A tiny, fully compliant HMAC-MD5 implementation for JavaScript:  
@@ -100,17 +102,17 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 
 ## Why make this project
 
-### English 
-
-(Translate by AI)
+> [!NOTE]  
+> Translated by AI, from Chinese.  
+> [查看原文](README-zh.md#为什么做这个项目)
 
 I originally needed HMAC‑MD5 just to call a certain website's API. That website used `crypto-js` to sign the request body with HMAC‑MD5, to make reverse engineering harder.
 
-But I only needed HMAC‑MD5 — dragging in the entire `crypto-js` felt too heavy, and Web Crypto doesn't support HMAC‑MD5, so I had to pull in a dependency.
+But I only needed HMAC‑MD5 — dragging in the entire `crypto-js` felt too heavy, and Web Crypto API doesn't support HMAC‑MD5, so I had to pull in a dependency.
 
-So I searched around and found a project called `blueimp-md5`. Its `md5.min.js` was only 3750 bytes.
+So I found `blueimp-md5` — its `md5.min.js` is only 3750 bytes, even smaller than `js-md5`.
 
-But even `blueimp-md5` still felt too bloated. It has some unnecessary design choices that hurt performance — it repeatedly converts strings back and forth, which is highly inefficient.
+But even `blueimp-md5` still felt too bloated. It has some completely unnecessary design choices — it repeatedly converts strings back and forth, which wastes performance.
 
 So I decided to adapt it, using more modern implementations to make it even smaller. That's how `tinyhmacmd5` was born.
 
@@ -120,39 +122,16 @@ I also found that using `Array` for inputs larger than 512 MiB could throw a `Ra
 
 This project proves that a fully compliant HMAC‑MD5 implementation in an extremely small footprint is not only possible, but also more reliable.
 
-Maybe not many people truly care about a difference of a few kilobytes. But "Into the Unknown" — that's what this project is about.
+Maybe not many people truly care about the difference of a few kilobytes, but "Into the Unknown" — that's what `tinyhmacmd5` is about.
 
-The Invincible Experiment!
-
-### 中文
-
-我最初用 HMAC-MD5 只是为了请求某个网站的 API，那个网站用 `crypto-js` 的 HMAC-MD5 对请求 body 签名，以增加逆向破解难度。
-
-但我只需要 HMAC-MD5 ，我觉得依赖 `crypto-js` 太臃肿了，Web Crypto 又不支持 HMAC-MD5 ，我不得不引入一个依赖。
-
-所以我在网上找，找到了个叫 `blueimp-md5` 的项目，里面的 `md5.min.js` 只有 3750 字节。
-
-但我觉得 `blueimp-md5` 还是过于臃肿了，里面有一些完全没有必要且拖慢性能的设计，它会反复用字符串转字符串，非常浪费性能。
-
-于是，我决定改编它，使用更现代化的实现，把体积压得更小，这就是现在的 `tinyhmacmd5` 。
-
-在改编的过程中，我还发现原作 `blueimp-md5` 并没有正确处理超过 32 位的 bit length padding，我修复了这个错误。
-
-我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
-
-我实践证明了用极小的体积实现 HMAC-MD5 是可行的，而且能做到更可靠。
-
-也许没有多少人真的在意这几 KB 的体积差距，但“探索未至之境”就是这个项目的意义。
-
-无敌实验！
+Invincible Experiment!
 
 ---
 
 ## License
 
-The MIT License
-
-See: [LICENSE](LICENSE)
+The MIT License  
+See: [`LICENSE`](LICENSE)
 
 ---
 
@@ -164,4 +143,3 @@ cd tinyhmacmd5
 pnpm i
 pnpm test
 ```
-
