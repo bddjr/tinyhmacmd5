@@ -64,10 +64,10 @@ let binlMD5 = (
             (l = j >> 4 << 2)
               ? l > 4
                 ? l > 8
-                  ? t1 ^ (t0 | ~t2)  // Round 4: II
-                  : t0 ^ t1 ^ t2     // Round 3: HH
-                : t0 & t2 | t1 & ~t2 // Round 2: GG
-              : t0 & t1 | ~t0 & t2   // Round 1: FF
+                  ? t1 ^ (t0 | ~t2)  // Round 4: I
+                  : t0 ^ t1 ^ t2     // Round 3: H
+                : t0 & t2 | t1 & ~t2 // Round 2: G
+              : t0 & t1 | ~t0 & t2   // Round 1: F
           ) +
           (
             0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
@@ -106,7 +106,8 @@ let inputToBinl = (
       ? input = new TextEncoder().encode(input)
       : input
   ).length,
-  // Using Array would fail to handle large files, so Int32Array must be used.
+  // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
+  // so I replaced it with `Int32Array`.
   output = new Int32Array(toBinlLen(j * 4 + byteLen)),
   i = 0,
 ) => {
