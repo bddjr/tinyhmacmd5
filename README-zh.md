@@ -112,7 +112,7 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 
 于是，我决定改编它，使用更现代化的实现，把体积压得更小，这就是现在的 `tinyhmacmd5` 。
 
-在改编的过程中，我发现 `blueimp-md5` 在输入的 bit 长度超过 32 位时，没有正确处理 MD5 末尾 padding 中的 64 位长度字段，它只写入了低 32 位，忽略了高 32 位。我修复了这个 bug 。
+在改编的过程中，我发现 `blueimp-md5` 在输入的 bit-length 超过 32 位时，没有正确处理 MD5 末尾 padding 中的 64 位长度字段，它只写入了低 32 位，忽略了高 32 位。我修复了这个 bug 。
 
 我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
 
