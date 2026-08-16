@@ -100,6 +100,17 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 
 ---
 
+## 运行环境
+
+支持 [逻辑空赋值（`??=`）](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment) 的运行环境：
+
+- Chrome ≥ 85 (2020-08-25)
+- Edge ≥ 85 (2020-08-27)
+- Firefox ≥ 79 (2020-07-28)
+- Safari ≥ 14 (2020-09-16)
+
+---
+
 ## 为什么做这个项目
 
 我最初用 HMAC-MD5 只是为了请求某个网站的 API，那个网站用 `crypto-js` 的 HMAC-MD5 对请求 body 签名，以增加逆向破解难度。

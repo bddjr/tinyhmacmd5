@@ -100,6 +100,17 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 
 ---
 
+## Runtime Environment
+
+Environments that support [Nullish coalescing assignment (`??=`)](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment) :
+
+- Chrome ≥ 85 (2020-08-25)
+- Edge ≥ 85 (2020-08-27)
+- Firefox ≥ 79 (2020-07-28)
+- Safari ≥ 14 (2020-09-16)
+
+---
+
 ## Why I Made This Project
 
 > [!NOTE]  
