@@ -116,7 +116,7 @@ But I felt `blueimp-md5` was still far too bloated. It has some completely unnec
 
 So I decided to adapt it, use a more modern implementation, and shrink the size even further. That's how `tinyhmacmd5` was born.
 
-During the adaptation, I discovered that `blueimp-md5` did not correctly handle the 64-bit length field required by MD5 when the input bit-length no longer fit in 32 bits. It wrote only the low 32 bits and ignored the high 32 bits. I fixed this bug.
+During the adaptation, I discovered that `blueimp-md5` did not correctly handle the 64-bit length field required by MD5 when the input bit-length exceeded 32 bits. It wrote only the low 32 bits and ignored the high 32 bits. I fixed this bug.
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
