@@ -125,20 +125,6 @@ let inputToBinl = (
 }
 
 /**
- * @overload
- * @param {string | Uint8Array | Uint8ClampedArray} data
- * @param {string | Uint8Array | Uint8ClampedArray | null} [key]
- * @param {false} [raw]
- * @returns {string}
- */
-/**
- * @overload
- * @param {string | Uint8Array | Uint8ClampedArray} data
- * @param {string | Uint8Array | Uint8ClampedArray | null | undefined} key
- * @param {true} raw
- * @returns {Uint8Array<ArrayBuffer>}
- */
-/**
  * Computes the MD5 hash of the input data.  
  * If a key is provided, computes HMAC-MD5.  
  * By default, returns the hash as a lowercase hexadecimal string.  

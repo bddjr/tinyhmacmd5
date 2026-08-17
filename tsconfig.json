@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
-        "noEmit": true
+        "noEmit": true,
+        "strict": true
     },
     "include": [
-        "./main.d.ts"
+        "./main.d.ts",
+        "./scripts/_typecheck.ts"
     ],
     "exclude": []
 }
