@@ -73,12 +73,12 @@ let binlMD5 = (
             0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
           ) +
           (
-            t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4) & 31,
+            t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4),
             K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
           ) +
           output[oi + 1 & 3]
         ),
-        0 | (t0 << t1 | t0 >>> 32 - t1) + output[oi + 2 & 3]
+        0 | (t0 << t1 | t0 >>> 64 - t1) + output[oi + 2 & 3]
       )
     }
     for (oi = 4; oi;) {
