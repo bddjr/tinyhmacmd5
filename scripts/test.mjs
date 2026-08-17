@@ -13,7 +13,7 @@ const nodeMD5 = (data) => crypto.createHash('md5').update(data).digest('hex')
  */
 const nodeHmacMD5 = (data, key) => crypto.createHmac('md5', key).update(data).digest('hex')
 
-let test663Once = true
+let test513Once = true
 
 /**
  * @param {typeof import("tinyhmacmd5").default} md5
@@ -81,10 +81,10 @@ function test(md5) {
     )
     console.log()
 
-    // 663 MiB
-    if (test663Once) {
-        test663Once = false
-        test(crypto.randomBytes(663 * 1024 * 1024), crypto.randomBytes(16))
+    // 513 MiB
+    if (test513Once) {
+        test513Once = false
+        test(crypto.randomBytes(513 * 1024 * 1024), crypto.randomBytes(16))
     }
 
     console.log('ok')
