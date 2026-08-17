@@ -167,8 +167,7 @@ var md5 = (data, key, raw) => {
       opad[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
     i = 16
-    bdata = binlMD5(bdata, 64 + dataByteLen)
-    bdata.unshift(...opad)
+    bdata = opad.concat(binlMD5(bdata, 64 + dataByteLen))
     dataByteLen = 80
   }
 
