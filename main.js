@@ -20,7 +20,7 @@ let toBinlLen = (byteLen) => floor((byteLen + 8) / 64) * 16 + 16
 let K = []
 
 /**
- * Calculate the MD5 of an array of little-endian words, and a bit length.
+ * Calculate the MD5 of an array of little-endian words, and a byte length.
  *
  * @param {Int32Array | number[]} x Array of little-endian words
  * @param {number} l Byte length
