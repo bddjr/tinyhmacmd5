@@ -163,8 +163,8 @@ var md5 = (data, key, raw) => {
       bkey = binlMD5(bkey, keyByteLen)
     }
     for (; i;) {
-      bdata[--i] = 0x36363636 ^ bkey[i] // ipad
-      opad[i] = 0x5c5c5c5c ^ bkey[i]
+      // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
+      opad[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
     i = 16
     bdata = binlMD5(bdata, 64 + dataByteLen)
