@@ -15,10 +15,15 @@ declare var md5: {
         key?: string | Uint8Array | Uint8ClampedArray | null,
         raw?: false
     ): string;
-    <T extends boolean = false>(
+    (
         data: string | Uint8Array | Uint8ClampedArray,
         key: string | Uint8Array | Uint8ClampedArray | null | undefined,
-        raw: T
-    ): T extends true ? Uint8Array<ArrayBuffer> : string;
+        raw: true
+    ): Uint8Array<ArrayBuffer>;
+    (
+        data: string | Uint8Array | Uint8ClampedArray,
+        key: string | Uint8Array | Uint8ClampedArray | null | undefined,
+        raw: boolean
+    ): string | Uint8Array<ArrayBuffer>;
 };
 export default md5;
