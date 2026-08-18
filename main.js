@@ -19,7 +19,6 @@ let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
  * @param {Int32Array | number[]} x Array of little-endian words
  * @param {number} l Byte length
  * 
- * @param {number} [t2]
  * @param {number} [oi]
  * 
  * @returns {number[]} MD5 Array
@@ -32,7 +31,7 @@ let binlMD5 = (
   j = toBinlLen(l),
   t0 = 1732584193,
   t1 = 271733878,
-  t2,
+  t2 = l << 3,
   oi,
   output = [t0, ~t1, ~t0, t1],
   oldOutput = [...output],
@@ -42,8 +41,8 @@ let binlMD5 = (
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[j - 1] = 0 | l / 2 ** 29;
-  x[j - 2] = j = l << 3;
-  x[floor(l / 4)] |= 0x80 << j;
+  x[j - 2] = t2;
+  x[floor(l / 4)] |= 0x80 << t2;
 
   for (; i < x.length;) {
     for (j = 0; j < 64;) {
