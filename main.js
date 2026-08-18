@@ -48,8 +48,8 @@ let binlMD5 = (
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[j - 1] = 0 | l / 2 ** 29;
-  x[j - 2] = 0 | l * 8;
-  x[floor(l / 4)] |= 0x80 << l * 8;
+  x[j - 2] = j = l << 3;
+  x[floor(l / 4)] |= 0x80 << j;
 
   for (; i < x.length;) {
     for (j = 0; j < 64;) {
