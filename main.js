@@ -15,7 +15,7 @@ let floor = $Math.floor
 
 /** @param {number} byteLen */
 // `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
-let toBinlLen = (byteLen) => floor((byteLen + 8) / 64) * 16 + 16
+let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
 
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
