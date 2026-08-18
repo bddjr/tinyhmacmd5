@@ -2,9 +2,6 @@
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
-let A = 1732584193
-  , D = 271733878
-
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
 
@@ -22,9 +19,6 @@ let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
  * @param {Int32Array | number[]} x Array of little-endian words
  * @param {number} l Byte length
  * 
- * @param {number} [j]
- * @param {number} [t0]
- * @param {number} [t1]
  * @param {number} [t2]
  * @param {number} [oi]
  * 
@@ -36,11 +30,11 @@ let binlMD5 = (
   // var:
   i = 0,
   j = toBinlLen(l),
-  t0,
-  t1,
+  t0 = 1732584193,
+  t1 = 271733878,
   t2,
   oi,
-  output = [A, ~D, ~A, D],
+  output = [t0, ~t1, ~t0, t1],
   oldOutput = [...output],
 ) => {
   // console.time("binlMD5")
