@@ -2,8 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny, fully compliant HMAC-MD5 implementation for JavaScript:  
-[`browser.min.js`](browser.min.js) is only **1016 bytes**.
+A tiny, fully compliant HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **1016 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or raw `Uint8Array`
