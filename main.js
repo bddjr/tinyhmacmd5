@@ -14,6 +14,7 @@ let $Math = Math
 let floor = $Math.floor
 
 /** @param {number} byteLen */
+// `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
 let toBinlLen = (byteLen) => floor((byteLen + 8) / 64) * 16 + 16
 
 /** @type {number[]} MD5 constants cached in memory */
@@ -51,6 +52,7 @@ let binlMD5 = (
   // append padding
   x[j - 1] = 0 | l * 8 / $2_32;
   x[j - 2] = 0 | l * 8;
+  // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[floor(l / 4)] |= 0x80 << l * 8;
 
   for (; i < x.length; i += 16) {
