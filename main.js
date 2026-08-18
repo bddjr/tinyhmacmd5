@@ -51,7 +51,7 @@ let binlMD5 = (
   // append padding
   x[j - 1] = 0 | l * 8 / $2_32;
   x[j - 2] = 0 | l * 8;
-  x[floor(l / 4)] |= 0x80 << l % 4 * 8;
+  x[floor(l / 4)] |= 0x80 << l * 8;
 
   for (; i < x.length; i += 16) {
     for (oi = j = 0; j < 64;) {
