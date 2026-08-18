@@ -51,9 +51,9 @@ let binlMD5 = (
   x[j - 2] = 0 | l * 8;
   x[floor(l / 4)] |= 0x80 << l * 8;
 
-  for (; i < x.length; i += 16) {
+  for (; i < x.length;) {
     for (oi = j = 0; j < 64;) {
-      output[oi & 3] = (
+      output[oi &= 3] = (
         t0 = 0 | (
           (
             t0 = output[++oi & 3],
@@ -79,7 +79,7 @@ let binlMD5 = (
         0 | (t0 << t1 | t0 >>> 64 - t1) + output[oi + 2 & 3]
       )
     }
-    for (oi = 4; oi;) {
+    for (; oi; i += 4) {
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
     }
   }
@@ -167,7 +167,7 @@ var md5 = (data, key, raw) => {
       ? out[i] = temp
       : out = (temp >> 4 && '') + temp.toString(16) + out
   ) {
-    temp = bdata[--i >> 2] >>> i * 8 & 0xff
+    temp = bdata[--i >> 2] >> i * 8 & 0xff
   }
 
   return out
