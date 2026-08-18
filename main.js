@@ -161,7 +161,7 @@ var md5 = (data, key, raw) => {
 
   // binl to bytes
   for (; i;) {
-    out[--i] = bdata[i >> 2] >>> i % 4 * 8
+    out[--i] = bdata[i >> 2] >>> i * 8
   }
 
   return raw
