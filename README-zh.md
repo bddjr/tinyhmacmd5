@@ -3,11 +3,11 @@
 # Tiny HMAC MD5
 
 一个精简且完全符合规范的 HMAC-MD5 JavaScript 实现：  
-[`browser.min.js`](browser.min.js) 仅有 **1016 字节**。
+[`browser.min.js`](browser.min.js) 仅 **1016 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或原始 `Uint8Array`
-- **支持 ≥ 512 MiB 的输入**：依据 RFC 1321 实现完整的 64 位长度填充
+- **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`)。
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 

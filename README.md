@@ -7,7 +7,7 @@ A tiny, fully compliant HMAC-MD5 implementation for JavaScript:
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or raw `Uint8Array`
-- **Supports inputs ≥ 512 MiB**: Full 64‑bit length padding per RFC 1321
+- **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`).
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
 - **0 dependencies**
 
