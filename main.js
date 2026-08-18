@@ -52,7 +52,7 @@ let binlMD5 = (
   x[floor(l / 4)] |= 0x80 << l * 8;
 
   for (; i < x.length;) {
-    for (oi = j = 0; j < 64;) {
+    for (j = 0; j < 64;) {
       output[oi &= 3] = (
         t0 = 0 | (
           (
