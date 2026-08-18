@@ -11,6 +11,8 @@ A tiny, fully compliant HMAC-MD5 implementation for JavaScript:
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
 - **0 dependencies**
 
+The goal of `tinyhmacmd5` is to strike a balance between size and performance, rather than sacrificing performance for the sake of minimizing size. Therefore, some performance-oriented optimizations are intentionally retained, and the final size is not the smallest theoretically achievable.
+
 **Live demo**: https://bddjr.github.io/tinyhmacmd5/
 
 > [!WARNING]  

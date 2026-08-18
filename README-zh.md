@@ -11,6 +11,8 @@
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 
+`tinyhmacmd5` 并不是单纯追求“越小越好”。它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，所以最终体积不是理论上的最小值。
+
 **在线演示**：https://bddjr.github.io/tinyhmacmd5/
 
 > [!WARNING]  
