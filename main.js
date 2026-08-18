@@ -4,10 +4,9 @@
 
 let A = 1732584193
   , D = 271733878
-  , C = ~A
-  , B = ~D
 
-let $2_32 = 2 ** 32
+/** @type {number[]} MD5 constants cached in memory */
+let K = []
 
 let $Math = Math
 
@@ -16,9 +15,6 @@ let floor = $Math.floor
 /** @param {number} byteLen */
 // `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
 let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
-
-/** @type {number[]} MD5 constants cached in memory */
-let K = []
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -44,13 +40,13 @@ let binlMD5 = (
   t1,
   t2,
   oi,
-  output = [A, B, C, D],
+  output = [A, ~D, ~A, D],
   oldOutput = [...output],
 ) => {
   // console.time("binlMD5")
 
   // append padding
-  x[j - 1] = 0 | l * 8 / $2_32;
+  x[j - 1] = 0 | l * 8 / 2 ** 32;
   x[j - 2] = 0 | l * 8;
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[floor(l / 4)] |= 0x80 << l * 8;
@@ -76,7 +72,7 @@ let binlMD5 = (
           ) +
           (
             t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4),
-            K[63 - j++] ??= 0 | $2_32 * $Math.abs($Math.sin(j))
+            K[63 - j++] ??= 0 | 2 ** 32 * $Math.abs($Math.sin(j))
           ) +
           output[oi + 1 & 3]
         ),
