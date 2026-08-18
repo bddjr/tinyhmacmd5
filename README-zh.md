@@ -111,6 +111,8 @@ md5(Uint8Array.of(1, 2, 3), null, true)
 - Firefox ≥ 79 (2020-07-28)
 - Safari ≥ 14 (2020-09-16)
 
+不建议在支持 `node:crypto` 的环境使用本库，因为 `node:crypto` 已内置 HMAC-MD5 。
+
 ---
 
 ## 为什么做这个项目

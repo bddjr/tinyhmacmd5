@@ -111,6 +111,8 @@ Environments that support [Nullish coalescing assignment (`??=`)](https://develo
 - Firefox ≥ 79 (2020-07-28)
 - Safari ≥ 14 (2020-09-16)
 
+Not recommended for use in environments that support `node:crypto`, as `node:crypto` already provides HMAC-MD5.
+
 ---
 
 ## Why I Made This Project
