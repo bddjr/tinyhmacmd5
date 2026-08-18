@@ -162,11 +162,12 @@ var md5 = (data, key, raw) => {
   bdata = binlMD5(bdata, dataByteLen)
 
   // binl to bytes
-  for (; i;) {
-    temp = bdata[--i >> 2] >>> i * 8 & 0xff
+  for (; i;
     raw
       ? out[i] = temp
       : out = (temp >> 4 && '') + temp.toString(16) + out
+  ) {
+    temp = bdata[--i >> 2] >>> i * 8 & 0xff
   }
 
   return out
