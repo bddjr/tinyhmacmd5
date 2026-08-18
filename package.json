@@ -29,6 +29,7 @@
     "hmacmd5",
     "hmac-md5",
     "tiny",
+    "tiny-hmac-md5",
     "hex",
     "crypto",
     "encryption",
@@ -37,6 +38,9 @@
     "blueimp-md5",
     "js-md5",
     "crypto-js",
+    "tiny-hashes",
+    "tiny-js-md5",
+    "spark-md5",
     "javascript",
     "typescript"
   ],
