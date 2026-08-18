@@ -2,12 +2,16 @@ import assert from 'node:assert'
 import fs from 'node:fs'
 import { execSync } from 'node:child_process'
 
-const fileName = 'browser.min.js'
+const names = [
+    "browser.min.js",
+]
 
-const beforeBuild = fs.readFileSync(fileName)
+const beforeBuild = names.map(name => fs.readFileSync(name))
 
 execSync('pnpm build', { stdio: 'inherit' })
 
-const afterBuild = fs.readFileSync(fileName)
-
-assert.strict(beforeBuild.equals(afterBuild), `browser.min.js changed`)
+names.forEach((name, index) => {
+    const before = beforeBuild[index]
+    const now = fs.readFileSync(name)
+    assert.strict(before.equals(now), `${name} changed`)
+})
