@@ -137,21 +137,25 @@ var md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
     , [bdata, dataByteLen] = inputToBinl(data, /**@type {*}*/(hasKey) * i)
-    , out = new Uint8Array(i)
+
+  /** @type {*} */
+  var temp = []
+
+  /** @type {*} */
+  var out = raw ? new Uint8Array(i) : ''
 
   if (hasKey) {
     // HMAC
     let [bkey, keyByteLen] = inputToBinl(key, 0)
-    let opad = []
     if (keyByteLen > 64) {
       bkey = binlMD5(bkey, keyByteLen)
     }
     for (; i;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
-      opad[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
+      temp[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
     i = 16
-    bdata = opad.concat(binlMD5(bdata, 64 + dataByteLen))
+    bdata = temp.concat(binlMD5(bdata, 64 + dataByteLen))
     dataByteLen = 80
   }
 
@@ -159,12 +163,13 @@ var md5 = (data, key, raw) => {
 
   // binl to bytes
   for (; i;) {
-    out[--i] = bdata[i >> 2] >>> i * 8
+    temp = bdata[--i >> 2] >>> i * 8 & 0xff
+    raw
+      ? out[i] = temp
+      : out = (temp >> 4 && '') + temp.toString(16) + out
   }
 
-  return raw
-    ? out
-    : out.reduce((p, v) => p + (v >> 4 && '') + v.toString(16), '')
+  return out
 }
 
 export default md5
