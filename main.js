@@ -46,8 +46,8 @@ let binlMD5 = (
 
   for (; i < x.length;) {
     for (j = 0; j < 64;) {
-      output[oi &= 3] = (
-        t1 = 0 | (
+      output[oi &= 3] = 0 | (
+        (t1 = 0 | (
           output[oi] +
           (
             t0 = output[++oi & 3],
@@ -68,9 +68,8 @@ let binlMD5 = (
             t2 = "',16%).4$+07&*/5".charCodeAt(j & 3 | l),
             K[63 - j++] ??= 0 | 2 ** 32 * $Math.abs($Math.sin(j))
           )
-        ),
-        0 | (t1 << t2 | t1 >>> 64 - t2) + t0
-      )
+        )) << t2 | t1 >>> 64 - t2
+      ) + t0
     }
     for (; oi; i += 4) {
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
