@@ -57,7 +57,7 @@ import md5 from "tinyhmacmd5";
 > 本库不验证输入类型。  
 > 请确保输入类型与 [`main.d.ts`](main.d.ts) 中的定义一致。  
 > TypeScript 会在编译时捕获类型错误（除非你使用了 `any`）。  
-> 无效的类型可能会产生错误的 MD5 哈希。
+> 无效的类型可能会产生错误的 MD5 哈希值。
 
 HMAC-MD5:
 
@@ -97,6 +97,15 @@ md5(Uint8Array.of(1, 2, 3))
 // 字节数组 到 字节数组
 // 返回 Uint8Array<ArrayBuffer>
 md5(Uint8Array.of(1, 2, 3), null, true)
+```
+
+`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会产生错误的 MD5 哈希值。
+
+```js
+let data = new ArrayBuffer(8)
+
+// MD5: 字节数组 到 16进制
+md5(new Uint8Array(data))
 ```
 
 ---

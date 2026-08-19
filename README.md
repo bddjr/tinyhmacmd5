@@ -99,6 +99,15 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
+`ArrayBuffer` must be wrapped in a `Uint8Array` before input; otherwise, it produces an incorrect MD5 hash.
+
+```js
+let data = new ArrayBuffer(8)
+
+// MD5: bytes to hex
+md5(new Uint8Array(data))
+```
+
 ---
 
 ## Runtime Environment
