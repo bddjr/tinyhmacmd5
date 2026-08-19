@@ -65,7 +65,7 @@ HMAC-MD5:
 md5("Hello world!👋", "HMAC key 🔑")
 
 // 字符串 到 字节数组
-// 返回 Uint8Array<ArrayBuffer>
+// 返回 Uint8Array(16)
 md5("Hello world!👋", "HMAC key 🔑", true)
 
 // 字节数组 到 16进制
@@ -73,7 +73,7 @@ md5("Hello world!👋", "HMAC key 🔑", true)
 md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
 
 // 字节数组 到 字节数组
-// 返回 Uint8Array<ArrayBuffer>
+// 返回 Uint8Array(16)
 md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
 ```
 
@@ -85,7 +85,7 @@ MD5:（当 `key` 为 `null` 或 `undefined`）
 md5("Hello world!👋")
 
 // 字符串 到 字节数组
-// 返回 Uint8Array<ArrayBuffer>
+// 返回 Uint8Array(16)
 md5("Hello world!👋", null, true)
 
 // 字节数组 到 16进制
@@ -93,7 +93,7 @@ md5("Hello world!👋", null, true)
 md5(Uint8Array.of(1, 2, 3))
 
 // 字节数组 到 字节数组
-// 返回 Uint8Array<ArrayBuffer>
+// 返回 Uint8Array(16)
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 

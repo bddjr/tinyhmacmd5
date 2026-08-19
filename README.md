@@ -65,7 +65,7 @@ HMAC-MD5:
 md5("Hello world!👋", "HMAC key 🔑")
 
 // string to bytes
-// returns Uint8Array<ArrayBuffer>
+// returns Uint8Array(16)
 md5("Hello world!👋", "HMAC key 🔑", true)
 
 // bytes to hex
@@ -73,7 +73,7 @@ md5("Hello world!👋", "HMAC key 🔑", true)
 md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
 
 // bytes to bytes
-// returns Uint8Array<ArrayBuffer>
+// returns Uint8Array(16)
 md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
 ```
 
@@ -85,7 +85,7 @@ MD5: (when `key` is `null` or `undefined`)
 md5("Hello world!👋")
 
 // string to bytes
-// returns Uint8Array<ArrayBuffer>
+// returns Uint8Array(16)
 md5("Hello world!👋", null, true)
 
 // bytes to hex
@@ -93,7 +93,7 @@ md5("Hello world!👋", null, true)
 md5(Uint8Array.of(1, 2, 3))
 
 // bytes to bytes
-// returns Uint8Array<ArrayBuffer>
+// returns Uint8Array(16)
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
