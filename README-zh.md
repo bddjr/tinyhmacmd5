@@ -111,9 +111,20 @@ md5(new Uint8Array(data))
 你也可以输入 `Uint8ClampedArray` ，这和输入 `Uint8Array` 的效果是一致的。
 
 ```js
-// 字节数组 到 16进制
+// MD5: 字节数组 到 16进制
 // 返回 "5289df737df57326fcdd22597afb1fac"
 md5(Uint8ClampedArray.of(1, 2, 3))
+```
+
+**【⚠️不安全】** 你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
+
+```js
+let data = [0, 1, 127, 255]
+
+// MD5: 字节数组 到 16进制
+// 返回 "b23d6235d525eed4c4b8d741d4c2a5a1"
+//@ts-ignore
+md5(data)
 ```
 
 ---
