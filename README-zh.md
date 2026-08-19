@@ -5,12 +5,13 @@
 一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **997 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
-- **输出类型**：16进制 `string` 或原始 `Uint8Array`
+- **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
 - **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`) 。
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 
-`tinyhmacmd5` 并不是单纯追求“越小越好”。它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，所以最终体积不是理论上的最小值。
+`tinyhmacmd5` 并不是单纯追求“越小越好”。  
+它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，最终体积不是理论上最小的。
 
 **在线演示**：https://bddjr.github.io/tinyhmacmd5/
 
@@ -43,10 +44,11 @@ import md5 from "tinyhmacmd5";
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
 ```
 
+它将使用 `var` 定义 `md5` 函数。
+
 ### 嵌入
 
-你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。
-
+你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。  
 它将使用 `var` 定义 `md5` 函数。
 
 ---

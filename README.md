@@ -5,12 +5,14 @@ English | [中文](README-zh.md)
 A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **997 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
-- **Output type**: hex `string` or raw `Uint8Array`
+- **Output type**: hex `string` or bytes `Uint8Array`
 - **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`).
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
 - **0 dependencies**
 
-The goal of `tinyhmacmd5` is to strike a balance between size and performance, rather than sacrificing performance for the sake of minimizing size. Therefore, some performance-oriented optimizations are intentionally retained, and the final size is not the smallest theoretically achievable.
+`tinyhmacmd5` does not simply aim for the smallest possible size.  
+Its goal is to balance code size and runtime performance, so some performance-oriented implementations are intentionally retained.  
+As a result, the final size is not the smallest theoretically achievable.
 
 **Live demo**: https://bddjr.github.io/tinyhmacmd5/
 
@@ -43,10 +45,11 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
 ```
 
+It will define the `md5` function using `var`.
+
 ### Inline
 
-You can embed [`browser.min.js`](browser.min.js) directly into your script.
-
+You can embed [`browser.min.js`](browser.min.js) directly into your script.  
 It will define the `md5` function using `var`.
 
 ---
