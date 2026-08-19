@@ -54,9 +54,7 @@ It will define the `md5` function using `var`.
 ## Example
 
 > [!NOTE]  
-> This library does not validate input types.  
 > Please ensure the input type matches the definitions in [`main.d.ts`](main.d.ts).  
-> TypeScript will catch mismatches at compile time (unless you use `any`).  
 > Invalid types may produce an incorrect MD5 hash.
 
 HMAC-MD5:
