@@ -54,17 +54,17 @@ It will define the `md5` function using `var`.
 ## Example
 
 > [!NOTE]  
-> Please ensure the input type matches the definitions in [`main.d.ts`](main.d.ts).  
-> Invalid types may produce an incorrect MD5 hash.
+> Please ensure that the input type matches the definition in [`main.d.ts`](main.d.ts).  
+> Invalid types may return an incorrect MD5 hash.
 
 HMAC-MD5:
 
 ```js
-// string to hex
+// string (UTF-8) to hex
 // returns "c87fdc912df24da05a6e3fed927e9d89"
 md5("Hello world!👋", "HMAC key 🔑")
 
-// string to bytes
+// string (UTF-8) to bytes
 // returns Uint8Array(16)
 md5("Hello world!👋", "HMAC key 🔑", true)
 
@@ -80,11 +80,11 @@ md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
 MD5: (when `key` is `null` or `undefined`)
 
 ```js
-// string to hex
+// string (UTF-8) to hex
 // returns "3ac851eecf9e37be7565bf073a73c9dc"
 md5("Hello world!👋")
 
-// string to bytes
+// string (UTF-8) to bytes
 // returns Uint8Array(16)
 md5("Hello world!👋", null, true)
 
@@ -97,7 +97,8 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` must be wrapped in a `Uint8Array` before input; otherwise, it produces an incorrect MD5 hash.
+`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input;  
+otherwise, it will return an incorrect MD5 hash.
 
 ```js
 let data = new ArrayBuffer(8)
@@ -123,10 +124,6 @@ Not recommended for use in environments that support `node:crypto`, as `node:cry
 
 ## Why I Made This Project
 
-> [!NOTE]  
-> AI-translated from Chinese.  
-> [查看原文](README-zh.md#为什么做这个项目)
-
 I initially used HMAC-MD5 just to call a certain website's API. That site signs the request body with `crypto-js`'s HMAC-MD5 to make reverse engineering harder.
 
 But I only needed HMAC-MD5. Depending on `crypto-js` felt way too bloated. The Web Crypto API doesn't support HMAC-MD5, so I had no choice but to drag in a dependency.
@@ -146,6 +143,8 @@ I demonstrated in practice that HMAC-MD5 can be implemented in an extremely smal
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 
 INVINCIBLE EXPERIMENT!
+
+[查看原文](README-zh.md#为什么做这个项目)
 
 ---
 

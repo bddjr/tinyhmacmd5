@@ -55,16 +55,16 @@ import md5 from "tinyhmacmd5";
 
 > [!NOTE]  
 > 请确保输入类型符合 [`main.d.ts`](main.d.ts) 的定义。  
-> 无效的类型可能会产生错误的 MD5 哈希值。
+> 无效的类型可能会返回错误的 MD5 哈希值。
 
 HMAC-MD5:
 
 ```js
-// 字符串 到 16进制
+// 字符串 (UTF-8) 到 16进制
 // 返回 "c87fdc912df24da05a6e3fed927e9d89"
 md5("Hello world!👋", "HMAC key 🔑")
 
-// 字符串 到 字节数组
+// 字符串 (UTF-8) 到 字节数组
 // 返回 Uint8Array(16)
 md5("Hello world!👋", "HMAC key 🔑", true)
 
@@ -80,11 +80,11 @@ md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
 MD5:（当 `key` 为 `null` 或 `undefined`）
 
 ```js
-// 字符串 到 16进制
+// 字符串 (UTF-8) 到 16进制
 // 返回 "3ac851eecf9e37be7565bf073a73c9dc"
 md5("Hello world!👋")
 
-// 字符串 到 字节数组
+// 字符串 (UTF-8) 到 字节数组
 // 返回 Uint8Array(16)
 md5("Hello world!👋", null, true)
 
@@ -97,7 +97,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会产生错误的 MD5 哈希值。
+`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值。
 
 ```js
 let data = new ArrayBuffer(8)
