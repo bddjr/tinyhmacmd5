@@ -64,7 +64,7 @@ let binlMD5 = (
             0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
           ) +
           (
-            t1 = "',16%).4$+07&*/5".charCodeAt(l + j % 4),
+            t1 = "',16%).4$+07&*/5".charCodeAt(j & 3 | l),
             K[63 - j++] ??= 0 | 2 ** 32 * $Math.abs($Math.sin(j))
           ) +
           output[oi + 1 & 3]
