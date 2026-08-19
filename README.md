@@ -110,6 +110,14 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
+You can also input a `Uint8ClampedArray`, which has the same effect as using a `Uint8Array`.
+
+```js
+// bytes to hex
+// returns "5289df737df57326fcdd22597afb1fac"
+md5(Uint8ClampedArray.of(1, 2, 3))
+```
+
 ---
 
 ## Runtime Environment

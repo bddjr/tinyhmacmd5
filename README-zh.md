@@ -108,6 +108,14 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
+你也可以输入 `Uint8ClampedArray` ，这和输入 `Uint8Array` 的效果是一致的。
+
+```js
+// 字节数组 到 16进制
+// 返回 "5289df737df57326fcdd22597afb1fac"
+md5(Uint8ClampedArray.of(1, 2, 3))
+```
+
 ---
 
 ## 运行环境
