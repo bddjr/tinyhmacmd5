@@ -54,7 +54,7 @@ import md5 from "tinyhmacmd5";
 ## 示范
 
 > [!NOTE]  
-> 请确保输入类型与 [`main.d.ts`](main.d.ts) 中的定义一致。  
+> 请确保输入类型符合 [`main.d.ts`](main.d.ts) 的定义。  
 > 无效的类型可能会产生错误的 MD5 哈希值。
 
 HMAC-MD5:
