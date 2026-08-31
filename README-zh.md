@@ -40,7 +40,7 @@ import md5 from "tinyhmacmd5";
 详见 https://www.jsdelivr.com/package/npm/tinyhmacmd5
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
 它将使用 `var` 定义 `md5` 函数。
@@ -48,7 +48,7 @@ import md5 from "tinyhmacmd5";
 ### UNPKG
 
 ```html
-<script src="https://unpkg.com/tinyhmacmd5"></script>
+<script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
 它将使用 `var` 定义 `md5` 函数。

@@ -42,7 +42,7 @@ You can also use other package managers (e.g. `pnpm` or `yarn`) in place of `npm
 See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
 It will define the `md5` function using `var`.
@@ -50,7 +50,7 @@ It will define the `md5` function using `var`.
 ### UNPKG
 
 ```html
-<script src="https://unpkg.com/tinyhmacmd5"></script>
+<script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
 It will define the `md5` function using `var`.
