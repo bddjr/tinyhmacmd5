@@ -133,12 +133,22 @@ md5(data)
 
 ## Runtime Environment
 
-Environments that support [Nullish coalescing assignment (`??=`)](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment) :
+Environments that support [Exponentiation (`**`)](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) and [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) :
 
-- Chrome ≥ 85 (2020-08-25)
-- Edge ≥ 85 (2020-08-27)
-- Firefox ≥ 79 (2020-07-28)
-- Safari ≥ 14 (2020-09-16)
+- Desktop
+  - Chrome ≥ 52 (2016-07-20)
+  - Edge ≥ 79 (2020-01-15)
+  - Firefox ≥ 52 (2017-03-07)
+  - Opera ≥ 39 (2016-08-02)
+  - Safari ≥ 10.1 (2017-03-27)
+- Mobile
+  - Chrome Android ≥ 52 (2016-07-27)
+  - Firefox for Android ≥ 52 (2017-03-07)
+  - Opera Android ≥ 41 (2016-10-25)
+  - Safari on iOS ≥ 10.3 (2017-03-27)
+  - Samsung Browser ≥ 6 (2017-08-23)
+  - WebView Android ≥ 51 (2016-06-08)
+  - WebView on iOS ≥ 10.3 (2017-03-27)
 
 Not recommended for use in environments that support `node:crypto`, as `node:crypto` already provides HMAC-MD5.
 

@@ -23,7 +23,6 @@
 
 ### npm
 
-
 ```
 npm i tinyhmacmd5
 ```
@@ -64,19 +63,19 @@ HMAC-MD5:
 ```js
 // 字符串 (UTF-8) 到 16进制
 // 返回 "c87fdc912df24da05a6e3fed927e9d89"
-md5("Hello world!👋", "HMAC key 🔑")
+md5("Hello world!👋", "HMAC key 🔑");
 
 // 字符串 (UTF-8) 到 字节数组
 // 返回 Uint8Array(16)
-md5("Hello world!👋", "HMAC key 🔑", true)
+md5("Hello world!👋", "HMAC key 🔑", true);
 
 // 字节数组 到 16进制
 // 返回 "f881235eccf71ab49b937753a72ac673"
-md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6))
+md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6));
 
 // 字节数组 到 字节数组
 // 返回 Uint8Array(16)
-md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true)
+md5(Uint8Array.of(1, 2, 3), Uint8Array.of(4, 5, 6), true);
 ```
 
 MD5:（当 `key` 为 `null` 或 `undefined`）
@@ -84,28 +83,28 @@ MD5:（当 `key` 为 `null` 或 `undefined`）
 ```js
 // 字符串 (UTF-8) 到 16进制
 // 返回 "3ac851eecf9e37be7565bf073a73c9dc"
-md5("Hello world!👋")
+md5("Hello world!👋");
 
 // 字符串 (UTF-8) 到 字节数组
 // 返回 Uint8Array(16)
-md5("Hello world!👋", null, true)
+md5("Hello world!👋", null, true);
 
 // 字节数组 到 16进制
 // 返回 "5289df737df57326fcdd22597afb1fac"
-md5(Uint8Array.of(1, 2, 3))
+md5(Uint8Array.of(1, 2, 3));
 
 // 字节数组 到 字节数组
 // 返回 Uint8Array(16)
-md5(Uint8Array.of(1, 2, 3), null, true)
+md5(Uint8Array.of(1, 2, 3), null, true);
 ```
 
 `ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值。
 
 ```js
-let data = new ArrayBuffer(8)
+let data = new ArrayBuffer(8);
 
 // MD5: 字节数组 到 16进制
-md5(new Uint8Array(data))
+md5(new Uint8Array(data));
 ```
 
 你也可以输入 `Uint8ClampedArray` ，这和输入 `Uint8Array` 的效果是一致的。
@@ -113,31 +112,41 @@ md5(new Uint8Array(data))
 ```js
 // MD5: 字节数组 到 16进制
 // 返回 "5289df737df57326fcdd22597afb1fac"
-md5(Uint8ClampedArray.of(1, 2, 3))
+md5(Uint8ClampedArray.of(1, 2, 3));
 ```
 
 **【⚠️不安全】**  
 你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
 
 ```js
-let data = [0, 1, 127, 255]
+let data = [0, 1, 127, 255];
 
 // MD5: 字节数组 到 16进制
 // 返回 "b23d6235d525eed4c4b8d741d4c2a5a1"
 //@ts-ignore
-md5(data)
+md5(data);
 ```
 
 ---
 
 ## 运行环境
 
-支持 [逻辑空赋值（`??=`）](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment) 的运行环境：
+支持 [幂（`**`）](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) 和 [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) 的运行环境：
 
-- Chrome ≥ 85 (2020-08-25)
-- Edge ≥ 85 (2020-08-27)
-- Firefox ≥ 79 (2020-07-28)
-- Safari ≥ 14 (2020-09-16)
+- 桌面端
+  - Chrome ≥ 52 (2016-07-20)
+  - Edge ≥ 79 (2020-01-15)
+  - Firefox ≥ 52 (2017-03-07)
+  - Opera ≥ 39 (2016-08-02)
+  - Safari ≥ 10.1 (2017-03-27)
+- 移动端
+  - Chrome Android ≥ 52 (2016-07-27)
+  - Firefox for Android ≥ 52 (2017-03-07)
+  - Opera Android ≥ 41 (2016-10-25)
+  - Safari on iOS ≥ 10.3 (2017-03-27)
+  - Samsung Browser ≥ 6 (2017-08-23)
+  - WebView Android ≥ 51 (2016-06-08)
+  - WebView on iOS ≥ 10.3 (2017-03-27)
 
 不建议在支持 `node:crypto` 的环境使用本库，因为 `node:crypto` 已内置 HMAC-MD5 。
 
