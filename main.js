@@ -151,7 +151,7 @@ var md5 = (data, key, raw) => {
 
   bdata = wordsMD5(bdata, dataByteLen)
 
-  // binl to bytes or hex
+  // words to bytes or hex
   for (; i;
     raw
       ? out[i] = temp
