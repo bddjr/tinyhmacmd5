@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **983 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **951 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -141,22 +141,22 @@ md5(data)
 
 ## Runtime Environment
 
-Environments that support [Exponentiation (`**`)](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) and [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) :
+Environments that support [`Uint8Array.prototype.toHex()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex) :
 
 - Desktop
-  - Chrome ≥ 52 (2016-07-20)
-  - Edge ≥ 79 (2020-01-15)
-  - Firefox ≥ 52 (2017-03-07)
-  - Opera ≥ 39 (2016-08-02)
-  - Safari ≥ 10.1 (2017-03-27)
+  - Chrome ≥ 140 (2025-09-02)
+  - Edge ≥ 140 (2025-09-05)
+  - Firefox ≥ 133 (2024-11-26)
+  - Opera ≥ 124 (2025-11-13)
+  - Safari ≥ 18.2 (2024-12-11)
 - Mobile
-  - Chrome Android ≥ 52 (2016-07-27)
-  - Firefox for Android ≥ 52 (2017-03-07)
-  - Opera Android ≥ 41 (2016-10-25)
-  - Safari on iOS ≥ 10.3 (2017-03-27)
-  - Samsung Browser ≥ 6 (2017-08-23)
-  - WebView Android ≥ 51 (2016-06-08)
-  - WebView on iOS ≥ 10.3 (2017-03-27)
+  - Chrome Android ≥ 140 (2025-09-02)
+  - Firefox for Android ≥ 133 (2024-11-26)
+  - Opera Android ≥ 92 (2025-10-08)
+  - Safari on iOS ≥ 18.2 (2024-12-11)
+  - Samsung Browser ×
+  - WebView Android ≥ 140 (2025-09-02)
+  - WebView on iOS ≥ 18.2 (2024-12-11)
 
 Not recommended for use in environments that support `node:crypto`, as `node:crypto` already provides HMAC-MD5.
 
@@ -178,7 +178,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (983 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (951 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 

@@ -2,7 +2,7 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **983 字节**。
+一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **951 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -139,22 +139,22 @@ md5(data)
 
 ## 运行环境
 
-支持 [幂（`**`）](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) 和 [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) 的运行环境：
+支持 [`Uint8Array.prototype.toHex()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex) 的运行环境：
 
 - 桌面端
-  - Chrome ≥ 52 (2016-07-20)
-  - Edge ≥ 79 (2020-01-15)
-  - Firefox ≥ 52 (2017-03-07)
-  - Opera ≥ 39 (2016-08-02)
-  - Safari ≥ 10.1 (2017-03-27)
+  - Chrome ≥ 140 (2025-09-02)
+  - Edge ≥ 140 (2025-09-05)
+  - Firefox ≥ 133 (2024-11-26)
+  - Opera ≥ 124 (2025-11-13)
+  - Safari ≥ 18.2 (2024-12-11)
 - 移动端
-  - Chrome Android ≥ 52 (2016-07-27)
-  - Firefox for Android ≥ 52 (2017-03-07)
-  - Opera Android ≥ 41 (2016-10-25)
-  - Safari on iOS ≥ 10.3 (2017-03-27)
-  - Samsung Browser ≥ 6 (2017-08-23)
-  - WebView Android ≥ 51 (2016-06-08)
-  - WebView on iOS ≥ 10.3 (2017-03-27)
+  - Chrome Android ≥ 140 (2025-09-02)
+  - Firefox for Android ≥ 133 (2024-11-26)
+  - Opera Android ≥ 92 (2025-10-08)
+  - Safari on iOS ≥ 18.2 (2024-12-11)
+  - Samsung Browser ×
+  - WebView Android ≥ 140 (2025-09-02)
+  - WebView on iOS ≥ 18.2 (2024-12-11)
 
 不建议在支持 `node:crypto` 的环境使用本库，因为 `node:crypto` 已内置 HMAC-MD5 。
 
@@ -176,7 +176,7 @@ md5(data)
 
 我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
 
-我实践证明了用极小的体积（983 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
+我实践证明了用极小的体积（951 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
 
 也许没有多少人在意这几 KB 的体积差距，但 `tinyhmacmd5` 的存在正是为了“探索未至之境”。
 

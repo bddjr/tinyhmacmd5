@@ -131,8 +131,7 @@ var md5 = (data, key, raw) => {
   /** @type {*} */
   var temp = []
 
-  /** @type {*} */
-  var out = raw ? new Uint8Array(i) : ''
+  var out = new Uint8Array(i)
 
   if (hasKey) {
     // HMAC
@@ -152,15 +151,11 @@ var md5 = (data, key, raw) => {
   bdata = wordsMD5(bdata, dataByteLen)
 
   // words to bytes or hex
-  for (; i;
-    raw
-      ? out[i] = temp
-      : out = (temp >> 4 && '') + temp.toString(16) + out
-  ) {
-    temp = bdata[--i >> 2] >> i * 8 & 0xff
+  for (; i;) {
+    out[--i] = bdata[i >> 2] >> i * 8
   }
 
-  return out
+  return raw ? out : out.toHex()
 }
 
 for (; i < 64;) {
