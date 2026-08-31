@@ -47,6 +47,14 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 
 It will define the `md5` function using `var`.
 
+### UNPKG
+
+```html
+<script src="https://unpkg.com/tinyhmacmd5"></script>
+```
+
+It will define the `md5` function using `var`.
+
 ### Inline
 
 You can embed [`browser.min.js`](browser.min.js) directly into your script.  
@@ -176,7 +184,7 @@ Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists 
 
 INVINCIBLE EXPERIMENT!
 
-[查看原文](README-zh.md#为什么做这个项目)
+[Read the original Chinese text](README-zh.md#为什么做这个项目)
 
 ---
 

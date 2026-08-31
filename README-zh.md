@@ -45,6 +45,14 @@ import md5 from "tinyhmacmd5";
 
 它将使用 `var` 定义 `md5` 函数。
 
+### UNPKG
+
+```html
+<script src="https://unpkg.com/tinyhmacmd5"></script>
+```
+
+它将使用 `var` 定义 `md5` 函数。
+
 ### 嵌入
 
 你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。  
