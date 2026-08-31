@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { minify_sync } from 'terser'
 
 let src = fs.readFileSync('main.js').toString()
-    .replace('*/', '*/\n{')
+    .replace('*/', '*/{')
     .replace(/export default .+/, '')
     .concat('\n}')
 

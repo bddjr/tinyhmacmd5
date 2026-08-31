@@ -1,4 +1,4 @@
-/** @license https://bddjr.github.io/tinyhmacmd5/lic */
+/*! npmjs.com/tinyhmacmd5 */
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
@@ -13,7 +13,7 @@ let floor = $Math.floor
 
 /** @param {number} byteLen */
 // `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
-let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
+let wordsLen = (byteLen) => floor((byteLen + 72) / 64) * 16
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -26,12 +26,12 @@ let toBinlLen = (byteLen) => floor((byteLen + 72) / 64) * 16
  * 
  * @returns {number[]} MD5 Array
  */
-let binlMD5 = (
+let wordsMD5 = (
   x,
   l,
   // var:
   i = 0,
-  j = toBinlLen(l),
+  j = wordsLen(l),
   t0 = 1732584193,
   t1 = 271733878,
   t2,
@@ -39,8 +39,6 @@ let binlMD5 = (
   output = [t0, ~t1, ~t0, t1],
   oldOutput = [...output],
 ) => {
-  // console.time("binlMD5")
-
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[j - 1] = 0 | l / 2 ** 29;
@@ -78,7 +76,6 @@ let binlMD5 = (
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
     }
   }
-  // console.timeEnd("binlMD5")
   return output
 }
 
@@ -90,7 +87,7 @@ let binlMD5 = (
  * 
  * @returns {[Int32Array<ArrayBuffer> | number[], number]}
  */
-let inputToBinl = (
+let inputToWords = (
   input,
   j,
   // var:
@@ -101,10 +98,9 @@ let inputToBinl = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new Int32Array(toBinlLen(j * 4 + byteLen)),
+  output = new Int32Array(wordsLen(j * 4 + byteLen)),
   i = 0,
 ) => {
-  // console.time("inputToBinl")
   for (; i < byteLen;) {
     output[j++] = (
       input[i++] |
@@ -113,7 +109,6 @@ let inputToBinl = (
       input[i++] << 24
     )
   }
-  // console.timeEnd("inputToBinl")
   return [output, byteLen]
 }
 
@@ -131,7 +126,7 @@ let inputToBinl = (
 var md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
-    , [bdata, dataByteLen] = inputToBinl(data, /**@type {*}*/(hasKey) * i)
+    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(hasKey) * i)
 
   /** @type {*} */
   var temp = []
@@ -141,20 +136,20 @@ var md5 = (data, key, raw) => {
 
   if (hasKey) {
     // HMAC
-    let [bkey, keyByteLen] = inputToBinl(key, 0)
+    let [bkey, keyByteLen] = inputToWords(key, 0)
     if (keyByteLen > 64) {
-      bkey = binlMD5(bkey, keyByteLen)
+      bkey = wordsMD5(bkey, keyByteLen)
     }
     for (; i;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
       temp[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
     i = 16
-    bdata = temp.concat(binlMD5(bdata, 64 + dataByteLen))
+    bdata = temp.concat(wordsMD5(bdata, 64 + dataByteLen))
     dataByteLen = 80
   }
 
-  bdata = binlMD5(bdata, dataByteLen)
+  bdata = wordsMD5(bdata, dataByteLen)
 
   // binl to bytes or hex
   for (; i;

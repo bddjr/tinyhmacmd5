@@ -2,11 +2,11 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **997 字节**。
+一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **983 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
-- **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`) 。
+- **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 2⁵³-1 (`Number.MAX_SAFE_INTEGER`) 。
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 
@@ -116,7 +116,8 @@ md5(new Uint8Array(data))
 md5(Uint8ClampedArray.of(1, 2, 3))
 ```
 
-**【⚠️不安全】** 你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
+**【⚠️不安全】**  
+你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
 
 ```js
 let data = [0, 1, 127, 255]
@@ -158,7 +159,7 @@ md5(data)
 
 我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
 
-我实践证明了用极小的体积（997 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
+我实践证明了用极小的体积（983 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
 
 也许没有多少人在意这几 KB 的体积差距，但 `tinyhmacmd5` 的存在正是为了“探索未至之境”。
 

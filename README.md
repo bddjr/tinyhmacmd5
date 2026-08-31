@@ -2,11 +2,11 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **997 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **983 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
-- **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to $2^{53}-1$ (`Number.MAX_SAFE_INTEGER`).
+- **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to 2⁵³-1 (`Number.MAX_SAFE_INTEGER`).
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
 - **0 dependencies**
 
@@ -100,8 +100,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input;  
-otherwise, it will return an incorrect MD5 hash.
+`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input; otherwise, it will return an incorrect MD5 hash.
 
 ```js
 let data = new ArrayBuffer(8)
@@ -118,8 +117,8 @@ You can also input a `Uint8ClampedArray`, which has the same effect as using a `
 md5(Uint8ClampedArray.of(1, 2, 3))
 ```
 
-**[⚠️Unsafe]** You can also input a `number[]`, but every element must be an integer in the range `0 ≤ x ≤ 255`;  
-otherwise, it will return an incorrect MD5 hash.
+**[⚠️Unsafe]**  
+You can also input a `number[]`, but every element must be an integer in the range `0 ≤ x ≤ 255`; otherwise, it will return an incorrect MD5 hash.
 
 ```js
 let data = [0, 1, 127, 255]
@@ -161,7 +160,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (997 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (983 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 
