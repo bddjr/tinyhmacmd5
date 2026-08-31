@@ -5,6 +5,8 @@
 /** @type {number[]} MD5 constants cached in memory */
 let K = []
 
+let i = 0
+
 let $Math = Math
 
 let floor = $Math.floor
@@ -47,28 +49,29 @@ let binlMD5 = (
   for (; i < x.length;) {
     for (j = 0; j < 64;) {
       output[oi &= 3] = 0 | (
-        (t1 = 0 | (
-          output[oi] +
-          (
-            t0 = output[++oi & 3],
-            t1 = output[++oi & 3],
-            t2 = output[++oi & 3],
-            (l = j >> 4 << 2)
-              ? l > 4
-                ? l > 8
-                  ? t1 ^ (t0 | ~t2)  // Round 4: I
-                  : t0 ^ t1 ^ t2     // Round 3: H
-                : t0 & t2 | t1 & ~t2 // Round 2: G
-              : t0 & t1 | ~t0 & t2   // Round 1: F
-          ) +
-          (
-            0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
-          ) +
-          (
-            t2 = "',16%).4$+07&*/5".charCodeAt(j & 3 | l),
-            K[63 - j++] ??= 0 | 2 ** 32 * $Math.abs($Math.sin(j))
+        (
+          t1 = 0 | (
+            output[oi] +
+            K[j] +
+            (
+              t0 = output[++oi & 3],
+              t1 = output[++oi & 3],
+              t2 = output[++oi & 3],
+              (l = j >> 4 << 2)
+                ? l > 4
+                  ? l > 8
+                    ? t1 ^ (t0 | ~t2)  // Round 4: I
+                    : t0 ^ t1 ^ t2     // Round 3: H
+                  : t0 & t2 | t1 & ~t2 // Round 2: G
+                : t0 & t1 | ~t0 & t2   // Round 1: F
+            ) +
+            (
+              0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
+            )
           )
-        )) << t2 | t1 >>> 64 - t2
+        ) << (
+          t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
+        ) | t1 >>> 64 - t2
       ) + t0
     }
     for (; oi; i += 4) {
@@ -163,6 +166,10 @@ var md5 = (data, key, raw) => {
   }
 
   return out
+}
+
+for (; i < 64;) {
+  K[i] = 0 | 2 ** 32 * $Math.abs($Math.sin(++i))
 }
 
 export default md5
