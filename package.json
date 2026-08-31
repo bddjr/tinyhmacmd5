@@ -16,6 +16,9 @@
     "browser.min.js"
   ],
   "homepage": "https://bddjr.github.io/tinyhmacmd5/",
+  "publishConfig": {
+    "tag": "es2026"
+  },
   "scripts": {
     "build": "tsc && node scripts/build.mjs && es-check es2026 --module --checkFeatures main.js browser.min.js",
     "build:unchanged": "node scripts/build-unchanged.mjs",
