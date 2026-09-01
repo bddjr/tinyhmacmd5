@@ -24,7 +24,7 @@
 ### npm
 
 ```
-npm i tinyhmacmd5
+npm i tinyhmacmd5@es2026
 ```
 
 ```js
@@ -40,7 +40,7 @@ import md5 from "tinyhmacmd5";
 详见 https://www.jsdelivr.com/package/npm/tinyhmacmd5
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
 它将使用 `var` 定义 `md5` 函数。
@@ -48,7 +48,7 @@ import md5 from "tinyhmacmd5";
 ### UNPKG
 
 ```html
-<script src="https://unpkg.com/tinyhmacmd5"></script>
+<script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
 它将使用 `var` 定义 `md5` 函数。
@@ -139,22 +139,22 @@ md5(data)
 
 ## 运行环境
 
-支持 [幂（`**`）](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) 和 [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) 的运行环境：
+支持 [`Uint8Array.prototype.toHex()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex) 的运行环境：
 
 - 桌面端
-  - Chrome ≥ 52 (2016-07-20)
-  - Edge ≥ 79 (2020-01-15)
-  - Firefox ≥ 52 (2017-03-07)
-  - Opera ≥ 39 (2016-08-02)
-  - Safari ≥ 10.1 (2017-03-27)
+  - Chrome ≥ 140 (2025-09-02)
+  - Edge ≥ 140 (2025-09-05)
+  - Firefox ≥ 133 (2024-11-26)
+  - Opera ≥ 124 (2025-11-13)
+  - Safari ≥ 18.2 (2024-12-11)
 - 移动端
-  - Chrome Android ≥ 52 (2016-07-27)
-  - Firefox for Android ≥ 52 (2017-03-07)
-  - Opera Android ≥ 41 (2016-10-25)
-  - Safari on iOS ≥ 10.3 (2017-03-27)
-  - Samsung Browser ≥ 6 (2017-08-23)
-  - WebView Android ≥ 51 (2016-06-08)
-  - WebView on iOS ≥ 10.3 (2017-03-27)
+  - Chrome Android ≥ 140 (2025-09-02)
+  - Firefox for Android ≥ 133 (2024-11-26)
+  - Opera Android ≥ 92 (2025-10-08)
+  - Safari on iOS ≥ 18.2 (2024-12-11)
+  - Samsung Browser ×
+  - WebView Android ≥ 140 (2025-09-02)
+  - WebView on iOS ≥ 18.2 (2024-12-11)
 
 不建议在支持 `node:crypto` 的环境使用本库，因为 `node:crypto` 已内置 HMAC-MD5 。
 

@@ -26,7 +26,7 @@ As a result, the final size is not the smallest theoretically achievable.
 
 
 ```
-npm i tinyhmacmd5
+npm i tinyhmacmd5@es2026
 ```
 
 ```js
@@ -42,7 +42,7 @@ You can also use other package managers (e.g. `pnpm` or `yarn`) in place of `npm
 See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
 It will define the `md5` function using `var`.
@@ -50,7 +50,7 @@ It will define the `md5` function using `var`.
 ### UNPKG
 
 ```html
-<script src="https://unpkg.com/tinyhmacmd5"></script>
+<script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
 It will define the `md5` function using `var`.
@@ -141,22 +141,22 @@ md5(data)
 
 ## Runtime Environment
 
-Environments that support [Exponentiation (`**`)](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Exponentiation) and [`TextEncoder`](https://developer.mozilla.org/docs/Web/API/TextEncoder) :
+Environments that support [`Uint8Array.prototype.toHex()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex) :
 
 - Desktop
-  - Chrome ≥ 52 (2016-07-20)
-  - Edge ≥ 79 (2020-01-15)
-  - Firefox ≥ 52 (2017-03-07)
-  - Opera ≥ 39 (2016-08-02)
-  - Safari ≥ 10.1 (2017-03-27)
+  - Chrome ≥ 140 (2025-09-02)
+  - Edge ≥ 140 (2025-09-05)
+  - Firefox ≥ 133 (2024-11-26)
+  - Opera ≥ 124 (2025-11-13)
+  - Safari ≥ 18.2 (2024-12-11)
 - Mobile
-  - Chrome Android ≥ 52 (2016-07-27)
-  - Firefox for Android ≥ 52 (2017-03-07)
-  - Opera Android ≥ 41 (2016-10-25)
-  - Safari on iOS ≥ 10.3 (2017-03-27)
-  - Samsung Browser ≥ 6 (2017-08-23)
-  - WebView Android ≥ 51 (2016-06-08)
-  - WebView on iOS ≥ 10.3 (2017-03-27)
+  - Chrome Android ≥ 140 (2025-09-02)
+  - Firefox for Android ≥ 133 (2024-11-26)
+  - Opera Android ≥ 92 (2025-10-08)
+  - Safari on iOS ≥ 18.2 (2024-12-11)
+  - Samsung Browser ×
+  - WebView Android ≥ 140 (2025-09-02)
+  - WebView on iOS ≥ 18.2 (2024-12-11)
 
 Not recommended for use in environments that support `node:crypto`, as `node:crypto` already provides HMAC-MD5.
 

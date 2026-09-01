@@ -1,6 +1,6 @@
 {
   "name": "tinyhmacmd5",
-  "version": "0.2.3",
+  "version": "0.2.3-es2026",
   "description": "A tiny and reliable HMAC-MD5 implementation for JavaScript: browser.min.js is only 982 bytes.",
   "author": "bddjr",
   "license": "MIT",
@@ -17,7 +17,7 @@
   ],
   "homepage": "https://bddjr.github.io/tinyhmacmd5/",
   "scripts": {
-    "build": "tsc && node scripts/build.mjs && es-check es2016 --module --checkFeatures main.js browser.min.js",
+    "build": "tsc && node scripts/build.mjs && es-check es2026 --module --checkFeatures main.js browser.min.js",
     "build:unchanged": "node scripts/build-unchanged.mjs",
     "test": "pnpm build && pnpm test:only",
     "test:only": "node scripts/test.mjs",
