@@ -27,11 +27,17 @@ function test(md5) {
         console.log('data:', data)
         console.log('key:', key)
 
-        let a = md5(data), b = nodeMD5(data)
+        console.time("md5 timer")
+        let a = md5(data)
+        console.timeEnd("md5 timer")
+        let b = nodeMD5(data)
         console.log('md5: tinyhmacmd5:', a, 'nodejs:', b)
         assert.strictEqual(a, b, `Failed to test MD5`)
 
-        a = md5(data, key), b = nodeHmacMD5(data, key)
+        console.time("hmacmd5 timer")
+        a = md5(data, key)
+        console.timeEnd("hmacmd5 timer")
+        b = nodeHmacMD5(data, key)
         console.log('hmacmd5: tinyhmacmd5:', a, 'nodejs:', b)
         assert.strictEqual(a, b, `Failed to test HMAC-MD5`)
 
