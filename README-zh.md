@@ -10,10 +10,10 @@
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 
+**在线演示**：https://bddjr.github.io/tinyhmacmd5/
+
 `tinyhmacmd5` 并不是单纯追求“越小越好”。  
 它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，最终体积不是理论上最小的。
-
-**在线演示**：https://bddjr.github.io/tinyhmacmd5/
 
 如果你需要基于 ECMAScript 2026 的更小实现，请参阅 [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) 分支。
 

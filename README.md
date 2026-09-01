@@ -10,11 +10,11 @@ A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](b
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
 - **0 dependencies**
 
+**Live demo**: https://bddjr.github.io/tinyhmacmd5/
+
 `tinyhmacmd5` does not simply aim for the smallest possible size.  
 Its goal is to balance code size and runtime performance, so some performance-oriented implementations are intentionally retained.  
 As a result, the final size is not the smallest theoretically achievable.
-
-**Live demo**: https://bddjr.github.io/tinyhmacmd5/
 
 If you need a smaller implementation that targets ECMAScript 2026, see the [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) branch.
 
