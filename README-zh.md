@@ -15,6 +15,8 @@
 
 **在线演示**：https://bddjr.github.io/tinyhmacmd5/
 
+如果你需要基于 ECMAScript 2026 的更小实现，请参阅 [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) 分支。
+
 > [!WARNING]  
 > MD5 在密码学上已被攻破，对于安全敏感的应用而言并不安全。  
 > 请勿依赖它进行密码哈希、数字签名或证书验证。

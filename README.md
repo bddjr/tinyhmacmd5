@@ -16,6 +16,8 @@ As a result, the final size is not the smallest theoretically achievable.
 
 **Live demo**: https://bddjr.github.io/tinyhmacmd5/
 
+If you need a smaller implementation that targets ECMAScript 2026, see the [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) branch.
+
 > [!WARNING]  
 > MD5 is cryptographically broken and unsafe for security-sensitive applications.  
 > Do not rely on it for password hashing, digital signatures, or certificate verification.
@@ -23,7 +25,6 @@ As a result, the final size is not the smallest theoretically achievable.
 ## Setup
 
 ### npm
-
 
 ```
 npm i tinyhmacmd5
