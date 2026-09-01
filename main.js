@@ -128,10 +128,7 @@ let inputToWords = (
 var md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
-    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(hasKey) * i)
-
-  /** @type {*} */
-  var temp = []
+    , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
 
   /** @type {*} */
   var out = raw ? new Uint8Array(i) : ''
@@ -139,19 +136,20 @@ var md5 = (data, key, raw) => {
   if (hasKey) {
     // HMAC
     let [bkey, keyByteLen] = inputToWords(key, 0)
+      , j = i
+      , ipad = []
     if (keyByteLen > 64) {
       bkey = wordsMD5(bkey, keyByteLen)
     }
-    for (; i;) {
+    for (; j;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
-      temp[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
+      ipad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
     }
-    i = 16
-    bdata = temp.concat(wordsMD5(bdata, 64 + dataByteLen))
-    dataByteLen = 80
+    bdata = ipad.concat(wordsMD5(bdata, 64 + temp))
+    temp = 80
   }
 
-  bdata = wordsMD5(bdata, dataByteLen)
+  bdata = wordsMD5(bdata, temp)
 
   // words to bytes or hex
   for (; i;
