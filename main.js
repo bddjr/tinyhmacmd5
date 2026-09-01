@@ -44,8 +44,8 @@ let wordsMD5 = (
   x[j - 1] = 0 | l / 2 ** 29;
   x[floor(l / 4)] |= 0x80 << (x[j - 2] = l << 3);
 
-  for (; i < x.length;) {
-    for (j = 0; j < 64;) {
+  for (; i < x.length; i += 16) {
+    for (j = 0; j < 64;
       output[oi &= 3] = 0 | (
         (
           t1 = 0 | (
@@ -55,7 +55,7 @@ let wordsMD5 = (
               t0 = output[++oi & 3],
               t1 = output[++oi & 3],
               t2 = output[++oi & 3],
-              (l = j >> 4 << 2)
+              l
                 ? l > 4
                   ? l > 8
                     ? t1 ^ (t0 | ~t2)  // Round 4: I
@@ -71,8 +71,10 @@ let wordsMD5 = (
           t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
         ) | t1 >>> 64 - t2
       ) + t0
+    ) {
+      l = j >> 4 << 2
     }
-    for (; oi; i += 4) {
+    for (; oi;) {
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
     }
   }
