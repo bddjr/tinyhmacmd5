@@ -2,7 +2,7 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **982 字节**。
+一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **950 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -176,7 +176,7 @@ md5(data)
 
 我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
 
-我实践证明了用极小的体积（982 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
+我实践证明了用极小的体积（950 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
 
 也许没有多少人在意这几 KB 的体积差距，但 `tinyhmacmd5` 的存在正是为了“探索未至之境”。
 
