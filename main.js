@@ -136,15 +136,15 @@ var md5 = (data, key, raw) => {
   if (hasKey) {
     // HMAC
     let [bkey, j] = inputToWords(key, 0)
-      , ipad = []
+      , opad = []
     if (j > 64) {
       bkey = wordsMD5(bkey, j)
     }
     for (j = i; j;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
-      ipad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
+      opad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
     }
-    bdata = ipad.concat(wordsMD5(bdata, 64 + temp))
+    bdata = opad.concat(wordsMD5(bdata, 64 + temp))
     temp = 80
   }
 
