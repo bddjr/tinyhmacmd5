@@ -99,7 +99,8 @@ function test(md5) {
 
 console.log('test browser.min.js');
 
-; (0, eval)(fs.readFileSync('browser.min.js').toString())
+const browser_min_js_Buffer = fs.readFileSync('browser.min.js');
+; (0, eval)(browser_min_js_Buffer.toString())
 if (typeof md5 != 'function')
     throw Error(`browser.min.js is invalid`)
 test(md5)
@@ -111,3 +112,5 @@ console.log();
 
 import md5 from "tinyhmacmd5";
 test(md5)
+
+console.log(browser_min_js_Buffer.byteLength, 'bytes')
