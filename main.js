@@ -135,13 +135,12 @@ var md5 = (data, key, raw) => {
 
   if (hasKey) {
     // HMAC
-    let [bkey, keyByteLen] = inputToWords(key, 0)
-      , j = i
+    let [bkey, j] = inputToWords(key, 0)
       , ipad = []
-    if (keyByteLen > 64) {
-      bkey = wordsMD5(bkey, keyByteLen)
+    if (j > 64) {
+      bkey = wordsMD5(bkey, j)
     }
-    for (; j;) {
+    for (j = i; j;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
       ipad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
     }
