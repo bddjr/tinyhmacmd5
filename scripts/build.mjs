@@ -13,6 +13,8 @@ const result = minify_sync(src, {
     sourceMap: false,
 })
 
-let dst = result.code
+let dst = Buffer.from(result.code)
+
+console.log(dst.byteLength, 'bytes')
 
 fs.writeFileSync('browser.min.js', dst)
