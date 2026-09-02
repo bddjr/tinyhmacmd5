@@ -11,10 +11,6 @@ let $Int32Array = Int32Array
 /** MD5 constants cached in memory */
 let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
 
-/** @param {number} byteLen */
-// `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
-let wordsLen = (byteLen) => floor((byteLen + 72) / 64) * 16
-
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
  *
@@ -100,7 +96,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(wordsLen(j * 4 + byteLen)),
+  output = new $Int32Array(floor((j * 4 + byteLen + 72) / 64) * 16),
   i = 0,
 ) => {
   for (; i < byteLen;) {
