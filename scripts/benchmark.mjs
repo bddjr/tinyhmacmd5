@@ -6,9 +6,9 @@ import crypto from 'crypto';
 import { performance } from 'perf_hooks';
 
 console.log('Generating 100MB string data (this might take a moment)...');
-const buffer = crypto.randomBytes(50 * 1024 * 1024); // 50MB bytes -> 100MB hex string
+const buffer = crypto.randomBytes(50 * 1024 * 1024); // 50MiB bytes -> 100MiB hex string
 const data = buffer.toString('hex');
-console.log(`Data length: ${data.length} chars (~100MB)`);
+console.log(`Data length: ${data.length} chars (100MiB)`);
 console.log('--------------------------------------------------');
 
 const pad = (str) => str.padEnd(15, ' ');

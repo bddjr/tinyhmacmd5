@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import assert from 'node:assert'
 
 console.log()
-console.log('--- Pure 513MB Test (No prior small tests) ---');
+console.log('--- Pure 513MiB Test (No prior small tests) ---');
 
 const data = crypto.randomBytes(513 * 1024 * 1024);
 

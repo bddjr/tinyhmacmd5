@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **982 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **995 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -171,21 +171,21 @@ pnpm benchmark
 
 ```
 Generating 100MB string data (this might take a moment)...
-Data length: 104857600 chars (~100MB)
+Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 958.24 ms
-js-md5          : 140.88 ms
-blueimp-md5     : 4028.38 ms
-crypto-js       : 1690.20 ms
-native crypto   : 136.84 ms
+tinyhmacmd5     : 764.26 ms
+js-md5          : 136.74 ms
+blueimp-md5     : 4041.79 ms
+crypto-js       : 1631.91 ms
+native crypto   : 137.04 ms
 --------------------------------------------------
 ✅ All pure JS implementations match native crypto result.
 
---- Pure 513MB Test (No prior small tests) ---
-tinyhmacmd5 MD5 timer: 4.665s
-node:crypto MD5 timer: 575.891ms
-tinyhmacmd5 HMAC-MD5 timer: 4.641s
-node:crypto HMAC-MD5 timer: 577.77ms
+--- Pure 513MiB Test (No prior small tests) ---
+tinyhmacmd5 MD5 timer: 3.651s
+node:crypto MD5 timer: 572.225ms
+tinyhmacmd5 HMAC-MD5 timer: 3.650s
+node:crypto HMAC-MD5 timer: 574.613ms
 ```
 
 ---
@@ -206,7 +206,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (982 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (995 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 

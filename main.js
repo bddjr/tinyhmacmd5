@@ -45,34 +45,34 @@ let wordsMD5 = (
   x[floor(l / 4)] |= 0x80 << (x[j - 2] = l << 3);
 
   for (; i < x.length; i += 16) {
-    for (j = 0; j < 64;
-      output[oi &= 3] = 0 | (
-        (
-          t1 = 0 | (
-            output[oi] +
-            K[j] +
-            (
-              t0 = output[++oi & 3],
-              t1 = output[++oi & 3],
-              t2 = output[++oi & 3],
-              l
-                ? l > 4
-                  ? l > 8
-                    ? t1 ^ (t0 | ~t2)  // Round 4: I
-                    : t0 ^ t1 ^ t2     // Round 3: H
-                  : t0 & t2 | t1 & ~t2 // Round 2: G
-                : t0 & t1 | ~t0 & t2   // Round 1: F
-            ) +
-            (
-              0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
+    for (l = 0; l < 16; l += 4) {
+      for (j = 0; j < 16;) {
+        output[oi &= 3] = 0 | (
+          (
+            t1 = 0 | (
+              output[oi] +
+              K[l * 4 | j] +
+              (
+                t0 = output[++oi & 3],
+                t1 = output[++oi & 3],
+                t2 = output[++oi & 3],
+                l
+                  ? l > 4
+                    ? l > 8
+                      ? t1 ^ (t0 | ~t2)  // Round 4: I
+                      : t0 ^ t1 ^ t2     // Round 3: H
+                    : t0 & t2 | t1 & ~t2 // Round 2: G
+                  : t0 & t1 | ~t0 & t2   // Round 1: F
+              ) +
+              (
+                0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
+              )
             )
-          )
-        ) << (
-          t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-        ) | t1 >>> 64 - t2
-      ) + t0
-    ) {
-      l = j >> 4 << 2
+          ) << (
+            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
+          ) | t1 >>> 64 - t2
+        ) + t0
+      }
     }
     for (; oi;) {
       oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
