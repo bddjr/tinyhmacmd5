@@ -163,6 +163,27 @@ Not recommended for use in environments that support `node:crypto`, as `node:cry
 
 ---
 
+## Benchmark
+
+```
+pnpm benchmark
+```
+
+```
+Generating 100MB string data (this might take a moment)...
+Data length: 104857600 chars (~100MB)
+--------------------------------------------------
+tinyhmacmd5     : 959.89 ms
+js-md5          : 137.67 ms
+blueimp-md5     : 3958.96 ms
+crypto-js       : 1644.87 ms
+native crypto   : 137.40 ms
+--------------------------------------------------
+✅ All pure JS implementations match native crypto result.
+```
+
+---
+
 ## Why I Made This Project
 
 I initially used HMAC-MD5 just to call a certain website's API. That site signs the request body with `crypto-js`'s HMAC-MD5 to make reverse engineering harder.

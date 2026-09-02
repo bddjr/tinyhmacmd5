@@ -162,6 +162,27 @@ md5(data)
 
 ---
 
+## Benchmark
+
+```
+pnpm benchmark
+```
+
+```
+Generating 100MB string data (this might take a moment)...
+Data length: 104857600 chars (~100MB)
+--------------------------------------------------
+tinyhmacmd5     : 959.89 ms
+js-md5          : 137.67 ms
+blueimp-md5     : 3958.96 ms
+crypto-js       : 1644.87 ms
+native crypto   : 137.40 ms
+--------------------------------------------------
+✅ All pure JS implementations match native crypto result.
+```
+
+---
+
 ## 为什么做这个项目
 
 我最初用 HMAC-MD5 只是为了请求某个网站的 API，那个网站用 `crypto-js` 的 HMAC-MD5 对请求 body 签名，以增加逆向破解难度。

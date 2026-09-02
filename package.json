@@ -22,6 +22,7 @@
     "test": "pnpm build && pnpm test:only",
     "test:only": "node scripts/test.mjs",
     "test:unchanged": "pnpm build:unchanged && pnpm test:only",
+    "benchmark": "node scripts/benchmark.mjs",
     "prepublishOnly": "pnpm test:unchanged"
   },
   "keywords": [
@@ -62,7 +63,10 @@
     "url": "git+https://github.com/bddjr/tinyhmacmd5.git"
   },
   "devDependencies": {
+    "blueimp-md5": "^2.19.0",
+    "crypto-js": "^4.2.0",
     "es-check": "^9.6.4",
+    "js-md5": "^0.9.2",
     "terser": "^5.49.0",
     "tinyhmacmd5": "link:",
     "typescript": "^7.0.2"
