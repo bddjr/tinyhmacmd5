@@ -2,14 +2,14 @@
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
-/** @type {number[]} MD5 constants cached in memory */
-let K = []
-
-let i = 0
-
 let $Math = Math
 
 let floor = $Math.floor
+
+let $Int32Array = Int32Array
+
+/** MD5 constants cached in memory */
+let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
 
 /** @param {number} byteLen */
 // `byteLen` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
@@ -18,13 +18,13 @@ let wordsLen = (byteLen) => floor((byteLen + 72) / 64) * 16
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
  *
- * @param {Int32Array | number[]} x Array of little-endian words
+ * @param {Int32Array<ArrayBuffer>} x little-endian words
  * @param {number} l Byte length
  * 
  * @param {number} [t2]
  * @param {number} [oi]
  * 
- * @returns {number[]} MD5 Array
+ * @returns {Int32Array<ArrayBuffer>} MD5 Array
  */
 let wordsMD5 = (
   x,
@@ -36,8 +36,8 @@ let wordsMD5 = (
   t1 = 271733878,
   t2,
   oi,
-  output = [t0, ~t1, ~t0, t1],
-  oldOutput = [...output],
+  output = $Int32Array.of(t0, ~t1, ~t0, t1),
+  oldOutput = new $Int32Array(output),
 ) => {
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
@@ -64,9 +64,7 @@ let wordsMD5 = (
                     : t0 & t2 | t1 & ~t2 // Round 2: G
                   : t0 & t1 | ~t0 & t2   // Round 1: F
               ) +
-              (
-                0 | x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
-              )
+              x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
             )
           ) << (
             t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
@@ -87,7 +85,7 @@ let wordsMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length
  * 
- * @returns {[Int32Array<ArrayBuffer> | number[], number]}
+ * @returns {[Int32Array<ArrayBuffer>, number]}
  */
 let inputToWords = (
   input,
@@ -100,7 +98,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new Int32Array(wordsLen(j * 4 + byteLen)),
+  output = new $Int32Array(wordsLen(j * 4 + byteLen)),
   i = 0,
 ) => {
   for (; i < byteLen;) {
@@ -136,7 +134,7 @@ var md5 = (data, key, raw) => {
   if (hasKey) {
     // HMAC
     let [bkey, j] = inputToWords(key, 0)
-      , opad = []
+      , opad = new $Int32Array(32)
     if (j > 64) {
       bkey = wordsMD5(bkey, j)
     }
@@ -144,7 +142,8 @@ var md5 = (data, key, raw) => {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
       opad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
     }
-    bdata = opad.concat(wordsMD5(bdata, 64 + temp))
+    opad.set(wordsMD5(bdata, 64 + temp), 16)
+    bdata = opad
     temp = 80
   }
 
@@ -160,10 +159,6 @@ var md5 = (data, key, raw) => {
   }
 
   return out
-}
-
-for (; i < 64;) {
-  K[i] = 0 | 2 ** 32 * $Math.abs($Math.sin(++i))
 }
 
 export default md5
