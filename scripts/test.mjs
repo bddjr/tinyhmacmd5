@@ -5,7 +5,7 @@ import assert from 'node:assert'
 /**
  * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
  */
-const nodeMD5 = (data) => crypto.createHash('md5').update(data).digest('hex')
+const nodeMD5 = (data) => crypto.hash('md5', data, 'hex')
 
 /**
  * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
@@ -13,7 +13,6 @@ const nodeMD5 = (data) => crypto.createHash('md5').update(data).digest('hex')
  */
 const nodeHmacMD5 = (data, key) => crypto.createHmac('md5', key).update(data).digest('hex')
 
-let test513Once = true
 
 /**
  * @param {typeof import("tinyhmacmd5").default} md5
@@ -87,12 +86,6 @@ function test(md5) {
     )
     console.log()
 
-    // 513 MiB
-    if (test513Once) {
-        test513Once = false
-        test(crypto.randomBytes(513 * 1024 * 1024), crypto.randomBytes(16))
-    }
-
     console.log('ok')
     console.log()
 }
@@ -104,13 +97,13 @@ const browser_min_js_Buffer = fs.readFileSync('browser.min.js');
 if (typeof md5 != 'function')
     throw Error(`browser.min.js is invalid`)
 test(md5)
-delete global.md5
+// delete global.md5
 
 console.log('=======================');
 console.log('test main.js');
 console.log();
 
-import md5 from "tinyhmacmd5";
-test(md5)
+import md5_main from "tinyhmacmd5";
+test(md5_main)
 
 console.log(browser_min_js_Buffer.byteLength, 'bytes')

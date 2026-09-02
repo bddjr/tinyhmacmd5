@@ -173,13 +173,19 @@ pnpm benchmark
 Generating 100MB string data (this might take a moment)...
 Data length: 104857600 chars (~100MB)
 --------------------------------------------------
-tinyhmacmd5     : 959.89 ms
-js-md5          : 137.67 ms
-blueimp-md5     : 3958.96 ms
-crypto-js       : 1644.87 ms
-native crypto   : 137.40 ms
+tinyhmacmd5     : 958.24 ms
+js-md5          : 140.88 ms
+blueimp-md5     : 4028.38 ms
+crypto-js       : 1690.20 ms
+native crypto   : 136.84 ms
 --------------------------------------------------
 ✅ All pure JS implementations match native crypto result.
+
+--- Pure 513MB Test (No prior small tests) ---
+tinyhmacmd5 MD5 timer: 4.665s
+node:crypto MD5 timer: 575.891ms
+tinyhmacmd5 HMAC-MD5 timer: 4.641s
+node:crypto HMAC-MD5 timer: 577.77ms
 ```
 
 ---

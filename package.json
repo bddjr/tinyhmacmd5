@@ -20,9 +20,9 @@
     "build": "tsc && node scripts/build.mjs && es-check es2016 --module --checkFeatures main.js browser.min.js",
     "build:unchanged": "node scripts/build-unchanged.mjs",
     "test": "pnpm build && pnpm test:only",
-    "test:only": "node scripts/test.mjs",
+    "test:only": "node scripts/test.mjs && node scripts/test-513MiB.mjs",
     "test:unchanged": "pnpm build:unchanged && pnpm test:only",
-    "benchmark": "node scripts/benchmark.mjs",
+    "benchmark": "node scripts/benchmark.mjs && node scripts/test-513MiB.mjs",
     "prepublishOnly": "pnpm test:unchanged"
   },
   "keywords": [
