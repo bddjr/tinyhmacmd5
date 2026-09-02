@@ -1,4 +1,4 @@
-import tiny from '../main.js';
+import tiny from 'tinyhmacmd5';
 import blueimp from 'blueimp-md5';
 import CryptoJS from 'crypto-js';
 import jsmd5 from 'js-md5';
