@@ -140,7 +140,7 @@ var md5 = (data, key, raw) => {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
       opad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
     }
-    opad.set(wordsMD5(bdata, 64 + temp), 16)
+    opad.set(wordsMD5(bdata, 64 + temp), i)
     bdata = opad
     temp = 80
   }
