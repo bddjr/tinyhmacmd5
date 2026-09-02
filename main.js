@@ -21,6 +21,7 @@ let wordsLen = (byteLen) => floor((byteLen + 72) / 64) * 16
  * @param {Int32Array<ArrayBuffer>} x little-endian words
  * @param {number} l Byte length
  * 
+ * @param {number} [j]
  * @param {number} [t2]
  * @param {number} [oi]
  * 
@@ -31,25 +32,26 @@ let wordsMD5 = (
   l,
   // var:
   i = 0,
-  j = wordsLen(l),
+  j,
   t0 = 1732584193,
   t1 = 271733878,
   t2,
   oi,
+  xLen = x.length,
   output = $Int32Array.of(t0, ~t1, ~t0, t1),
   oldOutput = new $Int32Array(output),
 ) => {
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
-  x[j - 1] = 0 | l / 2 ** 29;
-  x[floor(l / 4)] |= 0x80 << (x[j - 2] = l << 3);
+  x[xLen - 1] = l / 2 ** 29;
+  x[floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
 
-  for (; i < x.length; i += 16) {
+  for (; i < xLen; i += 16) {
     for (l = 0; l < 16; l += 4) {
       for (j = 0; j < 16;) {
-        output[oi &= 3] = 0 | (
+        output[oi &= 3] = (
           (
-            t1 = 0 | (
+            t1 = (
               output[oi] +
               K[l * 4 | j] +
               (
@@ -73,7 +75,7 @@ let wordsMD5 = (
       }
     }
     for (; oi;) {
-      oldOutput[--oi] = output[oi] = 0 | oldOutput[oi] + output[oi]
+      oldOutput[--oi] = output[oi] += oldOutput[oi]
     }
   }
   return output
