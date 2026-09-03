@@ -172,19 +172,19 @@ pnpm benchmark
 ```
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 648.83 ms
-js-md5          : 130.40 ms
-blueimp-md5     : 3867.11 ms
-crypto-js       : 1560.58 ms
-native crypto   : 129.38 ms
+tinyhmacmd5     : 643.28 ms
+js-md5          : 130.90 ms
+blueimp-md5     : 3857.11 ms
+crypto-js       : 1571.68 ms
+native crypto   : 131.45 ms
 --------------------------------------------------
 ✅ All pure JS implementations match native crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 3.206s
-node:crypto HMAC-MD5 timer: 550.62ms
-tinyhmacmd5 MD5 timer: 3.194s
-node:crypto MD5 timer: 552.403ms
+tinyhmacmd5 HMAC-MD5 timer: 3.220s
+node:crypto HMAC-MD5 timer: 551.014ms
+tinyhmacmd5 MD5 timer: 3.178s
+node:crypto MD5 timer: 553.307ms
 ```
 
 CPU: i5-10600KF  

@@ -49,7 +49,7 @@ let wordsMD5 = (
           (
             t1 = (
               output[oi] +
-              K[l * 4 | j] +
+              K[l * 4 + j] +
               (
                 t0 = output[++oi & 3],
                 t1 = output[++oi & 3],
