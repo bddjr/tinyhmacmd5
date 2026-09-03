@@ -186,6 +186,10 @@ tinyhmacmd5 MD5 timer: 3.365s
 node:crypto MD5 timer: 553.953ms
 ```
 
+CPU: i5-10600KF  
+DRAM: 64G DDR4 3333MT/s  
+OS: Windows 11 专业工作站版 25H2 26200.8737  
+
 ---
 
 ## 为什么做这个项目
