@@ -187,7 +187,7 @@ node:crypto MD5 timer: 552.403ms
 ```
 
 CPU: i5-10600KF  
-DRAM: 64G DDR4 3333MT/s  
+DRAM: 64GiB DDR4 3333MT/s  
 OS: Windows 11 专业工作站版 25H2 26200.8737  
 Node.js: v26.8.1
 
