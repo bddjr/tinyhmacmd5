@@ -2,7 +2,7 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **987 字节**。
+一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **985 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -171,19 +171,19 @@ pnpm benchmark
 ```
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 643.28 ms
-js-md5          : 130.90 ms
-blueimp-md5     : 3857.11 ms
-crypto-js       : 1571.68 ms
-native crypto   : 131.45 ms
+tinyhmacmd5     : 649.73 ms
+js-md5          : 131.21 ms
+blueimp-md5     : 3891.47 ms
+crypto-js       : 1573.89 ms
+native crypto   : 132.45 ms
 --------------------------------------------------
 ✅ All pure JS implementations match native crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 3.220s
-node:crypto HMAC-MD5 timer: 551.014ms
-tinyhmacmd5 MD5 timer: 3.178s
-node:crypto MD5 timer: 553.307ms
+tinyhmacmd5 HMAC-MD5 timer: 3.201s
+node:crypto HMAC-MD5 timer: 556.708ms
+tinyhmacmd5 MD5 timer: 3.194s
+node:crypto MD5 timer: 556.871ms
 ```
 
 CPU: i5-10600KF  
@@ -209,7 +209,7 @@ Node.js: v26.8.1
 
 我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
 
-我实践证明了用极小的体积（987 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
+我实践证明了用极小的体积（985 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
 
 也许没有多少人在意这几 KB 的体积差距，但 `tinyhmacmd5` 的存在正是为了“探索未至之境”。
 
