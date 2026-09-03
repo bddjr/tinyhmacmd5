@@ -150,6 +150,9 @@
         <p class="form-title">MD5 output hex:</p>
         <div class="output" id="output-md5">-</div>
 
+        <p class="form-title">MD5 timer:</p>
+        <div class="output" id="output-md5-timer">-</div>
+
         <p class="form-title">MD5 error:</p>
         <div class="output" id="output-md5-error">-</div>
 
@@ -176,6 +179,9 @@
         <p class="form-title">HMAD-MD5 output hex:</p>
         <div class="output" id="output-hmac">-</div>
 
+        <p class="form-title">MD5 timer:</p>
+        <div class="output" id="output-hmac-timer">-</div>
+
         <p class="form-title">HMAD-MD5 error:</p>
         <div class="output" id="output-hmac-error">-</div>
     </div>
@@ -200,22 +206,28 @@
             /** @type {HTMLDivElement} */
             const elemOutputMD5 = document.getElementById("output-md5")
             /** @type {HTMLDivElement} */
+            const elemOutputMD5Timer = document.getElementById("output-md5-timer")
+            /** @type {HTMLDivElement} */
             const elemOutputMD5Error = document.getElementById("output-md5-error")
 
             /** @type {HTMLButtonElement} */
-            const elemButtonHMAC = document.getElementById("btn-hmac")
+            const elemButtonHmac = document.getElementById("btn-hmac")
             /** @type {HTMLDivElement} */
-            const elemOutputHMAC = document.getElementById("output-hmac")
+            const elemOutputHmac = document.getElementById("output-hmac")
             /** @type {HTMLDivElement} */
-            const elemOutputHMACError = document.getElementById("output-hmac-error")
+            const elemOutputHmacTimer = document.getElementById("output-hmac-timer")
+            /** @type {HTMLDivElement} */
+            const elemOutputHmacError = document.getElementById("output-hmac-error")
 
             const clearMD5 = () => {
                 elemOutputMD5.innerText = '-'
+                elemOutputMD5Timer.innerText = '-'
                 elemOutputMD5Error.innerText = '-'
             }
             const clearHMAC = () => {
-                elemOutputHMAC.innerText = '-'
-                elemOutputHMACError.innerText = '-'
+                elemOutputHmac.innerText = '-'
+                elemOutputHmacTimer.innerText = '-'
+                elemOutputHmacError.innerText = '-'
             }
             const clear = () => {
                 clearMD5()
@@ -230,13 +242,29 @@
             elemInputKeyText.oninput = clearHMAC
             elemInputKeyFile.oninput = clearHMAC
 
-            const readFileToBytes = (file) => new Promise((resolve, reject) => {
-                const fr = new FileReader
-                fr.onload = () => resolve(new Uint8Array(fr.result))
-                fr.onerror = () => reject(fr.error)
-                fr.readAsArrayBuffer(file)
-            })
+            /** 
+             * @param {File} file
+             * @returns {Promise<Uint8Array<ArrayBuffer>>}
+             */
+            const readFileToBytes = async (file) => {
+                if (file.bytes)
+                    return file.bytes();
+                if (file.arrayBuffer)
+                    return new Uint8Array(await file.arrayBuffer());
+                return new Promise((resolve, reject) => {
+                    const fr = new FileReader
+                    fr.onload = () => resolve(new Uint8Array(fr.result))
+                    fr.onerror = () => reject(fr.error)
+                    fr.readAsArrayBuffer(file)
+                })
+            }
 
+            /**
+             * @param {HTMLFormElement} elemInputType
+             * @param {HTMLInputElement} elemInputText
+             * @param {HTMLInputElement} elemInputFile
+             * @returns {Promise<Uint8Array<ArrayBuffer>>}
+             */
             const getInputValue = async (elemInputType, elemInputText, elemInputFile) => {
                 const inputType = elemInputType.input.value;
                 if (inputType === 'text') {
@@ -255,7 +283,11 @@
                 clearMD5()
                 try {
                     const data = await getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile)
-                    elemOutputMD5.innerText = md5(data)
+                    const startTime = performance.now();
+                    const out = md5(data)
+                    const endTime = performance.now();
+                    elemOutputMD5.innerText = out
+                    elemOutputMD5Timer.innerText = `${(endTime - startTime).toFixed(2)} ms`
                 } catch (e) {
                     console.error(e)
                     elemOutputMD5Error.innerText = e
@@ -264,22 +296,26 @@
             }
             elemButtonMD5.disabled = false
 
-            elemButtonHMAC.onclick = async () => {
-                elemButtonHMAC.disabled = true
+            elemButtonHmac.onclick = async () => {
+                elemButtonHmac.disabled = true
                 clearHMAC()
                 try {
                     const [data, key] = await Promise.all([
                         getInputValue(elemInputDataType, elemInputDataText, elemInputDataFile),
                         getInputValue(elemInputKeyType, elemInputKeyText, elemInputKeyFile)
                     ])
-                    elemOutputHMAC.innerText = md5(data, key)
+                    const startTime = performance.now();
+                    const out = md5(data, key)
+                    const endTime = performance.now();
+                    elemOutputHmac.innerText = out
+                    elemOutputHmacTimer.innerText = `${(endTime - startTime).toFixed(2)} ms`
                 } catch (e) {
                     console.error(e)
-                    elemOutputHMACError.innerText = e
+                    elemOutputHmacError.innerText = e
                 }
-                elemButtonHMAC.disabled = false
+                elemButtonHmac.disabled = false
             }
-            elemButtonHMAC.disabled = false
+            elemButtonHmac.disabled = false
         }
     </script>
 </body>
