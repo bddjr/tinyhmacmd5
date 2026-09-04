@@ -85,7 +85,7 @@ let wordsMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length (0 or 16)
  * 
- * @param {*} [i]
+ * @param {number} [i]
  * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
@@ -106,7 +106,9 @@ let inputToWords = (
 ) => {
   // (fast) little-endian
   output[0] = /**@type{*}*/(!!byteLen)
-  i = outputBytes[0] && outputBytes.set(input, j * 4)
+  outputBytes[0]
+    ? outputBytes.set(input, j * 4)
+    : output[0] = i = 0
   // (slow) big-endian
   for (; i < byteLen; i & 3 || j++) {
     output[j] |= input[i] << 8 * i++
