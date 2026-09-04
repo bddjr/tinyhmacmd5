@@ -83,7 +83,7 @@ let wordsMD5 = (
  * Convert bytes to an array of little-endian words
  *
  * @param {*} input
- * @param {number} j pad int32 length
+ * @param {number} j pad int32 length (0 or 16)
  * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
@@ -98,7 +98,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(floor((j * 4 + byteLen + 72) / 64) * 16),
+  output = new $Int32Array(j + floor((byteLen + 72) / 64) * 16),
   i = 0,
 ) => {
   for (; i < byteLen;) {
