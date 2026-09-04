@@ -6,6 +6,8 @@ let $Math = Math
 
 let $Int32Array = Int32Array
 
+let $Uint8Array = Uint8Array
+
 /** MD5 constants cached in memory */
 let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
 
@@ -83,6 +85,8 @@ let wordsMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length (0 or 16)
  * 
+ * @param {*} [i]
+ * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
 let inputToWords = (
@@ -97,15 +101,15 @@ let inputToWords = (
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
   output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
-  i = 0,
+  outputBytes = new $Uint8Array(output.buffer),
+  i,
 ) => {
-  for (; i < byteLen;) {
-    output[j++] = (
-      input[i++] |
-      input[i++] << 8 |
-      input[i++] << 16 |
-      input[i++] << 24
-    )
+  // (fast) little-endian
+  output[0] = /**@type{*}*/(!!byteLen)
+  i = outputBytes[0] && outputBytes.set(input, j * 4)
+  // (slow) big-endian
+  for (; i < byteLen; i & 3 || j++) {
+    output[j] |= input[i] << 8 * i++
   }
   return [output, byteLen]
 }
@@ -127,7 +131,7 @@ var md5 = (data, key, raw) => {
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
 
   /** @type {*} */
-  var out = raw ? new Uint8Array(i) : ''
+  var out = raw ? new $Uint8Array(i) : ''
 
   if (hasKey) {
     // HMAC
