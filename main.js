@@ -4,8 +4,6 @@
 
 let $Math = Math
 
-let floor = $Math.floor
-
 let $Int32Array = Int32Array
 
 /** MD5 constants cached in memory */
@@ -40,7 +38,7 @@ let wordsMD5 = (
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[xLen - 1] = l / 2 ** 29;
-  x[floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
+  x[$Math.floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
 
   for (; i < xLen; i += 16) {
     for (l = 0; l < 16; l += 4) {
@@ -98,7 +96,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(j + floor((byteLen + 72) / 64) * 16),
+  output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
   i = 0,
 ) => {
   for (; i < byteLen;) {
