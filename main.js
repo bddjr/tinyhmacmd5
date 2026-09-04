@@ -4,8 +4,6 @@
 
 let $Math = Math
 
-let floor = $Math.floor
-
 let $Int32Array = Int32Array
 
 /** MD5 constants cached in memory */
@@ -40,7 +38,7 @@ let wordsMD5 = (
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
   x[xLen - 1] = l / 2 ** 29;
-  x[floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
+  x[$Math.floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
 
   for (; i < xLen; i += 16) {
     for (l = 0; l < 16; l += 4) {
@@ -49,24 +47,26 @@ let wordsMD5 = (
           (
             t1 = (
               output[oi] +
-              K[l * 4 | j] +
+              K[l * 4 + j] +
               (
                 t0 = output[++oi & 3],
                 t1 = output[++oi & 3],
                 t2 = output[++oi & 3],
                 l
-                  ? l > 4
-                    ? l > 8
-                      ? t1 ^ (t0 | ~t2)  // Round 4: I
-                      : t0 ^ t1 ^ t2     // Round 3: H
-                    : t0 & t2 | t1 & ~t2 // Round 2: G
-                  : t0 & t1 | ~t0 & t2   // Round 1: F
+                  ? t1 ^ (
+                    l > 4
+                      ? l > 8
+                        ? t0 | ~t2     // Round 4: I
+                        : t0 ^ t2      // Round 3: H
+                      : t2 & (t0 ^ t1) // Round 2: G
+                  )
+                  : t0 & t1 | ~t0 & t2 // Round 1: F
               ) +
               x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
             )
           ) << (
-            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | t1 >>> 64 - t2
+            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l) - 32
+          ) | t1 >>> 32 - t2
         ) + t0
       }
     }
@@ -81,7 +81,7 @@ let wordsMD5 = (
  * Convert bytes to an array of little-endian words
  *
  * @param {*} input
- * @param {number} j pad int32 length
+ * @param {number} j pad int32 length (0 or 16)
  * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
@@ -96,7 +96,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(floor((j * 4 + byteLen + 72) / 64) * 16),
+  output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
   i = 0,
 ) => {
   for (; i < byteLen;) {

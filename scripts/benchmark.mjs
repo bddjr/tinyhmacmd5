@@ -40,12 +40,12 @@ console.log(`${pad('crypto-js')} : ${(end - start).toFixed(2)} ms`);
 start = performance.now();
 let resNative = crypto.createHash('md5').update(data).digest('hex');
 end = performance.now();
-console.log(`${pad('native crypto')} : ${(end - start).toFixed(2)} ms`);
+console.log(`${pad('node:crypto')} : ${(end - start).toFixed(2)} ms`);
 
 console.log('--------------------------------------------------');
 // Verify correctness
 if (resTiny !== resNative || resJsMd5 !== resNative || resBlueimp !== resNative || resCryptoJs !== resNative) {
   console.log('⚠️ WARNING: Hash results do not match!');
 } else {
-  console.log('✅ All pure JS implementations match native crypto result.');
+  console.log('✅ All pure JS implementations match node:crypto result.');
 }

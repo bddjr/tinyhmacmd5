@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **952 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **950 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -168,24 +168,25 @@ pnpm benchmark
 ```
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 714.66 ms
-js-md5          : 133.33 ms
-blueimp-md5     : 3905.12 ms
-crypto-js       : 1576.83 ms
-native crypto   : 130.49 ms
+tinyhmacmd5     : 640.00 ms
+js-md5          : 131.10 ms
+blueimp-md5     : 3825.62 ms
+crypto-js       : 1572.49 ms
+node:crypto     : 130.07 ms
 --------------------------------------------------
-✅ All pure JS implementations match native crypto result.
+✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 3.389s
-node:crypto HMAC-MD5 timer: 559.555ms
-tinyhmacmd5 MD5 timer: 3.365s
-node:crypto MD5 timer: 553.953ms
+tinyhmacmd5 HMAC-MD5 timer: 3.184s
+node:crypto HMAC-MD5 timer: 552.938ms
+tinyhmacmd5 MD5 timer: 3.175s
+node:crypto MD5 timer: 553.263ms
 ```
 
 CPU: i5-10600KF  
-DRAM: 64G DDR4 3333MT/s  
+DRAM: 64GiB DDR4 3333MT/s  
 OS: Windows 11 Pro for Workstations 25H2 26200.8737  
+Node.js: v26.8.1
 
 ---
 
@@ -205,7 +206,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (952 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (950 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 
