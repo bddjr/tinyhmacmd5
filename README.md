@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **982 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **978 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -168,19 +168,19 @@ pnpm benchmark
 ```
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 568.29 ms
-js-md5          : 130.97 ms
-blueimp-md5     : 3835.78 ms
-crypto-js       : 1560.48 ms
-node:crypto     : 130.22 ms
+tinyhmacmd5     : 550.13 ms
+js-md5          : 130.48 ms
+blueimp-md5     : 3858.88 ms
+crypto-js       : 1551.66 ms
+node:crypto     : 130.66 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 2.789s
-node:crypto HMAC-MD5 timer: 552.479ms
-tinyhmacmd5 MD5 timer: 2.778s
-node:crypto MD5 timer: 550.663ms
+tinyhmacmd5 HMAC-MD5 timer: 2.721s
+node:crypto HMAC-MD5 timer: 552.994ms
+tinyhmacmd5 MD5 timer: 2.701s
+node:crypto MD5 timer: 550.724ms
 ```
 
 CPU: i5-10600KF  
@@ -206,7 +206,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (982 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (978 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 

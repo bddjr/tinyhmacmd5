@@ -44,16 +44,16 @@ let wordsMD5 = (
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`.
   // `l << 3` cannot be changed to `l * 8`, as it would trigger JIT deoptimization on large inputs.
   x[xLen - 1] = l / 2 ** 29;
-  x[$Math.floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
+  x[(l - l % 4) / 4] |= 0x80 << (x[xLen - 2] = l << 3);
 
   for (; i < xLen; i += 16) {
-    for (l = 0; l < 16; l += 4) {
-      for (j = 0; j < 16;) {
+    for (l = j = 0; l < 16; l += 4) {
+      for (; j < 4 * l + 16;) {
         output[oi &= 3] = (
           (
             t1 = (
               output[oi] +
-              K[l * 4 + j] +
+              K[j] +
               (
                 t0 = output[++oi & 3],
                 t1 = output[++oi & 3],
