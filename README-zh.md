@@ -2,7 +2,9 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：[`browser.min.js`](browser.min.js) 仅 **1007 字节**。
+一个精简且可靠的 HMAC-MD5 JavaScript 实现：
+
+[`browser.min.js`](browser.min.js) 仅 **1007 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
