@@ -104,14 +104,16 @@ let inputToWords = (
   outputBytes = new $Uint8Array(output.buffer),
   i,
 ) => {
-  // (fast) little-endian
-  output[0] = /**@type{*}*/(!!byteLen)
-  outputBytes[0]
-    ? outputBytes.set(input, j * 4)
-    : output[0] = i = 0
-  // (slow) big-endian
-  for (; i < byteLen; i & 3 || j++) {
-    output[j] |= input[i] << 8 * i++
+  if (byteLen) {
+    // (fast) little-endian
+    output[0] = 1
+    outputBytes[0]
+      ? outputBytes.set(input, j * 4)
+      : output[0] = i = 0
+    // (slow) big-endian
+    for (; i < byteLen; i & 3 || j++) {
+      output[j] |= input[i] << 8 * i++
+    }
   }
   return [output, byteLen]
 }
