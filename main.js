@@ -12,7 +12,7 @@ let $Uint8Array = Uint8Array
 let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
 
 /** is little-endian */
-let isLE = new $Uint8Array(K.buffer)[28] < 2
+let isLE = new $Uint8Array(K.buffer)[3] & 1
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -89,7 +89,7 @@ let wordsMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length (0 or 16)
  * 
- * @param {number} [i]
+ * @param {*} [i]
  * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
@@ -105,13 +105,9 @@ let inputToWords = (
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
   output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
-  outputBytes = new $Uint8Array(output.buffer),
-  i,
-) => {
   // (fast) little-endian
-  isLE
-    ? outputBytes.set(input, j * 4)
-    : i = 0
+  i = isLE && new $Uint8Array(output.buffer, j * 4).set(input),
+) => {
   // (slow) big-endian
   for (; i < byteLen; ++i & 3 || j++) {
     output[j] |= input[i] << 8 * i
