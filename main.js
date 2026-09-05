@@ -41,7 +41,8 @@ let wordsMD5 = (
   oldOutput = new $Int32Array(output),
 ) => {
   // append padding
-  // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
+  // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`.
+  // `l << 3` cannot be changed to `l * 8`, as it would trigger JIT deoptimization on large inputs.
   x[xLen - 1] = l / 2 ** 29;
   x[$Math.floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
 
