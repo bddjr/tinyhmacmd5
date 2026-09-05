@@ -96,6 +96,7 @@ let inputToWords = (
   j,
   // var:
   byteLen = (
+    // Don't replace the type check below with something like `input.big`; it's unreliable.
     typeof input == 'string'
       ? input = new TextEncoder().encode(input)
       : input
