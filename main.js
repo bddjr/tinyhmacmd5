@@ -57,15 +57,15 @@ let wordsMD5 = (
                 t0 = output[++oi & 3],
                 t1 = output[++oi & 3],
                 t2 = output[++oi & 3],
-                l
-                  ? t1 ^ (
-                    l > 4
-                      ? l > 8
-                        ? t0 | ~t2     // Round 4: I
-                        : t0 ^ t2      // Round 3: H
-                      : t2 & (t0 ^ t1) // Round 2: G
-                  )
-                  : t0 & t1 | ~t0 & t2 // Round 1: F
+                t1 ^ (
+                  l > 4
+                    ? l > 8
+                      ? t0 | ~t2        // Round 4: I
+                      : t0 ^ t2         // Round 3: H
+                    : l
+                      ? t2 & (t0 ^ t1)  // Round 2: G
+                      : ~t0 & (t1 ^ t2) // Round 1: F
+                )
               ) +
               x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
             )
