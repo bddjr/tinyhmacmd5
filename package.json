@@ -1,7 +1,7 @@
 {
   "name": "tinyhmacmd5",
-  "version": "0.4.0",
-  "description": "A tiny and reliable HMAC-MD5 implementation for JavaScript: browser.min.js is only 1021 bytes.",
+  "version": "0.4.1",
+  "description": "A tiny and reliable HMAC-MD5 implementation for JavaScript: browser.min.js is only 1016 bytes.",
   "author": "bddjr",
   "license": "MIT",
   "type": "module",
