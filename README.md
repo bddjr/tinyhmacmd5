@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **1010 bytes**.
+A tiny and reliable HMAC-MD5 implementation for JavaScript: [`browser.min.js`](browser.min.js) is only **1007 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -210,7 +210,7 @@ During the adaptation, I discovered that `blueimp-md5` did not correctly handle 
 
 I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
 
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (1010 bytes) while also improving reliability.
+I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (1007 bytes) while also improving reliability.
 
 Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
 
