@@ -6,8 +6,13 @@ let $Math = Math
 
 let $Int32Array = Int32Array
 
+let $Uint8Array = Uint8Array
+
 /** MD5 constants cached in memory */
 let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
+
+/** is little-endian */
+let isLE = new $Uint8Array(K.buffer)[28] < 2
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -36,7 +41,8 @@ let wordsMD5 = (
   oldOutput = new $Int32Array(output),
 ) => {
   // append padding
-  // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`
+  // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`.
+  // `l << 3` cannot be changed to `l * 8`, as it would trigger JIT deoptimization on large inputs.
   x[xLen - 1] = l / 2 ** 29;
   x[$Math.floor(l / 4)] |= 0x80 << (x[xLen - 2] = l << 3);
 
@@ -52,20 +58,20 @@ let wordsMD5 = (
                 t0 = output[++oi & 3],
                 t1 = output[++oi & 3],
                 t2 = output[++oi & 3],
-                l
-                  ? t1 ^ (
-                    l > 4
-                      ? l > 8
-                        ? t0 | ~t2     // Round 4: I
-                        : t0 ^ t2      // Round 3: H
-                      : t2 & (t0 ^ t1) // Round 2: G
-                  )
-                  : t0 & t1 | ~t0 & t2 // Round 1: F
+                t1 ^ (
+                  l > 4
+                    ? l > 8
+                      ? t0 | ~t2        // Round 4: I
+                      : t0 ^ t2         // Round 3: H
+                    : l
+                      ? t2 & (t0 ^ t1)  // Round 2: G
+                      : ~t0 & (t1 ^ t2) // Round 1: F
+                )
               ) +
               x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
             )
           ) << (
-            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l) - 32
+            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
           ) | t1 >>> 32 - t2
         ) + t0
       }
@@ -83,6 +89,8 @@ let wordsMD5 = (
  * @param {*} input
  * @param {number} j pad int32 length (0 or 16)
  * 
+ * @param {number} [i]
+ * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
 let inputToWords = (
@@ -97,15 +105,16 @@ let inputToWords = (
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
   output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
-  i = 0,
+  outputBytes = new $Uint8Array(output.buffer),
+  i,
 ) => {
-  for (; i < byteLen;) {
-    output[j++] = (
-      input[i++] |
-      input[i++] << 8 |
-      input[i++] << 16 |
-      input[i++] << 24
-    )
+  // (fast) little-endian
+  isLE
+    ? outputBytes.set(input, j * 4)
+    : i = 0
+  // (slow) big-endian
+  for (; i < byteLen; ++i & 3 || j++) {
+    output[j] |= input[i] << 8 * i
   }
   return [output, byteLen]
 }
@@ -127,7 +136,7 @@ var md5 = (data, key, raw) => {
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
 
   /** @type {*} */
-  var out = raw ? new Uint8Array(i) : ''
+  var out = raw ? new $Uint8Array(i) : ''
 
   if (hasKey) {
     // HMAC
