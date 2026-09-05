@@ -2,14 +2,12 @@
 
 // Adapted from https://github.com/blueimp/JavaScript-MD5
 
-let $Math = Math
-
 let $Int32Array = Int32Array
 
 let $Uint8Array = Uint8Array
 
 /** MD5 constants cached in memory */
-let K = new $Int32Array(64).map((v, i) => 2 ** 32 * $Math.abs($Math.sin(i + 1)))
+let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.abs(Math.sin(i + 1)))
 
 /** is little-endian */
 let isLE = new $Uint8Array(K.buffer)[3] & 1
@@ -104,7 +102,7 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(j + $Math.ceil((byteLen + 9) / 64) * 16),
+  output = new $Int32Array(j + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
   // (fast) little-endian
   i = isLE && new $Uint8Array(output.buffer, j * 4).set(input),
 ) => {
