@@ -2,7 +2,7 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny and reliable HMAC-MD5 implementation for JavaScript:
+A tiny, efficient and reliable HMAC-MD5 implementation for JavaScript.
 
 [`browser.min.js`](browser.min.js) is only **973 bytes**.
 

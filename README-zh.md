@@ -2,7 +2,7 @@
 
 # Tiny HMAC MD5
 
-一个精简且可靠的 HMAC-MD5 JavaScript 实现：
+精简、高效、可靠的 HMAC-MD5 JavaScript 实现。
 
 [`browser.min.js`](browser.min.js) 仅 **973 字节**。
 
