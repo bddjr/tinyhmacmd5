@@ -3,10 +3,7 @@ let $Int32Array = Int32Array
 let $Uint8Array = Uint8Array
 
 /** MD5 constants cached in memory */
-let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.abs(Math.sin(i + 1)))
-
-/** is little-endian */
-let isLE = new $Uint8Array(K.buffer)[3] & 1
+let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -66,7 +63,7 @@ let wordsMD5 = (
             )
           ) << (
             t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | t1 >>> 32 - t2
+          ) | t1 >>> 32 - t2 // Keep '32 - t2' so JS engines can recognize bit rotation (ROL/ROR).
         ) + t0
       }
     }
@@ -101,7 +98,7 @@ let inputToWords = (
   // so I replaced it with `Int32Array`.
   output = new $Int32Array(j + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
   // (fast) little-endian
-  i = isLE && new $Uint8Array(output.buffer, j * 4).set(input),
+  i = new $Uint8Array(K.buffer)[3] & 1 && new $Uint8Array(output.buffer, j * 4).set(input),
 ) => {
   // (slow) big-endian
   for (; i < byteLen; ++i & 3 || j++) {
@@ -122,6 +119,7 @@ let inputToWords = (
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
 let md5 = (data, key, raw) => {
+  // Do not use parameter defaults to declare variables in public functions.
   var i = 16
     , hasKey = key != null
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
