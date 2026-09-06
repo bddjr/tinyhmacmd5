@@ -4,7 +4,7 @@
 
 一个精简且可靠的 HMAC-MD5 JavaScript 实现：
 
-[`browser.min.js`](browser.min.js) 仅 **1007 字节**。
+[`browser.min.js`](browser.min.js) 仅 **979 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -14,14 +14,47 @@
 
 **在线演示**：https://bddjr.github.io/tinyhmacmd5/
 
-`tinyhmacmd5` 并不是单纯追求“越小越好”。  
-它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，最终体积不是理论上最小的。
-
 如果你需要基于 ECMAScript 2026 的更小实现，请参阅 [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) 分支。
 
 > [!WARNING]  
 > MD5 在密码学上已被攻破，对于安全敏感的应用而言并不安全。  
 > 请勿依赖它进行密码哈希、数字签名或证书验证。
+
+---
+
+## Benchmark
+
+```
+pnpm benchmark
+```
+
+```
+Data length: 104857600 chars (100MiB)
+--------------------------------------------------
+tinyhmacmd5     : 550.92 ms
+js-md5          : 128.96 ms
+blueimp-md5     : 3837.83 ms
+crypto-js       : 1562.08 ms
+node:crypto     : 129.08 ms
+--------------------------------------------------
+✅ All pure JS implementations match node:crypto result.
+
+--- Pure 513MiB Test (No prior small tests) ---
+tinyhmacmd5 HMAC-MD5 timer: 2.706s
+node:crypto HMAC-MD5 timer: 547.808ms
+tinyhmacmd5 MD5 timer: 2.693s
+node:crypto MD5 timer: 550.144ms
+```
+
+CPU: i5-10600KF  
+DRAM: 64GiB DDR4 3333MT/s  
+OS: Windows 11 专业工作站版 25H2 26200.8737  
+Node.js: v26.8.1
+
+`tinyhmacmd5` 并不是单纯追求“越小越好”。  
+它的目标是在代码体积和运行性能之间取得平衡，因此会主动保留一些对性能有帮助的实现，最终体积不是理论上最小的。
+
+---
 
 ## 安装
 
@@ -65,10 +98,6 @@ import md5 from "tinyhmacmd5";
 ---
 
 ## 示范
-
-> [!NOTE]  
-> 请确保输入类型符合 [`main.d.ts`](main.d.ts) 的定义。  
-> 无效的类型可能会返回错误的 MD5 哈希值。
 
 HMAC-MD5:
 
@@ -164,65 +193,9 @@ md5(data)
 
 ---
 
-## Benchmark
-
-```
-pnpm benchmark
-```
-
-```
-Data length: 104857600 chars (100MiB)
---------------------------------------------------
-tinyhmacmd5     : 550.92 ms
-js-md5          : 128.96 ms
-blueimp-md5     : 3837.83 ms
-crypto-js       : 1562.08 ms
-node:crypto     : 129.08 ms
---------------------------------------------------
-✅ All pure JS implementations match node:crypto result.
-
---- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 2.706s
-node:crypto HMAC-MD5 timer: 547.808ms
-tinyhmacmd5 MD5 timer: 2.693s
-node:crypto MD5 timer: 550.144ms
-```
-
-CPU: i5-10600KF  
-DRAM: 64GiB DDR4 3333MT/s  
-OS: Windows 11 专业工作站版 25H2 26200.8737  
-Node.js: v26.8.1
-
----
-
-## 为什么做这个项目
-
-我最初用 HMAC-MD5 只是为了请求某个网站的 API，那个网站用 `crypto-js` 的 HMAC-MD5 对请求 body 签名，以增加逆向破解难度。
-
-但我只需要 HMAC-MD5 ，我觉得依赖 `crypto-js` 太臃肿了，Web Crypto API 又不支持 HMAC-MD5 ，我不得不引入一个依赖。
-
-于是我找到了 `blueimp-md5` ，里面的 `md5.min.js` 只有 3750 字节，比 `js-md5` 还小。
-
-但我觉得 `blueimp-md5` 还是过于臃肿了，里面有一些完全没有必要的设计，它会反复解析字符串再生成新的字符串，非常浪费性能。
-
-于是，我决定改编它，使用更现代化的实现，把体积压得更小，这就是现在的 `tinyhmacmd5` 。
-
-在改编的过程中，我发现 `blueimp-md5` 在输入的 bit-length 超过 32 位时，没有正确处理 MD5 末尾 padding 中的 64 位长度字段，它只写入了低 32 位，忽略了高 32 位。我修复了这个 bug 。
-
-我还发现用 `Array` 处理长度超过 512 MiB 的输入可能会抛出 `RangeError`，所以我把它改成了 `Int32Array` 。
-
-我实践证明了用极小的体积（1007 字节）实现 HMAC-MD5 是可行的，而且能做到更可靠。
-
-也许没有多少人在意这几 KB 的体积差距，但 `tinyhmacmd5` 的存在正是为了“探索未至之境”。
-
-无敌实验！
-
----
-
 ## 许可证
 
-MIT 许可证  
-详见: [`LICENSE`](LICENSE)
+该项目使用 [Unlicense](https://unlicense.org) 发布到公共领域。
 
 ---
 

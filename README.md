@@ -4,7 +4,7 @@ English | [中文](README-zh.md)
 
 A tiny and reliable HMAC-MD5 implementation for JavaScript:
 
-[`browser.min.js`](browser.min.js) is only **1007 bytes**.
+[`browser.min.js`](browser.min.js) is only **979 bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -14,15 +14,48 @@ A tiny and reliable HMAC-MD5 implementation for JavaScript:
 
 **Live demo**: https://bddjr.github.io/tinyhmacmd5/
 
-`tinyhmacmd5` does not simply aim for the smallest possible size.  
-Its goal is to balance code size and runtime performance, so some performance-oriented implementations are intentionally retained.  
-As a result, the final size is not the smallest theoretically achievable.
-
 If you need a smaller implementation that targets ECMAScript 2026, see the [`es2026`](https://github.com/bddjr/tinyhmacmd5/tree/es2026) branch.
 
 > [!WARNING]  
 > MD5 is cryptographically broken and unsafe for security-sensitive applications.  
 > Do not rely on it for password hashing, digital signatures, or certificate verification.
+
+---
+
+## Benchmark
+
+```
+pnpm benchmark
+```
+
+```
+Data length: 104857600 chars (100MiB)
+--------------------------------------------------
+tinyhmacmd5     : 550.92 ms
+js-md5          : 128.96 ms
+blueimp-md5     : 3837.83 ms
+crypto-js       : 1562.08 ms
+node:crypto     : 129.08 ms
+--------------------------------------------------
+✅ All pure JS implementations match node:crypto result.
+
+--- Pure 513MiB Test (No prior small tests) ---
+tinyhmacmd5 HMAC-MD5 timer: 2.706s
+node:crypto HMAC-MD5 timer: 547.808ms
+tinyhmacmd5 MD5 timer: 2.693s
+node:crypto MD5 timer: 550.144ms
+```
+
+CPU: i5-10600KF  
+DRAM: 64GiB DDR4 3333MT/s  
+OS: Windows 11 Pro for Workstations 25H2 26200.8737  
+Node.js: v26.8.1
+
+`tinyhmacmd5` does not simply aim for the smallest possible size.  
+Its goal is to balance code size and runtime performance, so some performance-oriented implementations are intentionally retained.  
+As a result, the final size is not the smallest theoretically achievable.
+
+---
 
 ## Setup
 
@@ -66,10 +99,6 @@ It will define the `md5` function using `var`.
 ---
 
 ## Example
-
-> [!NOTE]  
-> Please ensure that the input type matches the definition in [`main.d.ts`](main.d.ts).  
-> Invalid types may return an incorrect MD5 hash.
 
 HMAC-MD5:
 
@@ -165,67 +194,9 @@ Not recommended for use in environments that support `node:crypto`, as `node:cry
 
 ---
 
-## Benchmark
-
-```
-pnpm benchmark
-```
-
-```
-Data length: 104857600 chars (100MiB)
---------------------------------------------------
-tinyhmacmd5     : 550.92 ms
-js-md5          : 128.96 ms
-blueimp-md5     : 3837.83 ms
-crypto-js       : 1562.08 ms
-node:crypto     : 129.08 ms
---------------------------------------------------
-✅ All pure JS implementations match node:crypto result.
-
---- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 2.706s
-node:crypto HMAC-MD5 timer: 547.808ms
-tinyhmacmd5 MD5 timer: 2.693s
-node:crypto MD5 timer: 550.144ms
-```
-
-CPU: i5-10600KF  
-DRAM: 64GiB DDR4 3333MT/s  
-OS: Windows 11 Pro for Workstations 25H2 26200.8737  
-Node.js: v26.8.1
-
----
-
-## Why I Made This Project
-
-I initially used HMAC-MD5 just to call a certain website's API. That site signs the request body with `crypto-js`'s HMAC-MD5 to make reverse engineering harder.
-
-But I only needed HMAC-MD5. Depending on `crypto-js` felt way too bloated. The Web Crypto API doesn't support HMAC-MD5, so I had no choice but to drag in a dependency.
-
-Then I found `blueimp-md5`. Its `md5.min.js` is only 3750 bytes, even smaller than `js-md5`.
-
-But I felt `blueimp-md5` was still far too bloated. It has some completely unnecessary design choices—it repeatedly parses strings and creates new ones, adding a lot of unnecessary overhead.
-
-So I decided to adapt it, use a more modern implementation, and shrink the size even further. That's how `tinyhmacmd5` was born.
-
-During the adaptation, I discovered that `blueimp-md5` did not correctly handle the 64-bit length field required by MD5 when the input bit-length exceeded 32 bits. It wrote only the low 32 bits and ignored the high 32 bits. I fixed this bug.
-
-I also found that using `Array` to process inputs over 512 MiB could throw a `RangeError`, so I replaced it with `Int32Array`.
-
-I demonstrated in practice that HMAC-MD5 can be implemented in an extremely small footprint (1007 bytes) while also improving reliability.
-
-Maybe not many people care about saving just a few KB, but `tinyhmacmd5` exists precisely to "explore the unknown".
-
-INVINCIBLE EXPERIMENT!
-
-[Read the original Chinese text](README-zh.md#为什么做这个项目)
-
----
-
 ## License
 
-The MIT License  
-See: [`LICENSE`](LICENSE)
+This project is released into the public domain under the [Unlicense](https://unlicense.org).
 
 ---
 

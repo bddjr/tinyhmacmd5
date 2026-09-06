@@ -1,10 +1,11 @@
 import fs from 'node:fs'
 import { minify_sync } from 'terser'
 
-let src = fs.readFileSync('main.js').toString()
-    .replace('*/', '*/{')
-    .replace(/export default .+/, '')
-    .concat('\n}')
+let src = '{' + (
+    fs.readFileSync('main.js').toString()
+        .replace('let md5 =', 'var md5 =')
+        .replace(/export default .+/, '')
+) + '}'
 
 const result = minify_sync(src, {
     format: {

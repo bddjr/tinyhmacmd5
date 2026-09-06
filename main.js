@@ -1,7 +1,3 @@
-/*! npmjs.com/tinyhmacmd5 */
-
-// Adapted from https://github.com/blueimp/JavaScript-MD5
-
 let $Int32Array = Int32Array
 
 let $Uint8Array = Uint8Array
@@ -125,7 +121,7 @@ let inputToWords = (
  * @param {boolean} [raw] If true, the hash is returned as raw bytes (Uint8Array); otherwise, as a hex string.
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
-var md5 = (data, key, raw) => {
+let md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
