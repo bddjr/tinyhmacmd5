@@ -4,7 +4,7 @@
 
 精简、高效、可靠的 HMAC-MD5 JavaScript 实现。
 
-[`browser.min.js`](browser.min.js) 仅 **973 字节**。
+[`browser.min.js`](browser.min.js) 仅 **957 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -29,19 +29,19 @@
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 550.55 ms
-js-md5          : 131.59 ms
-blueimp-md5     : 3828.14 ms
-crypto-js       : 1564.33 ms
-node:crypto     : 130.88 ms
+tinyhmacmd5     : 404.05 ms
+js-md5          : 129.01 ms
+blueimp-md5     : 3849.92 ms
+crypto-js       : 1564.91 ms
+node:crypto     : 130.70 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 2.716s
-node:crypto HMAC-MD5 timer: 550.705ms
-tinyhmacmd5 MD5 timer: 2.706s
-node:crypto MD5 timer: 555.484ms
+tinyhmacmd5 HMAC-MD5 timer: 1.957s
+node:crypto HMAC-MD5 timer: 556.388ms
+tinyhmacmd5 MD5 timer: 1.951s
+node:crypto MD5 timer: 548.397ms
 ```
 
 CPU: i5-10600KF  

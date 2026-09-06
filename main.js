@@ -11,10 +11,6 @@ let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
  * @param {Int32Array<ArrayBuffer>} x little-endian words
  * @param {number} l Byte length
  * 
- * @param {number} [j]
- * @param {number} [t2]
- * @param {number} [oi]
- * 
  * @returns {Int32Array<ArrayBuffer>} MD5 Array
  */
 let wordsMD5 = (
@@ -22,14 +18,10 @@ let wordsMD5 = (
   l,
   // var:
   i = 0,
-  j,
-  t0 = 1732584193,
-  t1 = 271733878,
-  t2,
-  oi,
+  j = 1732584193,
+  temp = 271733878,
+  output = $Int32Array.of(j, ~temp, ~j, temp),
   xLen = x.length,
-  output = $Int32Array.of(t0, ~t1, ~t0, t1),
-  oldOutput = new $Int32Array(output),
 ) => {
   // append padding
   // `l` may be >= 2**32, so cannot use `>>>` as a replacement for `floor`.
@@ -38,38 +30,37 @@ let wordsMD5 = (
   x[(l - l % 4) / 4] |= 0x80 << (x[xLen - 2] = l << 3);
 
   for (; i < xLen; i += 16) {
+    let { 0: a, 1: b, 2: c, 3: d } = output
     for (l = j = 0; l < 16; l += 4) {
       for (; j < 4 * l + 16;) {
-        output[oi &= 3] = (
-          (
-            t1 = (
-              output[oi] +
-              K[j] +
-              (
-                t0 = output[++oi & 3],
-                t1 = output[++oi & 3],
-                t2 = output[++oi & 3],
-                t1 ^ (
-                  l > 4
-                    ? l > 8
-                      ? t0 | ~t2        // Round 4: I
-                      : t0 ^ t2         // Round 3: H
-                    : l
-                      ? t2 & (t0 ^ t1)  // Round 2: G
-                      : ~t0 & (t1 ^ t2) // Round 1: F
-                )
-              ) +
-              x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
-            )
-          ) << (
-            t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | t1 >>> 32 - t2 // Keep '32 - t2' so JS engines can recognize bit rotation (ROL/ROR).
-        ) + t0
+        temp = (
+          a +
+          K[j] +
+          (c ^ (
+            l > 4
+              ? l > 8
+                ? b | ~d       // Round 4: I
+                : b ^ d        // Round 3: H
+              : l
+                ? d & (b ^ c)  // Round 2: G
+                : ~b & (c ^ d) // Round 1: F
+          )) +
+          x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
+        )
+        a = d
+        d = c
+        c = b
+        b = 0 | c + (
+          temp << (
+            b = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
+          ) | temp >>> 32 - b // Keep '32 - t2' so JS engines can recognize bit rotation (ROL/ROR).
+        )
       }
     }
-    for (; oi;) {
-      oldOutput[--oi] = output[oi] += oldOutput[oi]
-    }
+    output[0] += a
+    output[1] += b
+    output[2] += c
+    output[3] += d
   }
   return output
 }
