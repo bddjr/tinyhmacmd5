@@ -8,7 +8,7 @@
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
-- **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 2⁵³-1 (`Number.MAX_SAFE_INTEGER`) 。
+- **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 2⁵³-73
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
 - **0 依赖**
 
