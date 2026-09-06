@@ -53,7 +53,7 @@ let wordsMD5 = (
         b = 0 | c + (
           temp << (
             b = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | temp >>> 32 - b // Keep '32 - t2' so JS engines can recognize bit rotation (ROL/ROR).
+          ) | temp >>> 32 - b // Keep '32 - b' so JS engines can recognize bit rotation (ROL/ROR).
         )
       }
     }
