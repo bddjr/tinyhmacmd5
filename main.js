@@ -125,9 +125,7 @@ let md5 = (data, key, raw) => {
   var i = 16
     , hasKey = key != null
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
-
-  /** @type {*} */
-  var out = raw ? new $Uint8Array(i) : ''
+    , out = new $Uint8Array(i)
 
   if (hasKey) {
     // HMAC
@@ -148,15 +146,11 @@ let md5 = (data, key, raw) => {
   bdata = wordsMD5(bdata, temp)
 
   // words to bytes or hex
-  for (; i;
-    raw
-      ? out[i] = temp
-      : out = (temp >> 4 && '') + temp.toString(16) + out
-  ) {
-    temp = bdata[--i >> 2] >> i * 8 & 0xff
+  for (; i;) {
+    out[--i] = bdata[i >> 2] >> i * 8
   }
 
-  return out
+  return raw ? out : out.toHex()
 }
 
 export default md5
