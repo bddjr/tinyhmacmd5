@@ -32,7 +32,14 @@ let wordsMD5 = (
   for (; i < xLen; i += 16) {
     let { 0: a, 1: b, 2: c, 3: d } = output
     for (l = j = 0; l < 16; l += 4) {
-      for (; j < 4 * l + 16;) {
+      for (
+        ; j < 4 * l + 16
+        ; b = 0 | c + (
+          temp << (
+            b = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
+          ) | temp >>> 32 - b // Keep '32 - b' so JS engines can recognize bit rotation (ROL/ROR).
+        )
+      ) {
         temp = (
           a +
           K[j] +
@@ -50,11 +57,6 @@ let wordsMD5 = (
         a = d
         d = c
         c = b
-        b = 0 | c + (
-          temp << (
-            b = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | temp >>> 32 - b // Keep '32 - b' so JS engines can recognize bit rotation (ROL/ROR).
-        )
       }
     }
     output[0] += a

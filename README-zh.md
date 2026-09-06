@@ -4,7 +4,7 @@
 
 精简、高效、可靠的 HMAC-MD5 JavaScript 实现。
 
-[`browser.min.js`](browser.min.js) 仅 **957 字节**。
+[`browser.min.js`](browser.min.js) 仅 **956 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
