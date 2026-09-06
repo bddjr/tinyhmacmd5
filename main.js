@@ -63,7 +63,7 @@ let wordsMD5 = (
             )
           ) << (
             t2 = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | t1 >>> 32 - t2
+          ) | t1 >>> 32 - t2 // Keep '32 - t2' so JS engines can recognize bit rotation (ROL/ROR).
         ) + t0
       }
     }
