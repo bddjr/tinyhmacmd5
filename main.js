@@ -119,6 +119,7 @@ let inputToWords = (
  * @returns {string | Uint8Array<ArrayBuffer>} The MD5 (or HMAC‑MD5) digest, either as a hex string or a Uint8Array.
  */
 let md5 = (data, key, raw) => {
+  // Do not use parameter defaults to declare variables in public functions.
   var i = 16
     , hasKey = key != null
     , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
