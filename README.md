@@ -94,6 +94,12 @@ It will define the `md5` function using `var`.
 You can embed [`browser.min.js`](browser.min.js) directly into your script.  
 It will define the `md5` function using `var`.
 
+If you are concerned that others might not recognize what this is, you can add the following comment:
+
+```js
+// tinyhmacmd5 (The Unlicense)
+```
+
 ---
 
 ## Example

@@ -93,6 +93,12 @@ import md5 from "tinyhmacmd5";
 你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。  
 它将使用 `var` 定义 `md5` 函数。
 
+如果你担心别人认不出这是什么，你可以添加以下注释：
+
+```js
+// tinyhmacmd5 (The Unlicense)
+```
+
 ---
 
 ## 示范
