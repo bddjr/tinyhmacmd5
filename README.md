@@ -212,3 +212,9 @@ cd tinyhmacmd5
 pnpm i
 pnpm test
 ```
+
+---
+
+## 
+
+INVINCIBLE EXPERIMENT!
