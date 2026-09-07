@@ -19,8 +19,8 @@ let wordsMD5 = (
   // var:
   i = 0,
   j = 1732584193,
-  temp = 271733878,
-  output = $Int32Array.of(j, ~temp, ~j, temp),
+  cnt = 271733878,
+  output = $Int32Array.of(j, ~cnt, ~j, cnt),
   xLen = x.length,
 ) => {
   // append padding
@@ -34,29 +34,29 @@ let wordsMD5 = (
     for (l = j = 0; l < 16; l += 4) {
       for (
         ; j < 4 * l + 16
-        ; b = 0 | c + (
-          temp << (
-            b = "',16%).4$+07&*/5".charCodeAt(j++ & 3 | l)
-          ) | temp >>> 32 - b // Keep '32 - b' so JS engines can recognize bit rotation (ROL/ROR).
+        ; b = 0 | (
+          (
+            (a += (
+              K[j] +
+              (c ^ (
+                l > 4
+                  ? l > 8
+                    ? b | ~d       // Round 4: I
+                    : b ^ d        // Round 3: H
+                  : l
+                    ? d & (b ^ c)  // Round 2: G
+                    : ~b & (c ^ d) // Round 1: F
+              )) +
+              x[i + (j++ * (0x7351 >> l) + (0x0510 >> l) & 15)]
+            )) << cnt | a >>> 32 - cnt // Keep `32 -` so JS engines can recognize bit rotation (ROL/ROR).
+          ) + (
+            a = d,
+            d = c,
+            c = b
+          )
         )
       ) {
-        temp = (
-          a +
-          K[j] +
-          (c ^ (
-            l > 4
-              ? l > 8
-                ? b | ~d       // Round 4: I
-                : b ^ d        // Round 3: H
-              : l
-                ? d & (b ^ c)  // Round 2: G
-                : ~b & (c ^ d) // Round 1: F
-          )) +
-          x[i + (j * (0x7351 >> l) + (0x0510 >> l) & 15)]
-        )
-        a = d
-        d = c
-        c = b
+        cnt = "',16%).4$+07&*/5".charCodeAt(j & 3 | l)
       }
     }
     output[0] += a
