@@ -30,6 +30,7 @@ let wordsMD5 = (
   x[(l - l % 4) / 4] |= 0x80 << (x[xLen - 2] = l << 3);
 
   for (; i < xLen; i += 16) {
+    // Avoid array destructuring, as invoking the iterator protocol hurts performance.
     let { 0: a, 1: b, 2: c, 3: d } = output
     for (l = j = 0; l < 16; l += 4) {
       for (
