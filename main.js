@@ -1,3 +1,5 @@
+// tinyhmacmd5 (The Unlicense)
+
 let $Int32Array = Int32Array
 
 let $Uint8Array = Uint8Array
