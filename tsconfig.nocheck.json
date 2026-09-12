@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "noCheck": true
+  },
+  "include": ["*.min.js"]
+}

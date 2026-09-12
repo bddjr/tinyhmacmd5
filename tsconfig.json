@@ -1,11 +1,8 @@
 {
-    "compilerOptions": {
-        "noEmit": true,
-        "strict": true
-    },
-    "include": [
-        "./main.d.ts",
-        "./scripts/_typecheck.ts"
-    ],
-    "exclude": []
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true
+  },
+  "include": ["./main.d.ts", "./scripts/_typecheck.ts"],
+  "references": [{ "path": "tsconfig.nocheck.json" }]
 }
