@@ -2,9 +2,9 @@ English | [中文](README-zh.md)
 
 # Tiny HMAC MD5
 
-A tiny, efficient and reliable HMAC-MD5 implementation for JavaScript.
+A tiny, fast and reliable implementation of MD5 and HMAC-MD5 for JavaScript.
 
-[`browser.min.js`](browser.min.js) is only **923 bytes**.
+[`browser.min.js`](browser.min.js) is only **905 Bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
 - **Output type**: hex `string` or bytes `Uint8Array`
@@ -29,19 +29,20 @@ If you need a smaller implementation that targets ECMAScript 2026, see the [`es2
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.35 ms
-js-md5          : 128.71 ms
-blueimp-md5     : 3823.48 ms
-crypto-js       : 1553.58 ms
-node:crypto     : 129.86 ms
+tinyhmacmd5     : 388.54 ms
+spark-md5       : 517.99 ms
+js-md5          : 477.30 ms
+crypto-js       : 1667.62 ms
+blueimp-md5     : 3771.47 ms
+node:crypto     : 129.42 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.886s
-node:crypto HMAC-MD5 timer: 548.216ms
+tinyhmacmd5 HMAC-MD5 timer: 1.866s
+node:crypto HMAC-MD5 timer: 548.204ms
 tinyhmacmd5 MD5 timer: 1.868s
-node:crypto MD5 timer: 548.352ms
+node:crypto MD5 timer: 553.895ms
 ```
 
 CPU: i5-10600KF  
@@ -97,7 +98,7 @@ It will define the `md5` function using `var`.
 If you are concerned that others might not recognize what this is, you can add the following comment:
 
 ```js
-// tinyhmacmd5 (The Unlicense)
+// https://npmjs.com/tinyhmacmd5
 ```
 
 ---

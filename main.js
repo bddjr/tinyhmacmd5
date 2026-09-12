@@ -7,6 +7,12 @@ let $Uint8Array = Uint8Array
 /** MD5 constants cached in memory */
 let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
 
+/** is big-endian */
+let isBE = /** @type {0 | 1} */(new $Uint8Array(K.buffer)[0] & 1)
+
+/** @type {(a: Uint8Array | Int32Array, ...x: any[]) => any} */
+let reverse = a => a.reverse()
+
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
  *
@@ -74,15 +80,13 @@ let wordsMD5 = (
  * Convert bytes to an array of little-endian words
  *
  * @param {*} input
- * @param {number} j pad int32 length (0 or 16)
- * 
- * @param {*} [i]
+ * @param {number} padLen pad int32 length (0 or 16)
  * 
  * @returns {[Int32Array<ArrayBuffer>, number]}
  */
 let inputToWords = (
   input,
-  j,
+  padLen,
   // var:
   byteLen = (
     // Don't replace the type check below with something like `input.big`; it's unreliable.
@@ -92,16 +96,13 @@ let inputToWords = (
   ).length,
   // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
   // so I replaced it with `Int32Array`.
-  output = new $Int32Array(j + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
-  // (fast) little-endian
-  i = new $Uint8Array(K.buffer)[3] & 1 && new $Uint8Array(output.buffer, j * 4).set(input),
-) => {
-  // (slow) big-endian
-  for (; i < byteLen; ++i & 3 || j++) {
-    output[j] |= input[i] << 8 * i
-  }
-  return [output, byteLen]
-}
+  output = new $Int32Array(padLen + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
+  outputBytes = new $Uint8Array(output.buffer),
+) => (
+  outputBytes.set(input, padLen * 4),
+  isBE && reverse(outputBytes, reverse(output)),
+  [output, byteLen]
+)
 
 /**
  * Computes the MD5 hash of the input data.  
@@ -116,35 +117,34 @@ let inputToWords = (
  */
 let md5 = (data, key, raw) => {
   // Do not use parameter defaults to declare variables in public functions.
-  var i = 16
-    , hasKey = key != null
-    , [bdata, temp] = inputToWords(data, /**@type {*}*/(hasKey) * i)
-    , out = new $Uint8Array(i)
+  /** @type {boolean | Uint8Array<ArrayBuffer>} */
+  var temp = key != null
+    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(temp) * 16)
 
-  if (hasKey) {
+  if (temp) {
     // HMAC
-    let [bkey, j] = inputToWords(key, 0)
+    let [bkey, keyByteLen] = inputToWords(key, 0)
       , opad = new $Int32Array(32)
-    if (j > 64) {
-      bkey = wordsMD5(bkey, j)
+      , i = 16
+    if (keyByteLen > 64) {
+      bkey = wordsMD5(bkey, keyByteLen)
     }
-    for (j = i; j;) {
+    for (; i;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
-      opad[--j] = 0x6a6a6a6a ^ (bdata[j] = 0x36363636 ^ bkey[j])
+      opad[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
-    opad.set(wordsMD5(bdata, 64 + temp), i)
+    opad.set(wordsMD5(bdata, 64 + dataByteLen), 16)
     bdata = opad
-    temp = 80
+    dataByteLen = 80
   }
 
-  bdata = wordsMD5(bdata, temp)
+  bdata = wordsMD5(bdata, dataByteLen)
 
-  // words to bytes or hex
-  for (; i;) {
-    out[--i] = bdata[i >> 2] >> i * 8
-  }
-
-  return raw ? out : out.toHex()
+  temp = new $Uint8Array(bdata.buffer)
+  isBE && reverse(temp, reverse(bdata))
+  return raw
+    ? temp
+    : temp.toHex()
 }
 
 export default md5

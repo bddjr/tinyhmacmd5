@@ -2,9 +2,9 @@
 
 # Tiny HMAC MD5
 
-精简、高效、可靠的 HMAC-MD5 JavaScript 实现。
+小巧、快速、可靠的 MD5 与 HMAC-MD5 的 JavaScript 实现。
 
-[`browser.min.js`](browser.min.js) 仅 **923 字节**。
+[`browser.min.js`](browser.min.js) 仅 **905 字节**。
 
 - **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
@@ -29,19 +29,20 @@
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.35 ms
-js-md5          : 128.71 ms
-blueimp-md5     : 3823.48 ms
-crypto-js       : 1553.58 ms
-node:crypto     : 129.86 ms
+tinyhmacmd5     : 388.54 ms
+spark-md5       : 517.99 ms
+js-md5          : 477.30 ms
+crypto-js       : 1667.62 ms
+blueimp-md5     : 3771.47 ms
+node:crypto     : 129.42 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.886s
-node:crypto HMAC-MD5 timer: 548.216ms
+tinyhmacmd5 HMAC-MD5 timer: 1.866s
+node:crypto HMAC-MD5 timer: 548.204ms
 tinyhmacmd5 MD5 timer: 1.868s
-node:crypto MD5 timer: 548.352ms
+node:crypto MD5 timer: 553.895ms
 ```
 
 CPU: i5-10600KF  
@@ -96,7 +97,7 @@ import md5 from "tinyhmacmd5";
 如果你担心别人认不出这是什么，你可以添加以下注释：
 
 ```js
-// tinyhmacmd5 (The Unlicense)
+// https://npmjs.com/tinyhmacmd5
 ```
 
 ---
