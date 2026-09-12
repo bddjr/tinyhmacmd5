@@ -80,7 +80,6 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
 ```
 
-It will define the `md5` function using `var`.
 
 ### UNPKG
 
@@ -88,6 +87,11 @@ It will define the `md5` function using `var`.
 <script src="https://unpkg.com/tinyhmacmd5"></script>
 ```
 
+It will define the `md5` function using `var`.
+
+### cdnjs
+
+See https://cdnjs.com/libraries/tinyhmacmd5  
 It will define the `md5` function using `var`.
 
 ### Inline
