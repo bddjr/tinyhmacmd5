@@ -98,7 +98,7 @@ It will define the `md5` function using `var`.
 If you are concerned that others might not recognize what this is, you can add the following comment:
 
 ```js
-// tinyhmacmd5 (The Unlicense)
+// https://npmjs.com/tinyhmacmd5
 ```
 
 ---

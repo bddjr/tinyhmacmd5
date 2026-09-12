@@ -97,7 +97,7 @@ import md5 from "tinyhmacmd5";
 如果你担心别人认不出这是什么，你可以添加以下注释：
 
 ```js
-// tinyhmacmd5 (The Unlicense)
+// https://npmjs.com/tinyhmacmd5
 ```
 
 ---
