@@ -1,7 +1,7 @@
 {
   "name": "tinyhmacmd5",
-  "version": "0.5.1",
-  "description": "A tiny (955 Bytes), efficient and reliable HMAC-MD5 implementation for JavaScript.",
+  "version": "0.5.2",
+  "description": "A tiny (955 Bytes), fast and reliable HMAC-MD5 implementation for JavaScript.",
   "author": "bddjr",
   "license": "Unlicense",
   "type": "module",
@@ -67,6 +67,7 @@
     "crypto-js": "^4.2.0",
     "es-check": "^9.6.4",
     "js-md5": "^0.9.2",
+    "spark-md5": "^3.0.2",
     "terser": "^5.49.0",
     "tinyhmacmd5": "link:",
     "typescript": "^7.0.2"
