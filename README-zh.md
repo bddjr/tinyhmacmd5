@@ -4,9 +4,9 @@
 
 小巧、快速、可靠的 MD5 与 HMAC-MD5 的 JavaScript 实现。
 
-[`browser.min.js`](browser.min.js) 仅 **905 字节**。
+[`browser.min.js`](browser.min.js) 仅 **888 字节**。
 
-- **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
+- **输入类型**：`string`（UTF‑8）、`Uint8Array`、`Uint8ClampedArray`、`Int8Array` 或 `number[]`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
 - **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 2⁵³-137
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
@@ -29,20 +29,20 @@
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.45 ms
-spark-md5       : 520.13 ms
-js-md5          : 480.29 ms
-crypto-js       : 1661.32 ms
-blueimp-md5     : 3749.15 ms
-node:crypto     : 129.97 ms
+tinyhmacmd5     : 374.04 ms
+spark-md5       : 513.18 ms
+js-md5          : 481.65 ms
+crypto-js       : 1667.43 ms
+blueimp-md5     : 3753.25 ms
+node:crypto     : 130.88 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.867s
-node:crypto HMAC-MD5 timer: 548.332ms
-tinyhmacmd5 MD5 timer: 1.869s
-node:crypto MD5 timer: 551.244ms
+tinyhmacmd5 HMAC-MD5 timer: 1.794s
+node:crypto HMAC-MD5 timer: 550.872ms
+tinyhmacmd5 MD5 timer: 1.786s
+node:crypto MD5 timer: 548.873ms
 ```
 
 CPU: i5-10600KF  
@@ -79,21 +79,20 @@ import md5 from "tinyhmacmd5";
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
-它将使用 `var` 定义 `md5` 函数。
-
 ### UNPKG
 
 ```html
 <script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
-它将使用 `var` 定义 `md5` 函数。
+### cdnjs
+
+详见 https://cdnjs.com/libraries/tinyhmacmd5  
 
 ### 嵌入
 
 你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。  
-它将使用 `var` 定义 `md5` 函数。
-
+它将使用 `var` 定义 `md5` 函数。  
 如果你担心别人认不出这是什么，你可以添加以下注释：
 
 ```js
@@ -144,7 +143,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值。
+`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值 `"0123456789abcdeffedcba9876543210"`。
 
 ```js
 let data = new ArrayBuffer(8)
@@ -153,24 +152,24 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
-你也可以输入 `Uint8ClampedArray` ，这和输入 `Uint8Array` 的效果是一致的。
+你也可以输入 `Uint8ClampedArray` 或 `Int8Array` 。
 
 ```js
 // MD5: 字节数组 到 16进制
 // 返回 "5289df737df57326fcdd22597afb1fac"
 md5(Uint8ClampedArray.of(1, 2, 3))
-```
-
-**【⚠️不安全】**  
-你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
-
-```js
-let data = [0, 1, 127, 255]
 
 // MD5: 字节数组 到 16进制
-// 返回 "b23d6235d525eed4c4b8d741d4c2a5a1"
-//@ts-ignore
-md5(data)
+// 返回 "915273adf4c4b9b384bc5550b54d6319"
+md5(Int8Array.of(1, -2, 3, -4))
+```
+
+你也可以输入 `number[]` ，内部会自动把每一项都转成字节。
+
+```js
+// MD5: 字节数组 到 16进制
+// 返回 "47e3385934cd3e9abefb2f87c3bd4288"
+md5([0, 1, 127, 255, -9])
 ```
 
 ---

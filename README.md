@@ -4,9 +4,9 @@ English | [中文](README-zh.md)
 
 A tiny, fast and reliable implementation of MD5 and HMAC-MD5 for JavaScript.
 
-[`browser.min.js`](browser.min.js) is only **905 Bytes**.
+[`browser.min.js`](browser.min.js) is only **888 Bytes**.
 
-- **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
+- **Input type**: `string` (UTF‑8), `Uint8Array`, `Uint8ClampedArray`, `Int8Array` or `number[]`
 - **Output type**: hex `string` or bytes `Uint8Array`
 - **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to 2⁵³-137
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
@@ -29,20 +29,20 @@ If you need a smaller implementation that targets ECMAScript 2026, see the [`es2
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.45 ms
-spark-md5       : 520.13 ms
-js-md5          : 480.29 ms
-crypto-js       : 1661.32 ms
-blueimp-md5     : 3749.15 ms
-node:crypto     : 129.97 ms
+tinyhmacmd5     : 374.04 ms
+spark-md5       : 513.18 ms
+js-md5          : 481.65 ms
+crypto-js       : 1667.43 ms
+blueimp-md5     : 3753.25 ms
+node:crypto     : 130.88 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.867s
-node:crypto HMAC-MD5 timer: 548.332ms
-tinyhmacmd5 MD5 timer: 1.869s
-node:crypto MD5 timer: 551.244ms
+tinyhmacmd5 HMAC-MD5 timer: 1.794s
+node:crypto HMAC-MD5 timer: 550.872ms
+tinyhmacmd5 MD5 timer: 1.786s
+node:crypto MD5 timer: 548.873ms
 ```
 
 CPU: i5-10600KF  
@@ -80,21 +80,20 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5@es2026"></script>
 ```
 
-It will define the `md5` function using `var`.
-
 ### UNPKG
 
 ```html
 <script src="https://unpkg.com/tinyhmacmd5@es2026"></script>
 ```
 
-It will define the `md5` function using `var`.
+### cdnjs
+
+See https://cdnjs.com/libraries/tinyhmacmd5  
 
 ### Inline
 
 You can embed [`browser.min.js`](browser.min.js) directly into your script.  
-It will define the `md5` function using `var`.
-
+It will define the `md5` function using `var`.  
 If you are concerned that others might not recognize what this is, you can add the following comment:
 
 ```js
@@ -145,7 +144,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input; otherwise, it will return an incorrect MD5 hash.
+`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input; otherwise, it will return an incorrect MD5 hash `"0123456789abcdeffedcba9876543210"`.
 
 ```js
 let data = new ArrayBuffer(8)
@@ -154,24 +153,24 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
-You can also input a `Uint8ClampedArray`, which has the same effect as using a `Uint8Array`.
+You can also input `Uint8ClampedArray` or `Int8Array`.
 
 ```js
 // MD5: bytes to hex
 // returns "5289df737df57326fcdd22597afb1fac"
 md5(Uint8ClampedArray.of(1, 2, 3))
-```
-
-**[⚠️Unsafe]**  
-You can also input a `number[]`, but every element must be an integer in the range `0 ≤ x ≤ 255`; otherwise, it will return an incorrect MD5 hash.
-
-```js
-let data = [0, 1, 127, 255]
 
 // MD5: bytes to hex
-// returns "b23d6235d525eed4c4b8d741d4c2a5a1"
-//@ts-ignore
-md5(data)
+// returns "915273adf4c4b9b384bc5550b54d6319"
+md5(Int8Array.of(1, -2, 3, -4))
+```
+
+You can also input a `number[]`, and each item will be converted to a byte.
+
+```js
+// MD5: bytes to hex
+// returns "47e3385934cd3e9abefb2f87c3bd4288"
+md5([0, 1, 127, 255, -9])
 ```
 
 ---

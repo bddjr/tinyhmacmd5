@@ -1,6 +1,12 @@
 import fs from 'node:fs'
 import crypto from 'node:crypto'
 import assert from 'node:assert'
+import md5_main from "tinyhmacmd5";
+
+/**
+ * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike> | number[]} input 
+ */
+const inputToABV = (input) => Array.isArray(input) ? Uint8Array.from(input) : input
 
 /**
  * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
@@ -9,7 +15,7 @@ const nodeMD5 = (data) => crypto.hash('md5', data, 'hex')
 
 /**
  * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} data
- * @param {crypto.KeyLike} key
+ * @param {string | NodeJS.ArrayBufferView<ArrayBufferLike>} key
  */
 const nodeHmacMD5 = (data, key) => crypto.createHmac('md5', key).update(data).digest('hex')
 
@@ -19,8 +25,8 @@ const nodeHmacMD5 = (data, key) => crypto.createHmac('md5', key).update(data).di
  */
 function test(md5) {
     /**
-     * @param {string | Uint8Array | Uint8ClampedArray} data
-     * @param {string | Uint8Array | Uint8ClampedArray} key
+     * @param {string | Uint8Array | Uint8ClampedArray | Int8Array | number[]} data
+     * @param {string | Uint8Array | Uint8ClampedArray | Int8Array | number[]} key
      */
     function test(data, key) {
         console.log('data:', data)
@@ -29,19 +35,24 @@ function test(md5) {
         console.time("md5 timer")
         let a = md5(data)
         console.timeEnd("md5 timer")
-        let b = nodeMD5(data)
+        let b = nodeMD5(inputToABV(data))
         console.log('md5: tinyhmacmd5:', a, 'nodejs:', b)
         assert.strictEqual(a, b, `Failed to test MD5`)
 
         console.time("hmacmd5 timer")
         a = md5(data, key)
         console.timeEnd("hmacmd5 timer")
-        b = nodeHmacMD5(data, key)
+        b = nodeHmacMD5(inputToABV(data), inputToABV(key))
         console.log('hmacmd5: tinyhmacmd5:', a, 'nodejs:', b)
         assert.strictEqual(a, b, `Failed to test HMAC-MD5`)
 
         console.log()
+    }
 
+    for (const n of [55, 56, 57, 63, 64, 65, 119, 120, 121]) {
+        for (const k of [0, 1, 63, 64, 65, 128]) {
+            test(crypto.randomBytes(n), crypto.randomBytes(k))
+        }
     }
 
     test('', crypto.randomBytes(4).toString('hex'))
@@ -58,11 +69,9 @@ function test(md5) {
 
     test(Uint8ClampedArray.of(1, 2, 3), Uint8ClampedArray.of(4, 5, 6))
 
-    for (const n of [55, 56, 57, 63, 64, 65, 119, 120, 121]) {
-        for (const k of [0, 1, 63, 64, 65, 128]) {
-            test(crypto.randomBytes(n), crypto.randomBytes(k))
-        }
-    }
+    test(Int8Array.of(1, -2, 3, -4), Int8Array.of(4, -5, 6))
+
+    test([0, 1, 127, 255, -9], [4, -5, 6])
 
     test('', '')
     test('a', 'a')
@@ -94,8 +103,10 @@ console.log('test browser.min.js');
 
 const browser_min_js_Buffer = fs.readFileSync('browser.min.js');
 ; (0, eval)(browser_min_js_Buffer.toString())
+//@ts-ignore
 if (typeof md5 != 'function')
     throw Error(`browser.min.js is invalid`)
+//@ts-ignore
 test(md5)
 // delete global.md5
 
@@ -103,7 +114,6 @@ console.log('=======================');
 console.log('test main.js');
 console.log();
 
-import md5_main from "tinyhmacmd5";
 test(md5_main)
 
-console.log(browser_min_js_Buffer.byteLength, 'bytes')
+console.log(browser_min_js_Buffer.byteLength, 'Bytes')
