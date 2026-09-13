@@ -14,7 +14,7 @@ let isBE = /** @type {0 | 1} */(new $Uint8Array(K.buffer)[0] & 1)
 let reverseOnBE = a => isBE ? a.reverse() : a
 
 /**
- * Calculate the MD5 of an array of little-endian words, and a byte length.
+ * Calculate the MD5 of an Int32Array of little-endian words, and a byte length.
  *
  * @type {(x: Int32Array<ArrayBuffer>, l: number) => Int32Array<ArrayBuffer>}
  * @param x words
