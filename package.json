@@ -1,6 +1,6 @@
 {
   "name": "tinyhmacmd5",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A tiny (943 Bytes), fast and reliable implementation of MD5 and HMAC-MD5 for JavaScript.",
   "author": "bddjr",
   "license": "Unlicense",
