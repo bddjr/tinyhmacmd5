@@ -29,20 +29,20 @@ If you need a smaller implementation that targets ECMAScript 2026, see the [`es2
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.63 ms
-spark-md5       : 519.00 ms
-js-md5          : 479.22 ms
-crypto-js       : 1661.26 ms
-blueimp-md5     : 3750.98 ms
-node:crypto     : 129.36 ms
+tinyhmacmd5     : 379.96 ms
+spark-md5       : 518.97 ms
+js-md5          : 476.78 ms
+crypto-js       : 1667.48 ms
+blueimp-md5     : 3772.40 ms
+node:crypto     : 129.70 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.865s
-node:crypto HMAC-MD5 timer: 550.542ms
-tinyhmacmd5 MD5 timer: 1.861s
-node:crypto MD5 timer: 551.626ms
+tinyhmacmd5 HMAC-MD5 timer: 1.826s
+node:crypto HMAC-MD5 timer: 547.807ms
+tinyhmacmd5 MD5 timer: 1.831s
+node:crypto MD5 timer: 552.811ms
 ```
 
 CPU: i5-10600KF  
