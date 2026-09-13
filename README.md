@@ -6,7 +6,7 @@ A tiny, fast and reliable implementation of MD5 and HMAC-MD5 for JavaScript.
 
 [`browser.min.js`](browser.min.js) is only **923 Bytes**.
 
-- **Input type**: `string` (UTF‑8), `Uint8Array` or `Uint8ClampedArray`
+- **Input type**: `string` (UTF‑8), `Uint8Array`, `Uint8ClampedArray`, `Int8Array` or `number[]`
 - **Output type**: hex `string` or bytes `Uint8Array`
 - **Supports inputs ≥ 512 MiB**: The input length theoretically supports 0 to 2⁵³-137
 - **TypeScript‑ready**: [`main.d.ts`](main.d.ts)
@@ -144,7 +144,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input; otherwise, it will return an incorrect MD5 hash.
+`ArrayBuffer` must be wrapped in a `Uint8Array` before use as input; otherwise, it will return an incorrect MD5 hash `"0123456789abcdeffedcba9876543210"`.
 
 ```js
 let data = new ArrayBuffer(8)
@@ -153,24 +153,24 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
-You can also input a `Uint8ClampedArray`, which has the same effect as using a `Uint8Array`.
+You can also input `Uint8ClampedArray` or `Int8Array`.
 
 ```js
 // MD5: bytes to hex
 // returns "5289df737df57326fcdd22597afb1fac"
 md5(Uint8ClampedArray.of(1, 2, 3))
-```
-
-**[⚠️Unsafe]**  
-You can also input a `number[]`, but every element must be an integer in the range `0 ≤ x ≤ 255`; otherwise, it will return an incorrect MD5 hash.
-
-```js
-let data = [0, 1, 127, 255]
 
 // MD5: bytes to hex
-// returns "b23d6235d525eed4c4b8d741d4c2a5a1"
-//@ts-ignore
-md5(data)
+// returns "915273adf4c4b9b384bc5550b54d6319"
+md5(Int8Array.of(1, -2, 3, -4))
+```
+
+You can also input a `number[]`, and each item will be converted to a byte.
+
+```js
+// MD5: bytes to hex
+// returns "47e3385934cd3e9abefb2f87c3bd4288"
+md5([0, 1, 127, 255, -9])
 ```
 
 ---

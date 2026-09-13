@@ -6,7 +6,7 @@
 
 [`browser.min.js`](browser.min.js) 仅 **923 字节**。
 
-- **输入类型**：`string`（UTF‑8）、`Uint8Array` 或 `Uint8ClampedArray`
+- **输入类型**：`string`（UTF‑8）、`Uint8Array`、`Uint8ClampedArray`、`Int8Array` 或 `number[]`
 - **输出类型**：16进制 `string` 或 字节数组 `Uint8Array`
 - **支持 ≥ 512 MiB 的输入**：输入长度理论上支持 0 到 2⁵³-137
 - **TypeScript 就绪**：[`main.d.ts`](main.d.ts)
@@ -143,7 +143,7 @@ md5(Uint8Array.of(1, 2, 3))
 md5(Uint8Array.of(1, 2, 3), null, true)
 ```
 
-`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值。
+`ArrayBuffer` 需包装成 `Uint8Array` 再输入，否则会返回错误的 MD5 哈希值 `"0123456789abcdeffedcba9876543210"`。
 
 ```js
 let data = new ArrayBuffer(8)
@@ -152,24 +152,24 @@ let data = new ArrayBuffer(8)
 md5(new Uint8Array(data))
 ```
 
-你也可以输入 `Uint8ClampedArray` ，这和输入 `Uint8Array` 的效果是一致的。
+你也可以输入 `Uint8ClampedArray` 或 `Int8Array` 。
 
 ```js
 // MD5: 字节数组 到 16进制
 // 返回 "5289df737df57326fcdd22597afb1fac"
 md5(Uint8ClampedArray.of(1, 2, 3))
-```
-
-**【⚠️不安全】**  
-你也可以输入 `number[]` ，但每一项都必须是整数，且满足 `0 ≤ x ≤ 255`，否则会返回错误的 MD5 哈希值。
-
-```js
-let data = [0, 1, 127, 255]
 
 // MD5: 字节数组 到 16进制
-// 返回 "b23d6235d525eed4c4b8d741d4c2a5a1"
-//@ts-ignore
-md5(data)
+// 返回 "915273adf4c4b9b384bc5550b54d6319"
+md5(Int8Array.of(1, -2, 3, -4))
+```
+
+你也可以输入 `number[]` ，内部会自动把每一项都转成字节。
+
+```js
+// MD5: 字节数组 到 16进制
+// 返回 "47e3385934cd3e9abefb2f87c3bd4288"
+md5([0, 1, 127, 255, -9])
 ```
 
 ---

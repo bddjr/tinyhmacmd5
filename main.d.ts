@@ -11,18 +11,18 @@
  */
 declare var md5: {
     (
-        data: string | Uint8Array | Uint8ClampedArray,
-        key?: string | Uint8Array | Uint8ClampedArray | null,
+        data: string | Uint8Array | Uint8ClampedArray | Int8Array | number[],
+        key?: string | Uint8Array | Uint8ClampedArray | Int8Array | number[] | null,
         raw?: false
     ): string;
     (
-        data: string | Uint8Array | Uint8ClampedArray,
-        key: string | Uint8Array | Uint8ClampedArray | null | undefined,
+        data: string | Uint8Array | Uint8ClampedArray | Int8Array | number[],
+        key: string | Uint8Array | Uint8ClampedArray | Int8Array | number[] | null | undefined,
         raw: true
     ): Uint8Array<ArrayBuffer>;
     (
-        data: string | Uint8Array | Uint8ClampedArray,
-        key: string | Uint8Array | Uint8ClampedArray | null | undefined,
+        data: string | Uint8Array | Uint8ClampedArray | Int8Array | number[],
+        key: string | Uint8Array | Uint8ClampedArray | Int8Array | number[] | null | undefined,
         raw: boolean
     ): string | Uint8Array<ArrayBuffer>;
 };
