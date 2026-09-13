@@ -80,25 +80,20 @@ See https://www.jsdelivr.com/package/npm/tinyhmacmd5
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
 ```
 
-
 ### UNPKG
 
 ```html
 <script src="https://unpkg.com/tinyhmacmd5"></script>
 ```
 
-It will define the `md5` function using `var`.
-
 ### cdnjs
 
 See https://cdnjs.com/libraries/tinyhmacmd5  
-It will define the `md5` function using `var`.
 
 ### Inline
 
 You can embed [`browser.min.js`](browser.min.js) directly into your script.  
-It will define the `md5` function using `var`.
-
+It will define the `md5` function using `var`.  
 If you are concerned that others might not recognize what this is, you can add the following comment:
 
 ```js

@@ -79,26 +79,20 @@ import md5 from "tinyhmacmd5";
 <script src="https://cdn.jsdelivr.net/npm/tinyhmacmd5"></script>
 ```
 
-它将使用 `var` 定义 `md5` 函数。
-
 ### UNPKG
 
 ```html
 <script src="https://unpkg.com/tinyhmacmd5"></script>
 ```
 
-它将使用 `var` 定义 `md5` 函数。
-
 ### cdnjs
 
 详见 https://cdnjs.com/libraries/tinyhmacmd5  
-它将使用 `var` 定义 `md5` 函数。
 
 ### 嵌入
 
 你可以将 [`browser.min.js`](browser.min.js) 直接嵌入到你的脚本。  
-它将使用 `var` 定义 `md5` 函数。
-
+它将使用 `var` 定义 `md5` 函数。  
 如果你担心别人认不出这是什么，你可以添加以下注释：
 
 ```js
