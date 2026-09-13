@@ -10,7 +10,7 @@ let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
 /** is big-endian */
 let isBE = /** @type {0 | 1} */(new $Uint8Array(K.buffer)[0] & 1)
 
-/** @type {<T extends { reverse(): T }>(a: T) => T} */
+/** @type {<T extends { reverse(): T }>(a: T, ..._: any[]) => T} */
 let reverseOnBE = a => isBE ? a.reverse() : a
 
 /**
@@ -93,11 +93,16 @@ let inputToWords = ((
   ).length,
   outputBytes = new $Uint8Array(padLen + byteLen + 72 - (byteLen + 8 & 63)),
   output = new $Int32Array(outputBytes.buffer),
-) => (
-  outputBytes.set(/** @type {*} */(input), padLen),
-  reverseOnBE(outputBytes),
-  [reverseOnBE(output), byteLen]
-))
+) =>
+  [
+    reverseOnBE(
+      output,
+      outputBytes.set(/** @type {*} */(input), padLen),
+      reverseOnBE(outputBytes)
+    ),
+    byteLen
+  ]
+)
 
 /**
  * Computes the MD5 hash of the input data.  
