@@ -124,13 +124,12 @@ let md5 = (data, key, raw) => {
 
   if (temp) {
     // HMAC
-    let [bkey, keyByteLen] = inputToWords(key, 0)
+    let [bkey, i] = inputToWords(key, 0)
       , opad = new $Int32Array(32)
-      , i = 16
-    if (keyByteLen > 64) {
-      bkey = wordsMD5(bkey, keyByteLen)
+    if (i > 64) {
+      bkey = wordsMD5(bkey, i)
     }
-    for (; i;) {
+    for (i = 16; i;) {
       // (0x36363636 ^ 0x5c5c5c5c) == 0x6a6a6a6a
       opad[--i] = 0x6a6a6a6a ^ (bdata[i] = 0x36363636 ^ bkey[i])
     }
