@@ -10,7 +10,7 @@ let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
 /** is big-endian */
 let isBE = /** @type {0 | 1} */(new $Uint8Array(K.buffer)[0] & 1)
 
-/** @type {(a: Uint8Array | Int32Array, ...x: any[]) => any} */
+/** @type {<T extends { reverse(): T }>(a: T, x: any) => T} */
 let reverse = a => a.reverse()
 
 /**
