@@ -56,7 +56,7 @@ let wordsMD5 = ((
                     : ~b & (c ^ d) // Round 1: F
               )) +
               x[i + (j++ * (0x7351 >> l) + (0x0510 >> l) & 15)]
-            )) << cnt | a >>> 32 - cnt // Keep `32 -` so JS engines can recognize bit rotation (ROL/ROR).
+            )) >>> cnt | a << 32 - cnt // Keep `32 -` so JS engines can recognize bit rotation (ROR).
           ) + (
             a = d,
             d = c,
@@ -64,7 +64,7 @@ let wordsMD5 = ((
           )
         )
       ) {
-        cnt = "',16%).4$+07&*/5".charCodeAt(j & 3 | l)
+        cnt = "94/*;72,<50):61+".charCodeAt(j & 3 | l)
       }
     }
     output[0] += a
