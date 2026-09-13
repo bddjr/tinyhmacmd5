@@ -4,7 +4,7 @@ English | [中文](README-zh.md)
 
 A tiny, fast and reliable implementation of MD5 and HMAC-MD5 for JavaScript.
 
-[`browser.min.js`](browser.min.js) is only **923 Bytes**.
+[`browser.min.js`](browser.min.js) is only **919 Bytes**.
 
 - **Input type**: `string` (UTF‑8), `Uint8Array`, `Uint8ClampedArray`, `Int8Array` or `number[]`
 - **Output type**: hex `string` or bytes `Uint8Array`

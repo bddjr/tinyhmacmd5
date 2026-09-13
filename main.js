@@ -94,11 +94,10 @@ let inputToWords = ((
       : input
   ).length,
   outputBytes = new $Uint8Array(padLen + byteLen + 72 - (byteLen + 8 & 63)),
-  output = new $Int32Array(outputBytes.buffer),
 ) =>
   [
     reverseOnBE(
-      output,
+      new $Int32Array(outputBytes.buffer),
       outputBytes.set(/** @type {Exclude<Input, string>} */(input), padLen),
       reverseOnBE(outputBytes)
     ),
