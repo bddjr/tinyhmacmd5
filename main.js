@@ -120,7 +120,7 @@ let md5 = (data, key, raw) => {
   // Do not use parameter defaults to declare variables in public functions.
   /** @type {boolean | Uint8Array<ArrayBuffer>} */
   var temp = key != null
-    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(temp) * 64)
+    , [bdata, dataByteLen] = inputToWords(data, /** @type {*} */(temp) * 64)
 
   if (temp) {
     // HMAC
