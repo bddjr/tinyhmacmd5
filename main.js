@@ -79,7 +79,7 @@ let wordsMD5 = ((
  * Convert bytes to an Int32Array of little-endian words
  *
  * @type {(input: string | Uint8Array | Uint8ClampedArray, padLen: number) => [Int32Array<ArrayBuffer>, number]}
- * @param padLen pad int32 length (0 or 16)
+ * @param padLen pad byte-length (0 or 64)
  */
 let inputToWords = ((
   input,
@@ -91,12 +91,10 @@ let inputToWords = ((
       ? input = new TextEncoder().encode(input)
       : input
   ).length,
-  // Using `Array` to process inputs over 512 MiB could throw a `RangeError`,
-  // so I replaced it with `Int32Array`.
-  output = new $Int32Array(padLen + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
-  outputBytes = new $Uint8Array(output.buffer),
+  outputBytes = new $Uint8Array(padLen + byteLen + 72 - (byteLen + 8 & 63)),
+  output = new $Int32Array(outputBytes.buffer),
 ) => (
-  outputBytes.set(/** @type {*} */(input), padLen * 4),
+  outputBytes.set(/** @type {*} */(input), padLen),
   reverseOnBE(outputBytes),
   [reverseOnBE(output), byteLen]
 ))
@@ -116,7 +114,7 @@ let md5 = (data, key, raw) => {
   // Do not use parameter defaults to declare variables in public functions.
   /** @type {boolean | Uint8Array<ArrayBuffer>} */
   var temp = key != null
-    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(temp) * 16)
+    , [bdata, dataByteLen] = inputToWords(data, /**@type {*}*/(temp) * 64)
 
   if (temp) {
     // HMAC

@@ -106,4 +106,4 @@ console.log();
 import md5_main from "tinyhmacmd5";
 test(md5_main)
 
-console.log(browser_min_js_Buffer.byteLength, 'bytes')
+console.log(browser_min_js_Buffer.byteLength, 'Bytes')
