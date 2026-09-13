@@ -60,7 +60,7 @@ Node.js: v26.8.1
 ### npm
 
 ```
-npm i tinyhmacmd5
+npm i tinyhmacmd5@latest
 ```
 
 ```js

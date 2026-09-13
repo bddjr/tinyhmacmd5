@@ -61,7 +61,7 @@ As a result, the final size is not the smallest theoretically achievable.
 ### npm
 
 ```
-npm i tinyhmacmd5
+npm i tinyhmacmd5@latest
 ```
 
 ```js
