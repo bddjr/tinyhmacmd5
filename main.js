@@ -16,12 +16,11 @@ let reverse = a => a.reverse()
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
  *
- * @param {Int32Array<ArrayBuffer>} x little-endian words
- * @param {number} l Byte length
- * 
- * @returns {Int32Array<ArrayBuffer>} MD5 Array
+ * @type {(x: Int32Array<ArrayBuffer>, l: number) => Int32Array<ArrayBuffer>}
+ * @param x words
+ * @param l Byte length
  */
-let wordsMD5 = (
+let wordsMD5 = ((
   x,
   l,
   // var:
@@ -74,17 +73,15 @@ let wordsMD5 = (
     output[3] += d
   }
   return output
-}
+})
 
 /**
- * Convert bytes to an array of little-endian words
+ * Convert bytes to an Int32Array of little-endian words
  *
- * @param {*} input
- * @param {number} padLen pad int32 length (0 or 16)
- * 
- * @returns {[Int32Array<ArrayBuffer>, number]}
+ * @type {(input: string | Uint8Array | Uint8ClampedArray, padLen: number) => [Int32Array<ArrayBuffer>, number]}
+ * @param padLen pad int32 length (0 or 16)
  */
-let inputToWords = (
+let inputToWords = ((
   input,
   padLen,
   // var:
@@ -99,10 +96,14 @@ let inputToWords = (
   output = new $Int32Array(padLen + 18 + (byteLen - (byteLen + 8 & 63)) / 4),
   outputBytes = new $Uint8Array(output.buffer),
 ) => (
-  outputBytes.set(input, padLen * 4),
-  isBE && reverse(outputBytes, reverse(output)),
-  [output, byteLen]
-)
+  outputBytes.set(/** @type {*} */(input), padLen * 4),
+  [
+    isBE
+      ? reverse(output, reverse(outputBytes))
+      : output
+    , byteLen
+  ]
+))
 
 /**
  * Computes the MD5 hash of the input data.  
