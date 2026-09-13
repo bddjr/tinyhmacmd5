@@ -41,6 +41,7 @@ let wordsMD5 = ((
     let { 0: a, 1: b, 2: c, 3: d } = output
     for (l = j = 0; l < 16; l += 4) {
       for (
+        let mul = 0x7351 >> l, add = 0x0510 >> l
         ; j < 4 * l + 16
         ; b = 0 | (
           (
@@ -55,7 +56,7 @@ let wordsMD5 = ((
                     ? d & (b ^ c)  // Round 2: G
                     : ~b & (c ^ d) // Round 1: F
               )) +
-              x[i + (j++ * (0x7351 >> l) + (0x0510 >> l) & 15)]
+              x[i + (j++ * mul + add & 15)]
             )) >>> cnt | a << 32 - cnt // Keep `32 -` so JS engines can recognize bit rotation (ROR).
           ) + (
             a = d,
