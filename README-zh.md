@@ -29,20 +29,20 @@
 $ node scripts/benchmark.mjs && node scripts/test-513MiB.mjs
 Data length: 104857600 chars (100MiB)
 --------------------------------------------------
-tinyhmacmd5     : 388.42 ms
-spark-md5       : 514.71 ms
-js-md5          : 478.54 ms
-crypto-js       : 1675.66 ms
-blueimp-md5     : 3750.59 ms
-node:crypto     : 129.99 ms
+tinyhmacmd5     : 388.63 ms
+spark-md5       : 519.00 ms
+js-md5          : 479.22 ms
+crypto-js       : 1661.26 ms
+blueimp-md5     : 3750.98 ms
+node:crypto     : 129.36 ms
 --------------------------------------------------
 ✅ All pure JS implementations match node:crypto result.
 
 --- Pure 513MiB Test (No prior small tests) ---
-tinyhmacmd5 HMAC-MD5 timer: 1.881s
-node:crypto HMAC-MD5 timer: 550.255ms
-tinyhmacmd5 MD5 timer: 1.864s
-node:crypto MD5 timer: 551.588ms
+tinyhmacmd5 HMAC-MD5 timer: 1.865s
+node:crypto HMAC-MD5 timer: 550.542ms
+tinyhmacmd5 MD5 timer: 1.861s
+node:crypto MD5 timer: 551.626ms
 ```
 
 CPU: i5-10600KF  
