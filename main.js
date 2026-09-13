@@ -10,8 +10,8 @@ let K = new $Int32Array(64).map((v, i) => 2 ** 32 * Math.sin(++i % Math.PI))
 /** is big-endian */
 let isBE = /** @type {0 | 1} */(new $Uint8Array(K.buffer)[0] & 1)
 
-/** @type {<T extends { reverse(): T }>(a: T, x: any) => T} */
-let reverse = a => a.reverse()
+/** @type {<T extends { reverse(): T }>(a: T) => T} */
+let reverseOnBE = a => isBE ? a.reverse() : a
 
 /**
  * Calculate the MD5 of an array of little-endian words, and a byte length.
@@ -97,12 +97,8 @@ let inputToWords = ((
   outputBytes = new $Uint8Array(output.buffer),
 ) => (
   outputBytes.set(/** @type {*} */(input), padLen * 4),
-  [
-    isBE
-      ? reverse(output, reverse(outputBytes))
-      : output
-    , byteLen
-  ]
+  reverseOnBE(outputBytes),
+  [reverseOnBE(output), byteLen]
 ))
 
 /**
@@ -139,10 +135,13 @@ let md5 = (data, key, raw) => {
     dataByteLen = 80
   }
 
-  bdata = wordsMD5(bdata, dataByteLen)
-
-  temp = new $Uint8Array(bdata.buffer)
-  isBE && reverse(temp, reverse(bdata))
+  temp = reverseOnBE(
+    new $Uint8Array(
+      reverseOnBE(
+        wordsMD5(bdata, dataByteLen)
+      ).buffer
+    )
+  )
   return raw
     ? temp
     : temp.reduce((p, v) => p + (v >> 4 && "") + v.toString(16), "")
